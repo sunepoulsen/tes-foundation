@@ -6,4 +6,5 @@ pluginManagement {
 
 rootProject.name = 'tes-foundation'
 include 'tes-json'
+include 'tes-xml'
 

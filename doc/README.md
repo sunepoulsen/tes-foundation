@@ -5,6 +5,7 @@
 The foundation defines the following libraries that is designed to be used in production code:
 
 - [TES JSON](tes-json/README.md): Common way to work with JSON.
+- [TES XML](tes-xml/README.md): Common way to work with XML.
 
 ### Dependencies
 
@@ -18,7 +19,8 @@ flowchart LR
     end
 
     subgraph "Libraries"
-        tesJson["TES JSON"]:::prodLibrary
+        tesJson["TES Json"]:::prodLibrary
+        tesXml["TES Xml"]:::prodLibrary
     end
 
     classDef prodLibrary fill:#d9ead3,color:#000

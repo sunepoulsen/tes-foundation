@@ -73,11 +73,6 @@ subprojects {
     }
 
     publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
         repositories {
             maven {
                 url = "${System.properties['maven.repository.base.url']}/" + (
