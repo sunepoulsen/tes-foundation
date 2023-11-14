@@ -12,5 +12,15 @@ This diagram shows the dependencies between all the libraries in TES Foundation
 
 ```mermaid
 flowchart LR
-    tesJson["TES JSON"]
+    subgraph "Legends"
+        legProdLib["Production Library"]:::prodLibrary
+        legTestLib["Test Library"]:::testLibrary
+    end
+
+    subgraph "Libraries"
+        tesJson["TES JSON"]:::prodLibrary
+    end
+
+    classDef prodLibrary fill:#d9ead3,color:#000
+    classDef testLibrary fill:#d9d2e9,color:#000
 ```
