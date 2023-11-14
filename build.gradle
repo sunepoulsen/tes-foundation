@@ -1,0 +1,158 @@
+import org.jetbrains.changelog.ExtensionsKt
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+}
+
+plugins {
+    id 'org.jetbrains.changelog'
+}
+
+apply plugin: 'java-library'
+apply plugin: 'groovy'
+apply plugin: 'maven-publish'
+
+group 'dk.sunepoulsen.tes'
+version "${project.property('version')}"
+
+task allWrappers(type: Wrapper) {
+    gradleVersion = "${project.property('gradle.version')}"
+}
+
+changelog {
+    path = "${project.projectDir}/CHANGELOG.md"
+    header = "${-> version.get()} - ${ExtensionsKt.date("yyyy-MM-dd")}"
+    headerParserRegex = ~/(\d+\.\d+\.\d+)/
+    introduction.set(
+        """
+        All notable changes to this project will be documented in this file. The target-audience for this document 
+        is developers and operations.
+        
+        The changelog-format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project 
+        adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        
+        Developers should add an entry to "Unreleased work" under the appropriate subsection, describing their work 
+        _prior_ to merging to master. The entry should contain a link to the Jira-story. 
+        
+        Adhere to the following format:
+        ```
+        - [Name of Jira-story or subtask](link to Jira-story): Description of the completed work`
+        ```
+        Example-entry:
+        
+        - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
+        
+        For release-dates, use date-format: DD-MM-YYYY
+        """.stripIndent()
+    )
+    itemPrefix = "-"
+    keepUnreleasedSection = true
+    unreleasedTerm = "Unreleased work"
+    groups = ["Features", "Fixed", "Security"]
+}
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'groovy'
+    apply plugin:  'org.jetbrains.changelog'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            url "${System.properties['maven.repository.base.url']}/${System.properties['maven.repository.snapshots']}"
+            allowInsecureProtocol = true
+        }
+        maven {
+            url "${System.properties['maven.repository.base.url']}/${System.properties['maven.repository.releases']}"
+            allowInsecureProtocol = true
+        }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
+        }
+        repositories {
+            maven {
+                url = "${System.properties['maven.repository.base.url']}/" + (
+                    version ==~ /^\d+\.\d+\.\d+$/ ?
+                        "${System.properties['maven.repository.releases']}" :
+                        "${System.properties['maven.repository.snapshots']}"
+                )
+                allowInsecureProtocol = true
+                credentials {
+                    username = "${System.properties['maven.repository.username']}"
+                    password = "${System.properties['maven.repository.password']}"
+                }
+            }
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    dependencies {
+        // Lombok
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+        // Logging
+        implementation 'ch.qos.logback:logback-classic:1.4.11'
+        implementation 'org.slf4j:log4j-over-slf4j:2.0.9'
+
+        // JUnit
+        testImplementation 'org.junit.vintage:junit-vintage-engine:5.10.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+
+        // Spock
+        testImplementation 'org.apache.groovy:groovy:4.0.15'
+        testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
+        testImplementation 'net.bytebuddy:byte-buddy:1.14.9'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    changelog {
+        path = "${project.projectDir}/CHANGELOG.md"
+        header = "${-> version.get()} - ${ExtensionsKt.date("yyyy-MM-dd")}"
+        headerParserRegex = ~/(\d+\.\d+\.\d+)/
+        introduction.set(
+            """
+        All notable changes to this project will be documented in this file. The target-audience for this document 
+        is developers and operations.
+        
+        The changelog-format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project 
+        adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        
+        Developers should add an entry to "Unreleased work" under the appropriate subsection, describing their work 
+        _prior_ to merging to master. The entry should contain a link to the Jira-story. 
+        
+        Adhere to the following format:
+        ```
+        - [Name of Jira-story or subtask](link to Jira-story): Description of the completed work`
+        ```
+        Example-entry:
+        
+        - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
+        
+        For release-dates, use date-format: DD-MM-YYYY
+        """.stripIndent()
+        )
+        itemPrefix = "-"
+        keepUnreleasedSection = true
+        unreleasedTerm = "Unreleased work"
+        groups = ["Features", "Fixed", "Security"]
+    }
+
+}

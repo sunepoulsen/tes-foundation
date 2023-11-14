@@ -1,0 +1,9 @@
+pluginManagement {
+    plugins {
+        id 'org.jetbrains.changelog' version '2.2.0'
+    }
+}
+
+rootProject.name = 'tes-foundation'
+include 'tes-json'
+
