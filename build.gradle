@@ -10,10 +10,6 @@ plugins {
     id 'org.jetbrains.changelog'
 }
 
-apply plugin: 'java-library'
-apply plugin: 'groovy'
-apply plugin: 'maven-publish'
-
 group 'dk.sunepoulsen.tes'
 version "${project.property('version')}"
 
@@ -56,7 +52,8 @@ changelog {
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'groovy'
-    apply plugin:  'org.jetbrains.changelog'
+    apply plugin: 'maven-publish'
+    apply plugin: 'org.jetbrains.changelog'
 
     repositories {
         mavenLocal()
@@ -73,6 +70,12 @@ subprojects {
     }
 
     publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
+        }
+
         repositories {
             maven {
                 url = "${System.properties['maven.repository.base.url']}/" + (
