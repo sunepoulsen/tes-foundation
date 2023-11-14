@@ -36,7 +36,6 @@ public class XmlDocumentFactory {
 
     /**
      * Creates an Xml Document from a classpath resource.
-     * <p/>
      * <h4>Note</h4>
      * The resource is loaded by the classloader of <code>XmlDocumentFactory</code> so the full classpath resource path
      * needs to be specified.
