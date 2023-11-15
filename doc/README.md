@@ -5,6 +5,7 @@
 The foundation defines the following libraries that is designed to be used in production code:
 
 - [TES JSON](tes-json/README.md): Common way to work with JSON.
+- [TES Maven](tes-maven/README.md): Simple integration with a Maven repository.
 - [TES XML](tes-xml/README.md): Common way to work with XML.
 
 The foundation defines the following libraries that is designed to be used in testing code:
@@ -16,7 +17,7 @@ The foundation defines the following libraries that is designed to be used in te
 This diagram shows the dependencies between all the libraries in TES Foundation
 
 ```mermaid
-flowchart LR
+flowchart
     subgraph "Legends"
         legProdLib["Production Library"]:::prodLibrary
         legTestLib["Test Library"]:::testLibrary
@@ -24,7 +25,9 @@ flowchart LR
 
     subgraph "Libraries"
         tesJson["TES Json"]:::prodLibrary
+        tesMaven["TES Maven"]:::prodLibrary
         tesXml["TES Xml"]:::prodLibrary
+        
         tesJMeter["TES JMeter"]:::testLibrary
     end
 
