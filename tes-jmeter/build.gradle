@@ -1,0 +1,5 @@
+dependencies {
+    // Test containers
+    implementation platform('org.testcontainers:testcontainers-bom:1.19.1')
+    implementation 'org.testcontainers:testcontainers'
+}
