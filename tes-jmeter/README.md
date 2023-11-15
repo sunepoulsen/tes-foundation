@@ -9,9 +9,9 @@ The execution of the stress test assumes a number of files to be in place then J
 | **File/Directory**                             | **Description**                                                                             |
 |------------------------------------------------|---------------------------------------------------------------------------------------------|
 | `/usr/local/bin/jmeter`                        | The location of the JMeter script that will execute JMeter                                  |
-| `src/test/resources/stress-test.jmx`           | The JMeter plan with the stress test. The path is relative to the root of the Gradle module |                                                         
+| `src/test/resources/stress-test.jmx`           | The JMeter plan with the stress test. The path is relative to the root of the Gradle module |
 | `src/test/resources/user.properties`           | Defines properties to be loaded used JMeter                                                 |
-| `src/test/resources/user-<profile>.properties` | Defines properties to be loaded used JMeter using a specific profile |                                                 
+| `src/test/resources/user-<profile>.properties` | Defines properties to be loaded used JMeter using a specific profile                        |
 
 A profile can be defined by settings the system property: `stress.test.profile`. This property will hold the profile 
 name to use to load the property file that will be parsed to JMeter.
