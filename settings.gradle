@@ -9,4 +9,5 @@ include 'tes-jmeter'
 include 'tes-json'
 include 'tes-maven'
 include 'tes-xml'
+include 'tes-spring-boot-backend-logging'
 

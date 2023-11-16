@@ -7,6 +7,7 @@ The foundation defines the following libraries that is designed to be used in pr
 - [TES JSON](../tes-json/README.md): Common way to work with JSON.
 - [TES Maven](../tes-maven/README.md): Simple integration with a Maven repository.
 - [TES XML](../tes-xml/README.md): Common way to work with XML.
+- [TES Spring Boot Backend Logging](../tes-spring-boot-backend-logging/README.md): Common logging with Spring Boot
 
 The foundation defines the following libraries that is designed to be used in testing code:
 
@@ -26,6 +27,7 @@ flowchart
     subgraph "Libraries"
         tesJson["TES Json"]:::prodLibrary
         tesMaven["TES Maven"]:::prodLibrary
+        tesSpringBootLogging["TES Spring Boot Backend Logging"]:::prodLibrary
         tesXml["TES Xml"]:::prodLibrary
         
         tesJMeter["TES JMeter"]:::testLibrary
