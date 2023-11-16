@@ -24,7 +24,7 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Features
 
 - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
-  - Common logging capabilities for Spring Boot backends. 
+  - Common definition of REST models and transformation of paginating models. 
 
 ### Fixed
 
