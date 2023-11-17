@@ -4,8 +4,6 @@
 
 The foundation defines the following libraries that is designed to be used in production code:
 
-- [TES Docker Containers](../tes-docker-containers/README.md): Standardisation of working with Docker containers 
-  in component, stress and system tests.
 - [TES JSON](../tes-json/README.md): Common way to work with JSON.
 - [TES Maven](../tes-maven/README.md): Simple integration with a Maven repository.
 - [TES XML](../tes-xml/README.md): Common way to work with XML.
@@ -16,9 +14,13 @@ The foundation defines the following libraries that is designed to be used in pr
 - [TES Spring Boot Backend Logging](../tes-spring-boot-backend-logging/README.md): Common logging with Spring Boot
 - [TES Spring Boot Rest Exceptions](../tes-spring-boot-rest-exceptions/README.md): Global exception handling for 
   TES backends with Spring Boot
+- [TES Spring Boot Rest Logic](../tes-spring-boot-rest-logic/README.md): Library with logic exceptions and 
+  utility classes for Spring Boot Rest applications
 
 The foundation defines the following libraries that is designed to be used in testing code:
 
+- [TES Docker Containers](../tes-docker-containers/README.md): Standardisation of working with Docker containers
+  in component, stress and system tests.
 - [TES JMeter](../tes-jmeter/README.md): Executing stress or performance tests with JMeter
 
 ### Dependencies
@@ -41,6 +43,7 @@ flowchart
         tesRestIntegrations["TES Rest Integrations"]:::prodLibrary --> tesJson
         tesRestIntegrations:::prodLibrary --> tesRestModels
         tesSpringBootRestExceptions["TES Spring Boot Rest Exceptions"]:::prodLibrary --> tesRestModels
+        tesSpringBootRestLogic["TES Spring Boot Rest Logic"]:::prodLibrary --> tesSpringBootRestExceptions
 
         tesDockerContainers["TES Docker Containers"]:::testLibrary --> tesRestIntegrations
         tesJMeter["TES JMeter"]:::testLibrary
