@@ -4,6 +4,8 @@
 
 The foundation defines the following libraries that is designed to be used in production code:
 
+- [TES Docker Containers](../tes-docker-containers/README.md): Standardisation of working with Docker containers 
+  in component, stress and system tests.
 - [TES JSON](../tes-json/README.md): Common way to work with JSON.
 - [TES Maven](../tes-maven/README.md): Simple integration with a Maven repository.
 - [TES XML](../tes-xml/README.md): Common way to work with XML.
@@ -36,7 +38,8 @@ flowchart
         tesXml["TES Xml"]:::prodLibrary
         tesRestIntegrations["TES Rest Integrations"]:::prodLibrary --> tesJson
         tesRestIntegrations:::prodLibrary --> tesRestModels
-        
+
+        tesDockerContainers["TES Docker Containers"]:::testLibrary --> tesRestIntegrations
         tesJMeter["TES JMeter"]:::testLibrary
     end
 

@@ -1,0 +1,8 @@
+dependencies {
+    // Tech Easy Solutions
+    api project(':tes-rest-integrations')
+
+    // Test containers
+    implementation platform('org.testcontainers:testcontainers-bom:1.19.1')
+    implementation 'org.testcontainers:testcontainers'
+}
