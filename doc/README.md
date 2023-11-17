@@ -22,6 +22,8 @@ The foundation defines the following libraries that is designed to be used in te
 - [TES Docker Containers](../tes-docker-containers/README.md): Standardisation of working with Docker containers
   in component, stress and system tests.
 - [TES JMeter](../tes-jmeter/README.md): Executing stress or performance tests with JMeter
+- [TES Selenium](../tes-selenium/README.md): TES Selenium is created to make it easier to use Selenium 
+  for testing web frontends.
 
 ### Dependencies
 
@@ -47,6 +49,7 @@ flowchart
 
         tesDockerContainers["TES Docker Containers"]:::testLibrary --> tesRestIntegrations
         tesJMeter["TES JMeter"]:::testLibrary
+        tesSelenium["TES Selenium"]:::testLibrary
     end
 
     classDef prodLibrary fill:#d9ead3,color:#000

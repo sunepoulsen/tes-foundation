@@ -16,4 +16,5 @@ include 'tes-rest-integrations'
 include 'tes-docker-containers'
 include 'tes-spring-boot-rest-exceptions'
 include 'tes-spring-boot-rest-logic'
+include 'tes-selenium'
 
