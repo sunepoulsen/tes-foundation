@@ -14,4 +14,5 @@ include 'tes-rest-models'
 include 'tes-spring-boot-backend-logging'
 include 'tes-rest-integrations'
 include 'tes-docker-containers'
+include 'tes-spring-boot-rest-exceptions'
 

@@ -14,6 +14,8 @@ The foundation defines the following libraries that is designed to be used in pr
 - [TES Rest Models](../tes-rest-models/README.md): Common definition of REST models and transformation of paginating 
   models.
 - [TES Spring Boot Backend Logging](../tes-spring-boot-backend-logging/README.md): Common logging with Spring Boot
+- [TES Spring Boot Rest Exceptions](../tes-spring-boot-rest-exceptions/README.md): Global exception handling for 
+  TES backends with Spring Boot
 
 The foundation defines the following libraries that is designed to be used in testing code:
 
@@ -38,6 +40,7 @@ flowchart
         tesXml["TES Xml"]:::prodLibrary
         tesRestIntegrations["TES Rest Integrations"]:::prodLibrary --> tesJson
         tesRestIntegrations:::prodLibrary --> tesRestModels
+        tesSpringBootRestExceptions["TES Spring Boot Rest Exceptions"]:::prodLibrary --> tesRestModels
 
         tesDockerContainers["TES Docker Containers"]:::testLibrary --> tesRestIntegrations
         tesJMeter["TES JMeter"]:::testLibrary

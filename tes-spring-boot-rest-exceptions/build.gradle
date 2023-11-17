@@ -1,0 +1,14 @@
+dependencies {
+    // Tech Easy Solutions
+    implementation project(':tes-rest-models')
+
+    // Spring Boot
+    implementation 'org.springframework:spring-web:6.0.12'
+    implementation 'org.springframework:spring-webmvc:6.0.12'
+
+    // Validation API
+    api 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    // Open API
+    api 'io.swagger.core.v3:swagger-annotations:2.2.15'
+}
