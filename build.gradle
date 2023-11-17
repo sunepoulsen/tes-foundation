@@ -4,6 +4,9 @@ buildscript {
     repositories {
         mavenCentral()
     }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:8.4.3'
+    }
 }
 
 plugins {
@@ -54,6 +57,7 @@ subprojects {
     apply plugin: 'groovy'
     apply plugin: 'maven-publish'
     apply plugin: 'org.jetbrains.changelog'
+    apply plugin: 'org.owasp.dependencycheck'
 
     repositories {
         mavenLocal()
@@ -152,6 +156,10 @@ subprojects {
         keepUnreleasedSection = true
         unreleasedTerm = "Unreleased work"
         groups = ["Features", "Fixed", "Security"]
+    }
+
+    dependencyCheck {
+        format='ALL'
     }
 
 }

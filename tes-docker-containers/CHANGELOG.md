@@ -29,3 +29,6 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Fixed
 
 ### Security
+
+- [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
+  - Update dependencies to latest versions.

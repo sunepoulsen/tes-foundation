@@ -1,6 +1,6 @@
 dependencies {
     // Spring Framework
-    implementation 'org.springframework:spring-web:6.0.12'
-    implementation 'org.springframework:spring-context:6.0.12'
+    implementation 'org.springframework:spring-web:6.1.0'
+    implementation 'org.springframework:spring-context:6.1.0'
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 }
