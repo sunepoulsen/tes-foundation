@@ -19,3 +19,6 @@ echo
 
 echo
 ./pipeline-publish.sh
+
+echo
+./pipeline-analyze.sh
