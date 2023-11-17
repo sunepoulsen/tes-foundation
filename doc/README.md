@@ -7,6 +7,8 @@ The foundation defines the following libraries that is designed to be used in pr
 - [TES JSON](../tes-json/README.md): Common way to work with JSON.
 - [TES Maven](../tes-maven/README.md): Simple integration with a Maven repository.
 - [TES XML](../tes-xml/README.md): Common way to work with XML.
+- [TES Rest Integrations](../tes-rest-integrations/README.md): Capabilities to integrate TES backend 
+  services with each order.
 - [TES Rest Models](../tes-rest-models/README.md): Common definition of REST models and transformation of paginating 
   models.
 - [TES Spring Boot Backend Logging](../tes-spring-boot-backend-logging/README.md): Common logging with Spring Boot
@@ -32,6 +34,8 @@ flowchart
         tesRestModels["TES Rest Models"]:::prodLibrary
         tesSpringBootLogging["TES Spring Boot Backend Logging"]:::prodLibrary
         tesXml["TES Xml"]:::prodLibrary
+        tesRestIntegrations["TES Rest Integrations"]:::prodLibrary --> tesJson
+        tesRestIntegrations:::prodLibrary --> tesRestModels
         
         tesJMeter["TES JMeter"]:::testLibrary
     end

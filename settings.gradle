@@ -12,3 +12,5 @@ include 'tes-maven'
 include 'tes-xml'
 include 'tes-rest-models'
 include 'tes-spring-boot-backend-logging'
+include 'tes-rest-integrations'
+
