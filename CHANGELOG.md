@@ -17,19 +17,15 @@ Example-entry:
 
 - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
 
-For release-dates, use date-format: DD-MM-YYYY
+For release-dates, use date-format: YYYY-MM-DD
 
 ## Unreleased work
 
 ### Features
 
+- [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
+  - Combined all existing `TES Libraries` into a single monolith. 
+
 ### Fixed
 
 ### Security
-
-## 1.0.0 - 2023-11-18
-
-### Features
-
-- [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
-  - Combined all existing `TES Libraries` into a single monolith.
