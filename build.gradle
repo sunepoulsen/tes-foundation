@@ -26,7 +26,7 @@ tasks.register('allWrappers', Wrapper) {
 apply from: "${rootProject.projectDir}/gradle/changelog.gradle"
 
 release {
-    tagTemplate = "v${version}"
+    tagTemplate = 'v${version}'
     git {
         requireBranch.set('main')
     }
