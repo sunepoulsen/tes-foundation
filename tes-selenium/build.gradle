@@ -1,0 +1,11 @@
+dependencies {
+    // Jakarta XML Bind
+    api 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+    api 'com.sun.xml.bind:jaxb-impl:4.0.4'
+
+    // Selenium
+    api 'org.seleniumhq.selenium:selenium-java:4.15.0'
+
+    // JUnit
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+}

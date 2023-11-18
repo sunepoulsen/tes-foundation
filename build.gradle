@@ -1,0 +1,144 @@
+import org.jetbrains.changelog.ExtensionsKt
+
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:8.4.3'
+    }
+}
+
+plugins {
+    id 'org.jetbrains.changelog'
+    id 'net.researchgate.release'
+    id 'org.sonarqube'
+    id 'jacoco'
+}
+
+group 'dk.sunepoulsen.tes'
+version "${project.property('version')}"
+
+task allWrappers(type: Wrapper) {
+    gradleVersion = "${project.property('gradle.version')}"
+}
+
+apply from: "${rootProject.projectDir}/gradle/changelog.gradle"
+
+release {
+    git {
+        requireBranch.set('main')
+    }
+}
+
+tasks.afterReleaseBuild.dependsOn tasks.patchChangelog
+
+subprojects {
+    apply plugin: 'java-library'
+    apply plugin: 'groovy'
+    apply plugin: 'maven-publish'
+    apply plugin: 'org.jetbrains.changelog'
+    apply plugin: 'org.owasp.dependencycheck'
+    apply plugin: 'jacoco'
+
+    repositories {
+        mavenLocal()
+        mavenCentral()
+
+        maven {
+            url "${System.properties['maven.repository.base.url']}/${System.properties['maven.repository.snapshots']}"
+            allowInsecureProtocol = true
+        }
+        maven {
+            url "${System.properties['maven.repository.base.url']}/${System.properties['maven.repository.releases']}"
+            allowInsecureProtocol = true
+        }
+    }
+
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
+        }
+
+        repositories {
+            maven {
+                url = "${System.properties['maven.repository.base.url']}/" + (
+                    version ==~ /^\d+\.\d+\.\d+$/ ?
+                        "${System.properties['maven.repository.releases']}" :
+                        "${System.properties['maven.repository.snapshots']}"
+                )
+                allowInsecureProtocol = true
+                credentials {
+                    username = "${System.properties['maven.repository.username']}"
+                    password = "${System.properties['maven.repository.password']}"
+                }
+            }
+        }
+    }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    dependencies {
+        // Lombok
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+        // Logging
+        implementation 'ch.qos.logback:logback-classic:1.4.11'
+        implementation 'org.slf4j:log4j-over-slf4j:2.0.9'
+
+        // JUnit
+        testImplementation 'org.junit.vintage:junit-vintage-engine:5.10.1'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.10.1'
+
+        // Spock
+        testImplementation 'org.apache.groovy:groovy-all:4.0.15'
+        testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
+        testImplementation 'net.bytebuddy:byte-buddy:1.14.9'
+        testImplementation 'org.objenesis:objenesis:3.3'
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+    apply from: "${rootProject.projectDir}/gradle/changelog.gradle"
+
+    jacocoTestReport {
+        reports {
+            xml.required = true
+        }
+    }
+
+    dependencyCheck {
+        format='ALL'
+    }
+
+    tasks.jacocoTestReport.dependsOn tasks.test
+
+    sonar {
+        properties {
+            property 'sonar.dependencyCheck.severity.blocker', '9.0'
+            property 'sonar.dependencyCheck.severity.critical', '7.0'
+            property 'sonar.dependencyCheck.severity.major', '4.0'
+            property 'sonar.dependencyCheck.severity.minor', '0.0'
+
+            property 'sonar.dependencyCheck.jsonReportPath', "${project.projectDir}/build/reports/dependency-check-report.json"
+            property 'sonar.dependencyCheck.htmlReportPath', "${project.projectDir}/build/reports/dependency-check-report.html"
+        }
+    }
+
+}
+
+sonar {
+    properties {
+        property "sonar.projectName", "TES Foundation"
+        property "sonar.projectKey", "tes-foundation"
+    }
+}

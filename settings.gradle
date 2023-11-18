@@ -1,0 +1,21 @@
+pluginManagement {
+    plugins {
+        id 'org.jetbrains.changelog' version '2.2.0'
+        id 'net.researchgate.release' version '3.0.2'
+        id 'org.sonarqube' version '4.4.1.3373'
+    }
+}
+
+rootProject.name = 'tes-foundation'
+
+include 'tes-jmeter'
+include 'tes-json'
+include 'tes-maven'
+include 'tes-xml'
+include 'tes-rest-models'
+include 'tes-spring-boot-backend-logging'
+include 'tes-rest-integrations'
+include 'tes-docker-containers'
+include 'tes-spring-boot-rest-exceptions'
+include 'tes-spring-boot-rest-logic'
+include 'tes-selenium'
