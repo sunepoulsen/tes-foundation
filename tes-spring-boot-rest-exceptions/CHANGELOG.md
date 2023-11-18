@@ -25,6 +25,9 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Fixed
 
+- [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
+  - GroupId is changed to `dk.sunepoulsen.tes-foundation`
+
 ### Security
 
 ## 1.0.0 - 2023-11-18
