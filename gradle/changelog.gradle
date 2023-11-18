@@ -24,7 +24,7 @@ changelog {
         
         - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
         
-        For release-dates, use date-format: DD-MM-YYYY
+        For release-dates, use date-format: YYYY-MM-DD
         """.stripIndent()
     )
     itemPrefix = "-"
