@@ -12,13 +12,13 @@ sdk use java $JAVA_VERSION
 java --version
 
 echo
-./pipeline-clean.sh
+./pipeline-clean.sh "$@"
 
 echo
-./pipeline-build.sh
+./pipeline-build.sh "$@"
 
 echo
-./pipeline-publish.sh
+./pipeline-publish.sh "$@"
 
 echo
-./pipeline-analyze.sh
+./pipeline-analyze.sh "$@"

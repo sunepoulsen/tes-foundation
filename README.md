@@ -45,7 +45,18 @@ This pipeline has the following steps:
 1. Clean the repository.
 2. Build the library - including JavaDoc.
 3. Analyzing the project with SonarQube - including check of dependency vulnerabilities.
-4. Publish the artifacts to Nexus.
+4. Publish the artifacts to local Maven repository in `~/.m2/repository`.
+
+The pipeline can also publish the artifacts to the remote Nexus repository. To activate that there are two options:
+
+1. Pass `--remote` to the pipeline script with:
+   ```shell
+   ./pipeline.sh --remote
+   ```
+2. Pass `--remote` to the publish step of the pipeline with:
+   ```shell
+   ./pipeline-publish.sh --remote
+   ```
 
 The pipeline selects the required Java version to build the project. To get it to work the
 developer needs:
