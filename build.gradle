@@ -16,7 +16,7 @@ plugins {
     id 'jacoco'
 }
 
-group 'dk.sunepoulsen.tes'
+group 'dk.sunepoulsen.tes-foundation'
 version "${project.property('version')}"
 
 tasks.register('allWrappers', Wrapper) {
@@ -55,6 +55,8 @@ subprojects {
     apply plugin: 'org.jetbrains.changelog'
     apply plugin: 'org.owasp.dependencycheck'
     apply plugin: 'jacoco'
+
+    group 'dk.sunepoulsen.tes-foundation'
 
     repositories {
         mavenLocal()
