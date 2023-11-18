@@ -106,12 +106,10 @@ The release process is as follows:
 5. Automatically update the version with the release version - removing the SNAPSHOT part of the version.
 6. Checks if your project is using any SNAPSHOT dependencies
 7. Will build your project.
-8. Update the CHANGELOG file.
+8. Updates all CHANGELOG files in the project, that has changes to the `Unreleased work` section.
+   - If the `Unreleased work` section contains no changes then the CHANGELOG file is not changed. 
 9. Publish the build artifact to Nexus.
-10. Check used dependencies for any vulnerabilities with the [org.owasp:dependency-check-gradle](https://github.com/dependency-check/dependency-check-gradle) plugin.
-11. Analyze the code with SonarQube. This will also publish any vulnerabilities found by `org.owasp:dependency-check-gradle`
-12. Commits the project if SNAPSHOT was being used.
-13. Creates a release tag with the current version.
-14. Automatically update the version number for the next development cycle.
-15. Commits the project with the new version.
-
+10. Commits the project if SNAPSHOT was being used.
+11. Creates a release tag with the current version.
+12. Automatically update the version number for the next development cycle.
+13. Commits the project with the new version.

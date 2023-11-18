@@ -11,6 +11,7 @@ buildscript {
 
 plugins {
     id 'org.jetbrains.changelog'
+    id 'net.researchgate.release'
     id 'org.sonarqube'
     id 'jacoco'
 }
@@ -53,6 +54,14 @@ changelog {
     unreleasedTerm = "Unreleased work"
     groups = ["Features", "Fixed", "Security"]
 }
+
+release {
+    git {
+        requireBranch.set('main')
+    }
+}
+
+tasks.afterReleaseBuild.dependsOn tasks.patchChangelog
 
 subprojects {
     apply plugin: 'java-library'
