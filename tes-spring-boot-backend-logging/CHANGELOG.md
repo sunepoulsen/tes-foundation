@@ -23,16 +23,10 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
-### Fixed
-
-### Security
-
-## 1.0.0 - 2023-11-18
-
-### Features
-
 - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
   - Common logging capabilities for Spring Boot backends. 
+
+### Fixed
 
 ### Security
 

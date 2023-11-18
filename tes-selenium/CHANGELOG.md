@@ -23,17 +23,11 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
-### Fixed
-
-### Security
-
-## 1.0.0 - 2023-11-18
-
-### Features
-
 - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
   - Verifying tags from web sites.
   - Verifying documented endpoints on exposed OpenApi on Spring Boot backends. 
+
+### Fixed
 
 ### Security
 
