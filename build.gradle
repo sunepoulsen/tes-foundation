@@ -16,6 +16,8 @@ plugins {
     id 'jacoco'
 }
 
+apply plugin: 'org.owasp.dependencycheck'
+
 group 'dk.sunepoulsen.tes-foundation'
 version "${project.property('version')}"
 
@@ -53,7 +55,6 @@ subprojects {
     apply plugin: 'groovy'
     apply plugin: 'maven-publish'
     apply plugin: 'org.jetbrains.changelog'
-    apply plugin: 'org.owasp.dependencycheck'
     apply plugin: 'jacoco'
 
     group 'dk.sunepoulsen.tes-foundation'
@@ -139,23 +140,19 @@ subprojects {
 
     tasks.jacocoTestReport.dependsOn tasks.test
 
-    sonar {
-        properties {
-            property 'sonar.dependencyCheck.severity.blocker', '9.0'
-            property 'sonar.dependencyCheck.severity.critical', '7.0'
-            property 'sonar.dependencyCheck.severity.major', '4.0'
-            property 'sonar.dependencyCheck.severity.minor', '0.0'
-
-            property 'sonar.dependencyCheck.jsonReportPath', "${project.projectDir}/build/reports/dependency-check-report.json"
-            property 'sonar.dependencyCheck.htmlReportPath', "${project.projectDir}/build/reports/dependency-check-report.html"
-        }
-    }
-
 }
 
 sonar {
     properties {
         property "sonar.projectName", "TES Foundation"
         property "sonar.projectKey", "tes-foundation"
+
+        property 'sonar.dependencyCheck.severity.blocker', '9.0'
+        property 'sonar.dependencyCheck.severity.critical', '7.0'
+        property 'sonar.dependencyCheck.severity.major', '4.0'
+        property 'sonar.dependencyCheck.severity.minor', '0.0'
+
+        property 'sonar.dependencyCheck.jsonReportPath', "build/reports/dependency-check-report.json"
+        property 'sonar.dependencyCheck.htmlReportPath', "build/reports/dependency-check-report.html"
     }
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
 echo "Analyze all libraries"
-./gradlew dependencyCheckAnalyze
+./gradlew dependencyCheckAggregate || exit
 ./gradlew jacocoTestReport
 ./gradlew sonar
