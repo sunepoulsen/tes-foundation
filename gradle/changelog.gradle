@@ -22,7 +22,7 @@ changelog {
         ```
         Example-entry:
         
-        - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
+        - [TESFOUND-120](https://sunepoulsen.atlassian.net/browse/TESFOUND-120): Tech Easy Solutions as a monolith
         
         For release-dates, use date-format: YYYY-MM-DD
         """.stripIndent()

@@ -27,6 +27,8 @@ For release-dates, use date-format: YYYY-MM-DD
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
   - GroupId is changed to `dk.sunepoulsen.tes-foundation`
+- [VIDADDR-5](https://sunepoulsen.atlassian.net/browse/VIDADDR-5): Create basic skeleton for ViDA.DDR
+  - Fixing potential bugs reported by `SonarQube`
 
 ### Security
 

@@ -131,10 +131,11 @@ public class ServiceExceptionHandler {
         ServiceErrorModel model = null;
 
         try {
-            if (ex.getBindingResult().getFieldError() != null ) {
+            var fieldError = ex.getBindingResult().getFieldError();
+            if (fieldError != null ) {
                 model = new ServiceErrorModel();
-                model.setParam(ex.getBindingResult().getFieldError().getField());
-                model.setMessage(ex.getBindingResult().getFieldError().getDefaultMessage());
+                model.setParam(fieldError.getField());
+                model.setMessage(fieldError.getDefaultMessage());
             }
 
             return model;

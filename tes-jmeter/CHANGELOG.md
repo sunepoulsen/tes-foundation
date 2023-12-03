@@ -23,6 +23,9 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [VIDADDR-5](https://sunepoulsen.atlassian.net/browse/VIDADDR-5): Create basic skeleton for ViDA.DDR
+  - Piping logging from stdout from JMeter to the logging, when executing stress tests with JMeter.
+
 ### Fixed
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId

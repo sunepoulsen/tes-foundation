@@ -3,9 +3,7 @@ package dk.sunepoulsen.tes.jmeter;
 import lombok.extern.slf4j.Slf4j;
 import org.testcontainers.containers.GenericContainer;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -37,14 +35,17 @@ public class JMeterExecutor {
         log.info("Executing {}", String.join(" ", processBuilder.command()));
         var process = processBuilder.start();
 
+        final var stdoutInputStream = process.getInputStream();
+        final var stdoutReader = new BufferedReader(new InputStreamReader(stdoutInputStream));
+
+        String line;
+        while (process.isAlive() && (line = stdoutReader.readLine()) != null) {
+            log.info(line);
+        }
         process.waitFor();
-        var output = new String(process.getInputStream().readAllBytes());
 
-        log.info("Standard output:\n{}", output);
         log.info("Exit code: {}", process.exitValue());
-
         return process.exitValue() == 0;
-
     }
 
     private <T extends GenericContainer<T>> void findExternalPorts(GenericContainer<T> container) {
