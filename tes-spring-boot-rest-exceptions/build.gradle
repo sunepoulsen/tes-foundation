@@ -3,8 +3,8 @@ dependencies {
     implementation project(':tes-rest-models')
 
     // Spring Boot
-    implementation 'org.springframework:spring-web:6.1.0'
-    implementation 'org.springframework:spring-webmvc:6.1.0'
+    implementation 'org.springframework:spring-web:6.1.1'
+    implementation 'org.springframework:spring-webmvc:6.1.1'
 
     // Validation API
     api 'jakarta.validation:jakarta.validation-api:3.0.2'
