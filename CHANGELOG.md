@@ -25,6 +25,8 @@ For release-dates, use date-format: YYYY-MM-DD
 
 - [VIDADDR-5](https://sunepoulsen.atlassian.net/browse/VIDADDR-5): Create basic skeleton for ViDA.DDR
   - Piping logging from stdout from JMeter to the logging, when executing stress tests with JMeter.
+- [TESFOUND-137](https://sunepoulsen.atlassian.net/browse/TESFOUND-137): Upgrade to Java 21
+  - The entire project is now build with Java 21.
 
 ### Fixed
 
@@ -34,6 +36,12 @@ For release-dates, use date-format: YYYY-MM-DD
   - Fixing potential bugs reported by `SonarQube`
 
 ### Security
+
+- [TESFOUND-137](https://sunepoulsen.atlassian.net/browse/TESFOUND-137): Upgrade to Java 21
+  - Update dependencies to fix the follow vulnerability:
+    - [CVE-2023-6378](https://nvd.nist.gov/vuln/detail/CVE-2023-6378): A serialization vulnerability in
+      logback receiver component part of logback version 1.4.11 allows an attacker to mount a Denial-Of-Service
+      attack by sending poisoned data.
 
 ## 1.0.0 - 2023-11-18
 

@@ -10,7 +10,7 @@ The documentation of how to use this library can be found the here:
 
 ## Building
 
-The project is built with Gradle and is requiring Java 17.
+The project is built with Gradle and is requiring Java 21.
 
 The project is integrated with [Sonatype Nexus Repository](https://www.sonatype.com/products/sonatype-nexus-repository)
 and [SonarQube](https://www.sonarsource.com/products/sonarqube/) and is using the following properties from
@@ -62,11 +62,11 @@ The pipeline selects the required Java version to build the project. To get it t
 developer needs:
 
 1. A working installation of [SDK Man](https://sdkman.io/)
-2. Installed the java distribution of `17.0.8.1-tem` with `sdk`. This distribution does not need to be active,
+2. Installed the java distribution of `21.0.1-tem` with `sdk`. This distribution does not need to be active,
    but it needs to be installed.
 
 If you want to change the Java distribution being used then you can overwrite the variable `JAVA_VERSION` in
-`pipeline.sh`
+`pipeline-tools.sh`
 
 ## Code Analysing
 

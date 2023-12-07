@@ -1,15 +1,6 @@
 #!/bin/bash
 
-JAVA_VERSION=17.0.8.1-tem
-
-echo "Select tools"
-
-export SDKMAN_DIR="$HOME/.sdkman"
-[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
-
-sdk use java $JAVA_VERSION
-
-java --version
+source ./pipeline-tools.sh
 
 echo
 ./pipeline-clean.sh "$@"
