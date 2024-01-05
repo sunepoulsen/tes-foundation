@@ -26,6 +26,10 @@ systemProp.maven.repository.releases=maven-releases
 systemProp.maven.repository.username=<Username for the account to connect to Nexus>
 systemProp.maven.repository.password=<Password for the user account>
 
+# System properties for OWASP Dependency Check
+
+systemProp.owasp.dependencycheck.api.key=<api-key for nvd>
+
 # System properties for SonarQube
 
 systemProp.sonar.host.url=<URL to SonarQube>

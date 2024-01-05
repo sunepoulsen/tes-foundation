@@ -142,6 +142,12 @@ subprojects {
 
 }
 
+dependencyCheck {
+    nvd {
+        apiKey = System.getProperty('owasp.dependencycheck.api.key')
+    }
+}
+
 sonar {
     properties {
         property "sonar.projectName", "TES Foundation"
