@@ -23,6 +23,10 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
+  - Extended `TESBackendContainer` with a `DockerImageProvider` to read the docker image name from different sources.
+  - Extended `TESBackendContainer` with a `TESContainerProtocol` to support both http and https.
+
 ### Fixed
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
