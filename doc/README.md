@@ -11,6 +11,7 @@ The foundation defines the following libraries that is designed to be used in pr
   services with each order.
 - [TES Rest Models](../tes-rest-models/README.md): Common definition of REST models and transformation of paginating 
   models.
+- [TES Security](../tes-security/README.md): Security requirements when working with certificates.
 - [TES Spring Boot Backend Logging](../tes-spring-boot-backend-logging/README.md): Common logging with Spring Boot
 - [TES Spring Boot Rest Exceptions](../tes-spring-boot-rest-exceptions/README.md): Global exception handling for 
   TES backends with Spring Boot
@@ -40,6 +41,7 @@ flowchart
         tesJson["TES Json"]:::prodLibrary
         tesMaven["TES Maven"]:::prodLibrary
         tesRestModels["TES Rest Models"]:::prodLibrary
+        tesSecurity["TES Security"]:::prodLibrary
         tesSpringBootLogging["TES Spring Boot Backend Logging"]:::prodLibrary
         tesXml["TES Xml"]:::prodLibrary
         tesRestIntegrations["TES Rest Integrations"]:::prodLibrary --> tesJson
