@@ -11,6 +11,7 @@ public class WebDriverFactory {
 
     private WebDriver createChromeDriver() {
         ChromeOptions options = new ChromeOptions();
+        options.setAcceptInsecureCerts(true);
         options.addArguments("--headless=new");
 
         return new ChromeDriver(options);
