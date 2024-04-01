@@ -26,3 +26,11 @@ hs_err_pid*
 .idea/
 .gradle
 build/
+
+# This drectory below can be used to store temporary pull requests body files if a developer want to use the
+# GitHub Cli to make pull requests. It is added here so a developer can store a body file in the project
+# without committing the file to the project by mistake.
+.pr
+
+# Local files for developer that override parts of the pipeline
+.pipeline
