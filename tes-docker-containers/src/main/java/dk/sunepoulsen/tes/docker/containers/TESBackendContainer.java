@@ -1,7 +1,9 @@
 package dk.sunepoulsen.tes.docker.containers;
 
+import dk.sunepoulsen.tes.docker.exceptions.DockerImageProviderException;
 import dk.sunepoulsen.tes.rest.integrations.TechEasySolutionsBackendIntegrator;
 import dk.sunepoulsen.tes.rest.integrations.TechEasySolutionsClient;
+import dk.sunepoulsen.tes.rest.integrations.config.TechEasySolutionsClientConfig;
 import org.testcontainers.containers.BindMode;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
@@ -11,15 +13,22 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class TESBackendContainer extends GenericContainer<TESBackendContainer> {
-    public TESBackendContainer(String imageName, String tagName, String springProfile) {
-        super(DockerImageName.parse(imageName + ":" + tagName));
+
+    private TESContainerProtocol protocol;
+
+    public TESBackendContainer(DockerImageProvider dockerImageProvider, String springProfile) throws DockerImageProviderException {
+        this(dockerImageProvider, new TESContainerUnsecureProtocol(), springProfile);
+    }
+
+    public TESBackendContainer(DockerImageProvider dockerImageProvider, TESContainerProtocol protocol, String springProfile) throws DockerImageProviderException {
+        super(dockerImageProvider.dockerImageName());
+        this.protocol = protocol;
 
         withEnv("SPRING_PROFILES_ACTIVE", springProfile);
-        withExposedPorts(8080);
+        withExposedPorts(this.protocol.exposedPort());
 
         waitingFor(
-            Wait.forHttp("/actuator/health")
-                .forStatusCode(200)
+            this.protocol.waitStrategy("/actuator/health")
         );
     }
 
@@ -32,9 +41,16 @@ public class TESBackendContainer extends GenericContainer<TESBackendContainer> {
         copyFileFromContainer("/app/logs/service.log", destinationPath);
     }
 
+    public URI baseUrl() throws URISyntaxException {
+        return this.protocol.baseUrl(getHost(), getMappedPort(this.protocol.exposedPort()) );
+    }
+
     public TechEasySolutionsClient createClient() throws URISyntaxException {
-        String baseUrl = String.format("http://%s:%s", getHost(), getMappedPort(8080) );
-        return new TechEasySolutionsClient(new URI(baseUrl));
+        return new TechEasySolutionsClient(baseUrl());
+    }
+
+    public TechEasySolutionsClient createClient(TechEasySolutionsClientConfig config) throws URISyntaxException {
+        return new TechEasySolutionsClient(baseUrl(), config);
     }
 
     public TechEasySolutionsBackendIntegrator createGenericIntegrator() throws URISyntaxException {

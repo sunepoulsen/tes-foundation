@@ -100,10 +100,15 @@ public class TechEasySolutionsClient {
     }
 
     private HttpClient buildHttpClient() {
-        return HttpClient.newBuilder()
+        HttpClient.Builder builder = HttpClient.newBuilder()
             .version(config.httpClientVersion())
             .followRedirects(config.httpClientFollowRedirects())
-            .connectTimeout(config.httpClientConnectTimeout())
-            .build();
+            .connectTimeout(config.httpClientConnectTimeout());
+
+        if (config.sslContext() != null) {
+            builder.sslContext(config.sslContext());
+        }
+
+        return builder.build();
     }
 }

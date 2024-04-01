@@ -15,7 +15,7 @@ Adhere to the following format:
 ```
 Example-entry:
 
-- [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
+- [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
 
 For release-dates, use date-format: YYYY-MM-DD
 
@@ -24,24 +24,7 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Features
 
 - [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
-  - Extended `TESBackendContainer` with a `DockerImageProvider` to read the docker image name from different sources.
-  - Extended `TESBackendContainer` with a `TESContainerProtocol` to support both http and https.
 
 ### Fixed
 
-- [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
-  - GroupId is changed to `dk.sunepoulsen.tes-foundation`
-
 ### Security
-
-## 1.0.0 - 2023-11-18
-
-### Features
-
-- [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
-  - Standardisation of working with Docker containers in component, stress and system tests. 
-
-### Security
-
-- [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
-  - Update dependencies to latest versions.

@@ -27,6 +27,7 @@ For release-dates, use date-format: YYYY-MM-DD
   - Piping logging from stdout from JMeter to the logging, when executing stress tests with JMeter.
 - [TESFOUND-137](https://sunepoulsen.atlassian.net/browse/TESFOUND-137): Upgrade to Java 21
   - The entire project is now build with Java 21.
+- [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
 
 ### Fixed
 
