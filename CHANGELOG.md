@@ -28,6 +28,8 @@ For release-dates, use date-format: YYYY-MM-DD
 - [TESFOUND-137](https://sunepoulsen.atlassian.net/browse/TESFOUND-137): Upgrade to Java 21
   - The entire project is now build with Java 21.
 - [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
+- [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
+  - Extends `tes-rest-integrations` and `tes-rest-models` with extra `/actuator` endpoints. 
 
 ### Fixed
 

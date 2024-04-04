@@ -1,6 +1,7 @@
 package dk.sunepoulsen.tes.rest.integrations
 
 import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientBadRequestException
+import dk.sunepoulsen.tes.rest.models.HashMapModel
 import dk.sunepoulsen.tes.rest.models.ServiceErrorModel
 import dk.sunepoulsen.tes.rest.models.monitoring.*
 import spock.lang.Specification
@@ -72,6 +73,119 @@ class TechEasySolutionsBackendIntegratorSpec extends Specification {
 
         then:
             1 * httpClient.get('/actuator/info', ServiceInfo) >> CompletableFuture.supplyAsync {
+                throw new ExecutionException("message", new ClientBadRequestException(Mock(HttpResponse), new ServiceErrorModel(
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                )))
+            }
+            ClientBadRequestException ex = thrown(ClientBadRequestException)
+            ex.serviceError.code == 'code'
+            ex.serviceError.param == 'param'
+            ex.serviceError.message == 'message'
+    }
+
+    void "Get env with OK"() {
+        given:
+            HashMapModel expected = [
+                activeProfiles: [
+                    "local"
+                ],
+                propertySources: [
+                    [
+                        name: 'server.ports',
+                        properties: [
+                            'local.server.port': [
+                                value: 8080
+                            ]
+                        ]
+                    ]
+                ]
+            ]
+
+        when:
+            HashMapModel result = this.sut.env().blockingGet()
+
+        then:
+            1 * httpClient.get('/actuator/env', HashMapModel) >> CompletableFuture.supplyAsync { expected }
+            result == expected
+    }
+
+    void "Get env with BadRequest result"() {
+        when:
+            this.sut.env().blockingGet()
+
+        then:
+            1 * httpClient.get('/actuator/env', HashMapModel) >> CompletableFuture.supplyAsync {
+                throw new ExecutionException("message", new ClientBadRequestException(Mock(HttpResponse), new ServiceErrorModel(
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                )))
+            }
+            ClientBadRequestException ex = thrown(ClientBadRequestException)
+            ex.serviceError.code == 'code'
+            ex.serviceError.param == 'param'
+            ex.serviceError.message == 'message'
+    }
+
+    void "Get metrics with OK"() {
+        given:
+            ServiceMetrics expected = new ServiceMetrics(
+                names: [
+                    'application.ready.time',
+                    'application.started.time',
+                    'disk.free',
+                    'disk.total',
+                ]
+            )
+
+        when:
+            ServiceMetrics result = this.sut.metrics().blockingGet()
+
+        then:
+            1 * httpClient.get('/actuator/metrics', ServiceMetrics) >> CompletableFuture.supplyAsync { expected }
+            result == expected
+    }
+
+    void "Get metrics with BadRequest result"() {
+        when:
+            this.sut.metrics().blockingGet()
+
+        then:
+            1 * httpClient.get('/actuator/metrics', ServiceMetrics) >> CompletableFuture.supplyAsync {
+                throw new ExecutionException("message", new ClientBadRequestException(Mock(HttpResponse), new ServiceErrorModel(
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                )))
+            }
+            ClientBadRequestException ex = thrown(ClientBadRequestException)
+            ex.serviceError.code == 'code'
+            ex.serviceError.param == 'param'
+            ex.serviceError.message == 'message'
+    }
+
+    void "Get metric with OK"() {
+        given:
+            HashMapModel expected = [
+                name: 'application.started.time'
+            ]
+
+        when:
+            HashMapModel result = this.sut.metric('application.started.time').blockingGet()
+
+        then:
+            1 * httpClient.get('/actuator/metrics/application.started.time', HashMapModel) >> CompletableFuture.supplyAsync { expected }
+            result == expected
+    }
+
+    void "Get metric with BadRequest result"() {
+        when:
+            this.sut.metric('application.started.time').blockingGet()
+
+        then:
+            1 * httpClient.get('/actuator/metrics/application.started.time', HashMapModel) >> CompletableFuture.supplyAsync {
                 throw new ExecutionException("message", new ClientBadRequestException(Mock(HttpResponse), new ServiceErrorModel(
                     code: 'code',
                     param: 'param',

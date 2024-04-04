@@ -5,6 +5,7 @@ import dk.sunepoulsen.tes.rest.integrations.config.DefaultClientConfig;
 import dk.sunepoulsen.tes.rest.integrations.config.TechEasySolutionsClientConfig;
 import dk.sunepoulsen.tes.rest.integrations.generators.RequestIdGenerator;
 import dk.sunepoulsen.tes.rest.integrations.generators.UUIDRequestIdGenerator;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URI;
@@ -18,7 +19,10 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 public class TechEasySolutionsClient {
+    @Getter
     private final URI uri;
+
+    @Getter
     private final TechEasySolutionsClientConfig config;
     private final HttpClient client;
 
