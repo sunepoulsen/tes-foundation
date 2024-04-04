@@ -23,6 +23,12 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
+  - Extends `TechEasySolutionsBackendIntegrator` with these endpoints:
+    - `/actuator/env` 
+    - `/actuator/metrics`
+    - `/actuator/metrics/{name}`
+
 ### Fixed
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId

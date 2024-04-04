@@ -27,6 +27,8 @@ For release-dates, use date-format: YYYY-MM-DD
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
   - GroupId is changed to `dk.sunepoulsen.tes-foundation`
+- [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
+  - Add new model for `/actuator/metrics` and a generic model for dynamic json. 
 
 ### Security
 

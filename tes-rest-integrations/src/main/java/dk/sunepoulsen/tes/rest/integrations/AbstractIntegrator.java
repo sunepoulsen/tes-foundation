@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 public class AbstractIntegrator {
-    protected final TechEasySolutionsClient httpClient;
+    public final TechEasySolutionsClient httpClient;
 
     public AbstractIntegrator(TechEasySolutionsClient httpClient) {
         this.httpClient = httpClient;
