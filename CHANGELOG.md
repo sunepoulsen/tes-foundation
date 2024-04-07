@@ -30,6 +30,7 @@ For release-dates, use date-format: YYYY-MM-DD
 - [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
 - [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
   - Extends `tes-rest-integrations` and `tes-rest-models` with extra `/actuator` endpoints. 
+- [TESENTLABS-27](https://sunepoulsen.atlassian.net/browse/TESENTLABS-27): Manage data sets in tel-testdata
 
 ### Fixed
 

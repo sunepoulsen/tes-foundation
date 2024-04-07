@@ -9,6 +9,9 @@ dependencies {
     // Validation Api
     api 'jakarta.validation:jakarta.validation-api:3.0.2'
 
+    // OpenApi
+    api 'io.swagger.core.v3:swagger-annotations:2.2.19'
+
     // Hibernate Validation
     testImplementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
     testImplementation 'org.apache.tomcat.embed:tomcat-embed-el:10.1.16'
