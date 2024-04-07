@@ -5,4 +5,11 @@ dependencies {
     // Jackson Json
     api 'com.fasterxml.jackson.core:jackson-databind:2.16.0'
     api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.16.0'
+
+    // Validation Api
+    api 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    // Hibernate Validation
+    testImplementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+    testImplementation 'org.apache.tomcat.embed:tomcat-embed-el:10.1.16'
 }

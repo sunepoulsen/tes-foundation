@@ -1,6 +1,8 @@
 package dk.sunepoulsen.tes.rest.models;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.util.List;
@@ -12,12 +14,16 @@ import java.util.List;
  */
 @Data
 public class PaginationModel<T> implements BaseModel {
+    @NotNull
+    @Valid
     private PaginationMetaData metadata;
 
     /**
      * List of results
      */
     @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@modelClass")
+    @NotNull
+    @Valid
     private List<T> results;
 
     public PaginationModel() {
