@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import dk.sunepoulsen.tes.json.JsonMapper;
 import dk.sunepoulsen.tes.rest.integrations.exceptions.*;
 import dk.sunepoulsen.tes.rest.models.ServiceErrorModel;
+import dk.sunepoulsen.tes.rest.models.ServiceValidationErrorModel;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.http.HttpResponse;
@@ -28,7 +29,7 @@ public class ResponseHandler {
 
         switch(response.statusCode()) {
             case 400:
-                throw new ClientBadRequestException(response, JsonMapper.decodeJson(response.body(), ServiceErrorModel.class));
+                throw new ClientBadRequestException(response, JsonMapper.decodeJson(response.body(), ServiceValidationErrorModel.class));
 
             case 401:
                 throw new ClientUnauthorizedException(response, JsonMapper.decodeJson(response.body(), ServiceErrorModel.class));
