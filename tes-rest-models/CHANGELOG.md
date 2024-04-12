@@ -23,12 +23,15 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
+  - Add new model for `/actuator/metrics` and a generic model for dynamic json.
+- [TESENTLABS-27](https://sunepoulsen.atlassian.net/browse/TESENTLABS-27): Manage data sets in tel-testdata
+  - Add OpenApi documentation to the rest models.  
+
 ### Fixed
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
   - GroupId is changed to `dk.sunepoulsen.tes-foundation`
-- [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
-  - Add new model for `/actuator/metrics` and a generic model for dynamic json. 
 
 ### Security
 
