@@ -34,6 +34,10 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Security
 
+- [TESENTLABS-37](https://sunepoulsen.atlassian.net/browse/TESENTLABS-37): Creation of docker image of tel-web should
+  be placed in a Gradle sub module
+  - Update dependencies to latest
+
 ## 1.0.0 - 2023-11-18
 
 ### Features

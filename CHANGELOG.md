@@ -42,10 +42,10 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Security
 
 - [TESFOUND-137](https://sunepoulsen.atlassian.net/browse/TESFOUND-137): Upgrade to Java 21
-  - Update dependencies to fix the follow vulnerability:
-    - [CVE-2023-6378](https://nvd.nist.gov/vuln/detail/CVE-2023-6378): A serialization vulnerability in
-      logback receiver component part of logback version 1.4.11 allows an attacker to mount a Denial-Of-Service
-      attack by sending poisoned data.
+  - Update dependencies to fix vulnerabilities
+- [TESENTLABS-37](https://sunepoulsen.atlassian.net/browse/TESENTLABS-37): Creation of docker image of tel-web should
+  be placed in a Gradle sub module
+  - Update dependencies to fix vulnerabilities
 
 ## 1.0.0 - 2023-11-18
 

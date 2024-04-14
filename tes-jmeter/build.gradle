@@ -1,5 +1,5 @@
 dependencies {
     // Test containers
-    implementation platform('org.testcontainers:testcontainers-bom:1.19.3')
+    implementation platform('org.testcontainers:testcontainers-bom:1.19.7')
     implementation 'org.testcontainers:testcontainers'
 }
