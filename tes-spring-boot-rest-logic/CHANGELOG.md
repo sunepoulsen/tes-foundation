@@ -40,5 +40,4 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Security
 
 - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
-  - Update dependencies to fix the follow vulnerabilities:
-    - [CVE-2023-35116](https://nvd.nist.gov/vuln/detail/CVE-2023-35116)
+  - Update dependencies to latest

@@ -35,6 +35,10 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Security
 
+- [TESENTLABS-37](https://sunepoulsen.atlassian.net/browse/TESENTLABS-37): Creation of docker image of tel-web should
+  be placed in a Gradle sub module
+  - Update dependencies to latest
+
 ## 1.0.0 - 2023-11-18
 
 ### Features
@@ -45,5 +49,4 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Security
 
 - [TES-120](https://sunepoulsen.atlassian.net/browse/TES-120): Tech Easy Solutions as a monolith
-  - Update dependencies to fix the follow vulnerabilities:
-    - [CVE-2023-35116](https://nvd.nist.gov/vuln/detail/CVE-2023-35116)
+  - Update dependencies to latest
