@@ -33,15 +33,6 @@
     ],
     "groups": [
       {
-        "name": "org.seleniumhq.selenium",
-        "artifacts": [
-          {
-            "name": "selenium-java",
-            "limit_version": "4.16"
-          }
-        ]
-      },
-      {
         "name": "org.spockframework",
         "types": [
           "-groovy-4.0"
