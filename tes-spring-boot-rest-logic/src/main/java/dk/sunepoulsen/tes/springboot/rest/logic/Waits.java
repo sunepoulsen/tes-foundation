@@ -21,7 +21,6 @@ import java.util.function.BooleanSupplier;
  *             checked again. See {@code DEFAULT_SLEEP_DURATION}
  *         </li>
  *     </ul>
- * </p>
  */
 @Slf4j
 public class Waits {
