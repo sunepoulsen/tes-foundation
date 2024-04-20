@@ -1,4 +1,4 @@
-package dk.sunepoulsen.tes.springboot.rest.logic
+package dk.sunepoulsen.tes.utils
 
 import spock.lang.Specification
 

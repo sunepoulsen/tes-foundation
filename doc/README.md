@@ -17,6 +17,7 @@ The foundation defines the following libraries that is designed to be used in pr
   TES backends with Spring Boot
 - [TES Spring Boot Rest Logic](../tes-spring-boot-rest-logic/README.md): Library with logic exceptions and 
   utility classes for Spring Boot Rest applications
+- [TES Utils](../tes-utils/README.md): Utility features for resources, property sources and waiting operations.
 
 The foundation defines the following libraries that is designed to be used in testing code:
 
@@ -40,6 +41,7 @@ flowchart
     subgraph "Libraries"
         tesJson["TES Json"]:::prodLibrary
         tesMaven["TES Maven"]:::prodLibrary
+        tesUtils["TES Utils"]:::prodLibrary
         tesRestModels["TES Rest Models"]:::prodLibrary
         tesSecurity["TES Security"]:::prodLibrary
         tesSpringBootLogging["TES Spring Boot Backend Logging"]:::prodLibrary
@@ -48,8 +50,10 @@ flowchart
         tesRestIntegrations:::prodLibrary --> tesRestModels
         tesSpringBootRestExceptions["TES Spring Boot Rest Exceptions"]:::prodLibrary --> tesRestModels
         tesSpringBootRestLogic["TES Spring Boot Rest Logic"]:::prodLibrary --> tesSpringBootRestExceptions
+        tesSpringBootRestLogic --> tesUtils
 
         tesDockerContainers["TES Docker Containers"]:::testLibrary --> tesRestIntegrations
+        tesDockerContainers --> tesUtils
         tesJMeter["TES JMeter"]:::testLibrary
         tesSelenium["TES Selenium"]:::testLibrary
     end

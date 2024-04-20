@@ -1,4 +1,11 @@
 dependencies {
     // Tech Easy Solutions
     api project(':tes-spring-boot-rest-exceptions')
+    api project(':tes-utils')
+
+    // Spring Boot
+    api 'org.springframework:spring-web:6.1.5'
+
+    // Rx Java2
+    api 'io.reactivex.rxjava3:rxjava:3.1.8'
 }

@@ -1,6 +1,7 @@
 dependencies {
     // Tech Easy Solutions
     api project(':tes-rest-integrations')
+    api project(':tes-utils')
 
     // Test containers
     implementation platform('org.testcontainers:testcontainers-bom:1.19.7')
