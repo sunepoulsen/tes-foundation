@@ -23,6 +23,9 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [TESENTLABS-27](https://sunepoulsen.atlassian.net/browse/TESENTLABS-27): Manage data sets in tel-testdata
+  - Add `Waits` class for waiting operations.
+
 ### Fixed
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId
