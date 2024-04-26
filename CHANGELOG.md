@@ -47,6 +47,11 @@ For release-dates, use date-format: YYYY-MM-DD
   be placed in a Gradle sub module
   - Update dependencies to fix vulnerabilities
 
+### DevOps
+
+- [TESENTLABS-13](https://sunepoulsen.atlassian.net/browse/TESENTLABS-13): Replace pipeline bash scripts with python 
+  scripts
+
 ## 1.0.0 - 2023-11-18
 
 ### Features
