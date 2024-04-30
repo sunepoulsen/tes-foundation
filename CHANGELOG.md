@@ -51,6 +51,7 @@ For release-dates, use date-format: YYYY-MM-DD
 
 - [TESENTLABS-13](https://sunepoulsen.atlassian.net/browse/TESENTLABS-13): Replace pipeline bash scripts with python 
   scripts
+- [TESFOUND-139](https://sunepoulsen.atlassian.net/browse/TESFOUND-139): Integrate building pipeline with Jenkins
 
 ## 1.0.0 - 2023-11-18
 
