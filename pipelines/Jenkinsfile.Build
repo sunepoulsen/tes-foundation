@@ -18,7 +18,7 @@ pipeline {
         // `org.owasp:dependency-check-gradle` to check for vulnerabilities.
         ORG_GRADLE_PROJECT_owaspDependencyCheckApiKey = credentials('svc-nvd-api-key')
 
-        SONAR_URL = http://cibar-sonarqube:9000
+        SONAR_URL = 'http://cibar-sonarqube:9000'
         SONAR_LOGIN = credentials('svc-sonarqube-token')
 
         // Give Gradle extra resources to execute the tasks.
