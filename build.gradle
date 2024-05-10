@@ -64,11 +64,11 @@ subprojects {
         mavenCentral()
 
         maven {
-            url "${System.properties['maven.repository.base.url']}/${System.properties['maven.repository.snapshots']}"
+            url "$mavenRepositoryBaseUrl/$mavenRepositorySnapshots"
             allowInsecureProtocol = true
         }
         maven {
-            url "${System.properties['maven.repository.base.url']}/${System.properties['maven.repository.releases']}"
+            url "$mavenRepositoryBaseUrl/$mavenRepositoryReleases"
             allowInsecureProtocol = true
         }
     }
@@ -82,15 +82,15 @@ subprojects {
 
         repositories {
             maven {
-                url = "${System.properties['maven.repository.base.url']}/" + (
+                url = "$mavenRepositoryBaseUrl/" + (
                     version ==~ /^\d+\.\d+\.\d+$/ ?
-                        "${System.properties['maven.repository.releases']}" :
-                        "${System.properties['maven.repository.snapshots']}"
+                        "$mavenRepositoryReleases" :
+                        "$mavenRepositorySnapshots"
                 )
                 allowInsecureProtocol = true
                 credentials {
-                    username = "${System.properties['maven.repository.username']}"
-                    password = "${System.properties['maven.repository.password']}"
+                    username = "$mavenRepositoryUsername"
+                    password = "$mavenRepositoryPassword"
                 }
             }
         }
@@ -144,7 +144,7 @@ subprojects {
 
 dependencyCheck {
     nvd {
-        apiKey = System.getProperty('owasp.dependencycheck.api.key')
+        apiKey = "$owaspDependencyCheckApiKey".toString()
     }
 }
 
