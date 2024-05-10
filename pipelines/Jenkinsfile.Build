@@ -6,7 +6,7 @@ pipeline {
     }
 
     environment{
-        # Project properties for Nexus
+        // Project properties for Nexus
         ORG_GRADLE_PROJECT_mavenRepositoryBaseUrl=http://cibar-nexus:8081/repository
 
         NEXUS = credentials('svc-nexus')
