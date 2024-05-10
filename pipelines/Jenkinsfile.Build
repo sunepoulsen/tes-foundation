@@ -22,7 +22,7 @@ pipeline {
         SONAR_LOGIN = credentials('svc-sonarqube-token')
 
         // Give Gradle extra resources to execute the tasks.
-        GRADLE_OPTS = '-Dorg.gradle.jvmargs="-Xmx2g -Xms512m -XX:+HeapDumpOnOutOfMemoryError" -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_LOGIN'
+        GRADLE_OPTS = "-Dorg.gradle.jvmargs='-Xmx2g -Xms512m -XX:+HeapDumpOnOutOfMemoryError' -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_LOGIN"
     }
 
     tools {
