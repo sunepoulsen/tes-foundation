@@ -55,12 +55,12 @@ pipeline {
             parallel {
                 stage('Publish') {
                     steps {
-                        sh './pipelines/pipeline-publish.py', '--remote'
+                        sh './pipelines/pipeline-publish.py --remote'
                     }
                 }
                 stage('Analyze') {
                     steps {
-                        sh './pipelines/pipeline-analyze.py', '--remote'
+                        sh './pipelines/pipeline-analyze.py --remote'
                     }
                     post {
                         always {
