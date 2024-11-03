@@ -4,8 +4,8 @@ dependencies {
     api 'com.sun.xml.bind:jaxb-impl:4.0.5'
 
     // Selenium
-    api 'org.seleniumhq.selenium:selenium-java:4.19.1'
+    api 'org.seleniumhq.selenium:selenium-java:4.26.0'
 
     // JUnit
-    implementation 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
 }

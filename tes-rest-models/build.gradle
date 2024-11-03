@@ -1,18 +1,18 @@
 dependencies {
     // Spring Boot
-    api 'org.springframework.data:spring-data-commons:3.2.5'
+    api 'org.springframework.data:spring-data-commons:3.3.5'
 
     // Jackson Json
-    api 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.0'
+    api 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.1'
 
     // Validation Api
     api 'jakarta.validation:jakarta.validation-api:3.0.2'
 
     // OpenApi
-    api 'io.swagger.core.v3:swagger-annotations:2.2.21'
+    api 'io.swagger.core.v3:swagger-annotations:2.2.25'
 
     // Hibernate Validation
     testImplementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
-    testImplementation 'org.apache.tomcat.embed:tomcat-embed-el:10.1.20'
+    testImplementation 'org.apache.tomcat.embed:tomcat-embed-el:11.0.0'
 }

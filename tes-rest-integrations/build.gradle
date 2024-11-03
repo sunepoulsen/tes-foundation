@@ -4,7 +4,7 @@ dependencies {
     api project(':tes-json')
 
     // Rx Java2
-    api 'io.reactivex.rxjava3:rxjava:3.1.8'
+    api 'io.reactivex.rxjava3:rxjava:3.1.9'
 
     // WireMock
     testImplementation 'com.github.tomakehurst:wiremock-standalone:3.0.1'
