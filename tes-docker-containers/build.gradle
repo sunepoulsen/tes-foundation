@@ -3,6 +3,9 @@ dependencies {
     api project(':tes-rest-integrations')
 
     // Test containers
-    implementation platform('org.testcontainers:testcontainers-bom:1.19.7')
+    implementation platform('org.testcontainers:testcontainers-bom:1.20.3')
     implementation 'org.testcontainers:testcontainers'
+
+    // Transitive dependencies to fix vulnerabilities
+    implementation 'org.apache.commons:commons-compress:1.27.1'
 }
