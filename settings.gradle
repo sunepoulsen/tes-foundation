@@ -2,22 +2,24 @@ pluginManagement {
     plugins {
         id 'org.jetbrains.changelog' version '2.2.1'
         id 'net.researchgate.release' version '3.0.2'
-        id 'org.sonarqube' version '5.1.0.4882'
+        id 'org.sonarqube' version '6.0.1.5171'
     }
 }
 
 rootProject.name = 'tes-foundation'
 
-include 'tes-jmeter'
-include 'tes-json'
-include 'tes-maven'
-include 'tes-xml'
-include 'tes-rest-models'
-include 'tes-spring-boot-backend-logging'
-include 'tes-rest-integrations'
-include 'tes-docker-containers'
-include 'tes-spring-boot-rest-exceptions'
-include 'tes-spring-boot-rest-logic'
-include 'tes-selenium'
-include 'tes-security'
-
+include 'generic'
+include 'generic:tes-json'
+include 'generic:tes-maven'
+include 'generic:tes-security'
+include 'generic:tes-xml'
+include 'services'
+include 'services:tes-rest-integrations'
+include 'services:tes-rest-models'
+include 'services:tes-spring-boot-backend-logging'
+include 'services:tes-spring-boot-rest-exceptions'
+include 'services:tes-spring-boot-rest-logic'
+include 'tests'
+include 'tests:tes-docker-containers'
+include 'tests:tes-jmeter'
+include 'tests:tes-selenium'

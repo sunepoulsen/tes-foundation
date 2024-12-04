@@ -1,0 +1,4 @@
+dependencies {
+    // Tech Easy Solutions
+    api project(':services:tes-spring-boot-rest-exceptions')
+}
