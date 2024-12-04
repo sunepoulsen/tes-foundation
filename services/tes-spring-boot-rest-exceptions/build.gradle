@@ -1,6 +1,6 @@
 dependencies {
     // Tech Easy Solutions
-    implementation project(':tes-rest-models')
+    implementation project(':services:tes-rest-models')
 
     // Spring Boot
     implementation 'org.springframework:spring-web:6.1.14'

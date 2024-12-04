@@ -1,7 +1,7 @@
 dependencies {
     // Tech Easy Solutions
-    api project(':tes-rest-models')
-    api project(':tes-json')
+    api project(':services:tes-rest-models')
+    api project(':generic:tes-json')
 
     // Rx Java2
     api 'io.reactivex.rxjava3:rxjava:3.1.9'
