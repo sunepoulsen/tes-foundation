@@ -108,17 +108,17 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok:1.18.36'
 
         // Logging
-        implementation 'ch.qos.logback:logback-classic:1.5.12'
+        implementation 'ch.qos.logback:logback-classic:1.5.14'
         implementation 'org.slf4j:log4j-over-slf4j:2.0.16'
 
         // JUnit
-        testImplementation 'org.junit.vintage:junit-vintage-engine:5.11.3'
-        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.3'
+        testImplementation 'org.junit.vintage:junit-vintage-engine:5.11.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
 
         // Spock
         testImplementation 'org.apache.groovy:groovy-all:4.0.24'
         testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
-        testImplementation 'net.bytebuddy:byte-buddy:1.15.10'
+        testImplementation 'net.bytebuddy:byte-buddy:1.15.11'
         testImplementation 'org.objenesis:objenesis:3.4'
     }
 
