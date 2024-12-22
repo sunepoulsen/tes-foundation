@@ -44,7 +44,7 @@ public class XmlUnmarshaller {
     public static <T> T unmarshal(Reader xml, Class<T> clazz) throws UnmarshalXmlException {
         try {
             var context = JAXBContext.newInstance(clazz);
-            return (T)context.createUnmarshaller().unmarshal(xml);
+            return clazz.cast(context.createUnmarshaller().unmarshal(xml));
         } catch (JAXBException ex) {
             throw new UnmarshalXmlException("Unable to unmarshal XML: " + ex.getMessage(), ex);
         }

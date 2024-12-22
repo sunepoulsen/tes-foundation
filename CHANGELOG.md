@@ -31,6 +31,9 @@ For release-dates, use date-format: YYYY-MM-DD
 - [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
   - Extends `tes-rest-integrations` and `tes-rest-models` with extra `/actuator` endpoints. 
 - [TESENTLABS-27](https://sunepoulsen.atlassian.net/browse/TESENTLABS-27): Manage data sets in tel-testdata
+- [TESFOUND-142](https://sunepoulsen.atlassian.net/browse/TESFOUND-142): Test data generators
+  
+  Add new `test-testdata-generators` library with features to produce test data.
 
 ### Fixed
 
