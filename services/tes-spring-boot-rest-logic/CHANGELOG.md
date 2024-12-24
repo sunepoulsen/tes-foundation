@@ -23,6 +23,10 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [TESFOUND-146](https://sunepoulsen.atlassian.net/browse/TESFOUND-146): Create new feature
+
+  1. Implementing `DeferredResults` class to produce instances of `DeferredResult`
+
 ### Fixed
 
 - [TES-135](https://sunepoulsen.atlassian.net/browse/TES-135): Change artifact groupId

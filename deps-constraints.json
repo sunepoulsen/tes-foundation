@@ -33,6 +33,10 @@
     ],
     "groups": [
       {
+        "name": "org.apache.groovy",
+        "limit_version": "5.0.0"
+      },
+      {
         "name": "org.spockframework",
         "types": [
           "-groovy-4.0"

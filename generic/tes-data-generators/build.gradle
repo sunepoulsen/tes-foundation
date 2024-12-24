@@ -1,0 +1,5 @@
+dependencies {
+    testImplementation project(':generic:tes-statistics')
+
+    testImplementation 'com.opencsv:opencsv:5.12.0'
+}

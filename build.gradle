@@ -4,9 +4,6 @@ buildscript {
     repositories {
         mavenCentral()
     }
-    dependencies {
-        classpath 'org.owasp:dependency-check-gradle:10.0.3'
-    }
 }
 
 plugins {
@@ -16,10 +13,8 @@ plugins {
     id 'jacoco'
 }
 
-apply plugin: 'org.owasp.dependencycheck'
-
-group 'dk.sunepoulsen.tes-foundation'
-version "${project.property('version')}"
+group = 'dk.sunepoulsen.tes-foundation'
+version = "${project.property('version')}"
 
 tasks.register('allWrappers', Wrapper) {
     gradleVersion = "${project.property('gradle.version')}"
@@ -57,18 +52,18 @@ subprojects {
     apply plugin: 'org.jetbrains.changelog'
     apply plugin: 'jacoco'
 
-    group 'dk.sunepoulsen.tes-foundation'
+    group = 'dk.sunepoulsen.tes-foundation'
 
     repositories {
         mavenLocal()
         mavenCentral()
 
         maven {
-            url "$mavenRepositoryBaseUrl/$mavenRepositorySnapshots"
+            url = "$mavenRepositoryBaseUrl/$mavenRepositorySnapshots"
             allowInsecureProtocol = true
         }
         maven {
-            url "$mavenRepositoryBaseUrl/$mavenRepositoryReleases"
+            url = "$mavenRepositoryBaseUrl/$mavenRepositoryReleases"
             allowInsecureProtocol = true
         }
     }
@@ -104,21 +99,21 @@ subprojects {
 
     dependencies {
         // Lombok
-        compileOnly 'org.projectlombok:lombok:1.18.36'
-        annotationProcessor 'org.projectlombok:lombok:1.18.36'
+        compileOnly 'org.projectlombok:lombok:1.18.38'
+        annotationProcessor 'org.projectlombok:lombok:1.18.38'
 
         // Logging
-        implementation 'ch.qos.logback:logback-classic:1.5.14'
-        implementation 'org.slf4j:log4j-over-slf4j:2.0.16'
+        implementation 'ch.qos.logback:logback-classic:1.5.18'
+        implementation 'org.slf4j:log4j-over-slf4j:2.0.17'
 
         // JUnit
-        testImplementation 'org.junit.vintage:junit-vintage-engine:5.11.4'
-        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.11.4'
+        testImplementation 'org.junit.vintage:junit-vintage-engine:5.13.4'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.13.4'
 
         // Spock
-        testImplementation 'org.apache.groovy:groovy-all:4.0.24'
+        testImplementation 'org.apache.groovy:groovy-all:4.0.28'
         testImplementation 'org.spockframework:spock-core:2.3-groovy-4.0'
-        testImplementation 'net.bytebuddy:byte-buddy:1.15.11'
+        testImplementation 'net.bytebuddy:byte-buddy:1.17.7'
         testImplementation 'org.objenesis:objenesis:3.4'
     }
 
@@ -134,18 +129,8 @@ subprojects {
         }
     }
 
-    dependencyCheck {
-        format='ALL'
-    }
-
     tasks.jacocoTestReport.dependsOn tasks.test
 
-}
-
-dependencyCheck {
-    nvd {
-        apiKey = "$owaspDependencyCheckApiKey".toString()
-    }
 }
 
 sonar {
@@ -157,8 +142,5 @@ sonar {
         property 'sonar.dependencyCheck.severity.critical', '7.0'
         property 'sonar.dependencyCheck.severity.major', '4.0'
         property 'sonar.dependencyCheck.severity.minor', '0.0'
-
-        property 'sonar.dependencyCheck.jsonReportPath', "build/reports/dependency-check-report.json"
-        property 'sonar.dependencyCheck.htmlReportPath', "build/reports/dependency-check-report.html"
     }
 }

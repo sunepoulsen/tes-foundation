@@ -1,0 +1,7 @@
+dependencies {
+    implementation project(':generic:tes-data-generators')
+
+    // Test containers
+    implementation platform('org.testcontainers:testcontainers-bom:1.21.3')
+    implementation 'org.testcontainers:testcontainers'
+}
