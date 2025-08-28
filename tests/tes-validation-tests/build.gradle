@@ -1,0 +1,11 @@
+dependencies {
+    // Validation Api
+    api 'jakarta.validation:jakarta.validation-api:3.0.2'
+
+    testImplementation project(':services:tes-rest-models')
+    testImplementation project(':generic:tes-data-generators')
+
+    // Hibernate Validation
+    testImplementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+    testImplementation 'org.apache.tomcat.embed:tomcat-embed-el:11.0.10'
+}

@@ -17,22 +17,18 @@ and [SonarQube](https://www.sonarsource.com/products/sonarqube/) and is using th
 `~/.gradle/gradle.properties`:
 
 ```properties
-# System properties for Nexus
+# Properties for Nexus
 
-systemProp.maven.repository.base.url=<url to Nexus>
-systemProp.maven.repository.snapshots=maven-snapshots
-systemProp.maven.repository.releases=maven-releases
+mavenRepositoryBaseUrl=<Http(s) URL to Nexus>/repository
+mavenRepositorySnapshots=maven-snapshots
+mavenRepositoryReleases=maven-releases
 
-systemProp.maven.repository.username=<Username for the account to connect to Nexus>
-systemProp.maven.repository.password=<Password for the user account>
-
-# System properties for OWASP Dependency Check
-
-systemProp.owasp.dependencycheck.api.key=<api-key for nvd>
+mavenRepositoryUsername=<Username for the account to connect to Nexus>
+mavenRepositoryPassword=<Password for the user account>
 
 # System properties for SonarQube
 
-systemProp.sonar.host.url=<URL to SonarQube>
+systemProp.sonar.host.url=<Http(s) URL to SonarQube>
 systemProp.sonar.login=<Auth token to SonarQube>
 ```
 
@@ -48,18 +44,18 @@ This pipeline has the following steps:
 
 1. Clean the repository.
 2. Build the library - including JavaDoc.
-3. Analyzing the project with SonarQube - including check of dependency vulnerabilities.
+3. Analyzing the project with SonarQube.
 4. Publish the artifacts to local Maven repository in `~/.m2/repository`.
 
 The pipeline can also publish the artifacts to the remote Nexus repository. To activate that there are two options:
 
 1. Pass `--remote` to the pipeline script with:
    ```shell
-   ./pipeline.sh --remote
+   ./pipelines/pipeline.sh --remote
    ```
 2. Pass `--remote` to the publish step of the pipeline with:
    ```shell
-   ./pipeline-publish.sh --remote
+   ./pipelines/pipeline-publish.sh --remote
    ```
 
 The pipeline selects the required Java version to build the project. To get it to work the
@@ -79,17 +75,6 @@ The project can be analyzed with [SonarQube](https://www.sonarsource.com/product
 ```shell
 ./gradlew sonar
 ```
-
-This will also analyze all dependencies for vulnerabilities. This is done with the
-[org.owasp:dependency-check-gradle](https://github.com/dependency-check/dependency-check-gradle) plugin.
-
-Analysing the vulnerabilities without the SonarQube analysis can be done with:
-
-```shell
-./gradlew dependencyCheckAnalyze
-```
-
-The result of the scan can be found here: `build/reports/dependency-check-*`
 
 ## Releasing
 

@@ -24,16 +24,26 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Features
 
 - [VIDADDR-5](https://sunepoulsen.atlassian.net/browse/VIDADDR-5): Create basic skeleton for ViDA.DDR
-  - Piping logging from stdout from JMeter to the logging, when executing stress tests with JMeter.
+  1. Piping logging from stdout from JMeter to the logging, when executing stress tests with JMeter.
+  
 - [TESFOUND-137](https://sunepoulsen.atlassian.net/browse/TESFOUND-137): Upgrade to Java 21
-  - The entire project is now build with Java 21.
+  1. The entire project is now build with Java 21.
+
 - [TESENTLABS-7](https://sunepoulsen.atlassian.net/browse/TESENTLABS-7): Use https for tests and Docker Compose deployments
+
 - [TESENTLABS-24](https://sunepoulsen.atlassian.net/browse/TESENTLABS-24): Create a deployment test
-  - Extends `tes-rest-integrations` and `tes-rest-models` with extra `/actuator` endpoints. 
+  1. Extends `tes-rest-integrations` and `tes-rest-models` with extra `/actuator` endpoints. 
+
 - [TESENTLABS-27](https://sunepoulsen.atlassian.net/browse/TESENTLABS-27): Manage data sets in tel-testdata
+
 - [TESFOUND-142](https://sunepoulsen.atlassian.net/browse/TESFOUND-142): Test data generators
   
-  Add new `test-testdata-generators` library with features to produce test data.
+  1. Add new `tes-testdata-generators` library with features to produce test data.
+  2. Add new `tes-validation-tests` library with features to validate expected validation errors.
+  
+- [TESFOUND-146](https://sunepoulsen.atlassian.net/browse/TESFOUND-146): Create new feature
+
+  1. Add new `tes-utils` library with waiting features. 
 
 ### Fixed
 
