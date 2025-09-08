@@ -1,0 +1,9 @@
+dependencies {
+    implementation project(':generic:tes-data-generators')
+    implementation project(':generic:tes-flows')
+    implementation project(':generic:tes-templates')
+    implementation project(':generic:tes-io')
+    implementation project(':generic:tes-security')
+
+    testImplementation 'com.google.jimfs:jimfs:1.3.1'
+}

@@ -1,0 +1,9 @@
+# ===================================================================
+#                   Spring JPA Configuration
+# ===================================================================
+
+spring:
+  datasource:
+    url: 'jdbc:postgresql://$databaseHost:5432/$databaseName'
+  username: $applicationUser.username
+  password: $applicationUser.password

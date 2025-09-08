@@ -21,12 +21,12 @@ public class Generators {
         return new DataSupplier<>(supplier);
     }
 
-    public static <T> DataGenerator<T> fixedGenerator(T value) {
-        return supplierGenerator(() -> value);
+    public static <T> FixedDataGenerator<T> fixedGenerator(T value) {
+        return new FixedDataGenerator<>(value);
     }
 
-    public static <T> DataGenerator<T> fixedGenerator(DataGenerator<T> generator) {
-        return fixedGenerator(generator.generate());
+    public static <T> FixedDataGenerator<T> fixedGenerator(DataGenerator<T> dataGenerator) {
+        return new FixedDataGenerator<>(dataGenerator);
     }
 
     public static <T extends Enum<T>> DataGenerator<String> enumGenerator(Class<T> supplier) {

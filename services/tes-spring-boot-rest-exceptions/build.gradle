@@ -3,12 +3,12 @@ dependencies {
     implementation project(':services:tes-rest-models')
 
     // Spring Boot
-    implementation 'org.springframework:spring-web:6.2.10'
-    implementation 'org.springframework:spring-webmvc:6.2.10'
+    implementation 'org.springframework:spring-web:6.2.11'
+    implementation 'org.springframework:spring-webmvc:6.2.11'
 
     // Validation API
     api 'jakarta.validation:jakarta.validation-api:3.0.2'
 
     // Open API
-    api 'io.swagger.core.v3:swagger-annotations:2.2.36'
+    api 'io.swagger.core.v3:swagger-annotations:2.2.38'
 }

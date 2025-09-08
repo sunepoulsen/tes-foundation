@@ -8,13 +8,18 @@ pluginManagement {
 
 rootProject.name = 'tes-foundation'
 
+include 'deployment'
+include 'deployment:tes-deployment-core'
 include 'generic'
 include 'generic:tes-data-generators'
 include 'generic:tes-data-jpa'
+include 'generic:tes-flows'
+include 'generic:tes-io'
 include 'generic:tes-json'
 include 'generic:tes-maven'
 include 'generic:tes-security'
 include 'generic:tes-statistics'
+include 'generic:tes-templates'
 include 'generic:tes-utils'
 include 'generic:tes-xml'
 include 'services'
@@ -29,4 +34,3 @@ include 'tests:tes-jmeter'
 include 'tests:tes-selenium'
 include 'tests:tes-sut-engine'
 include 'tests:tes-validation-tests'
-
