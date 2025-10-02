@@ -68,26 +68,40 @@ subprojects {
         }
     }
 
-    publishing {
-        publications {
-            maven(MavenPublication) {
-                from components.java
-            }
-        }
+    // Helper closure to check if project contains source code
+    def hasSourceCode = {
+        fileTree(projectDir).matching {
+            include 'src/main/java/**', 'src/main/resources/**'
+        }.files.size() > 0
+    }
 
-        repositories {
-            maven {
-                url = "$mavenRepositoryBaseUrl/" + (
-                    version ==~ /^\d+\.\d+\.\d+$/ ?
-                        "$mavenRepositoryReleases" :
-                        "$mavenRepositorySnapshots"
-                )
-                allowInsecureProtocol = true
-                credentials {
-                    username = "$mavenRepositoryUsername"
-                    password = "$mavenRepositoryPassword"
+    if (hasSourceCode()) {
+        publishing {
+            publications {
+                maven(MavenPublication) {
+                    from components.java
                 }
             }
+
+            repositories {
+                maven {
+                    url = "$mavenRepositoryBaseUrl/" + (
+                        version ==~ /^\d+\.\d+\.\d+$/ ?
+                            "$mavenRepositoryReleases" :
+                            "$mavenRepositorySnapshots"
+                    )
+                    allowInsecureProtocol = true
+                    credentials {
+                        username = "$mavenRepositoryUsername"
+                        password = "$mavenRepositoryPassword"
+                    }
+                }
+            }
+        }
+    } else {
+        // For projects without source code, disable publishing tasks
+        tasks.withType(PublishToMavenRepository).configureEach { task ->
+            task.enabled = false
         }
     }
 
