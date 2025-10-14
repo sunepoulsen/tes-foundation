@@ -113,16 +113,16 @@ subprojects {
 
     dependencies {
         // Lombok
-        compileOnly 'org.projectlombok:lombok:1.18.38'
-        annotationProcessor 'org.projectlombok:lombok:1.18.38'
+        compileOnly 'org.projectlombok:lombok:1.18.42'
+        annotationProcessor 'org.projectlombok:lombok:1.18.42'
 
         // Logging
-        implementation 'ch.qos.logback:logback-classic:1.5.18'
+        implementation 'ch.qos.logback:logback-classic:1.5.19'
         implementation 'org.slf4j:log4j-over-slf4j:2.0.17'
 
         // JUnit
-        testImplementation 'org.junit.vintage:junit-vintage-engine:5.13.4'
-        testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.13.4'
+        testImplementation 'org.junit.vintage:junit-vintage-engine:6.0.0'
+        testImplementation 'org.junit.jupiter:junit-jupiter-engine:6.0.0'
 
         // Spock
         testImplementation 'org.apache.groovy:groovy-all:4.0.28'
