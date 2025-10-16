@@ -9,7 +9,7 @@ import java.net.URISyntaxException;
 public class ContainerSecureProtocol implements ContainerProtocol {
     @Override
     public int exposedPort() {
-        return 443;
+        return 8080;
     }
 
     @Override

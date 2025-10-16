@@ -4,6 +4,7 @@ dependencies {
     implementation project(':generic:tes-templates')
     implementation project(':generic:tes-io')
     implementation project(':generic:tes-security')
+    implementation project(':generic:tes-utils')
 
     testImplementation 'com.google.jimfs:jimfs:1.3.1'
 }

@@ -19,6 +19,7 @@ class SequenceFlowSpec extends Specification {
 
         when:
             flow.execute()
+            flow.printReport()
 
         then:
             meterRegistry.meters.empty
@@ -31,6 +32,7 @@ class SequenceFlowSpec extends Specification {
 
         when:
             flow.execute()
+            flow.printReport()
 
         then:
             step.timerName() >> 'step'
@@ -45,6 +47,7 @@ class SequenceFlowSpec extends Specification {
 
         when:
             flow.execute()
+            flow.printReport()
 
         then:
             step.timerName() >> 'step'
@@ -59,10 +62,11 @@ class SequenceFlowSpec extends Specification {
 
         when:
             flow.execute()
+            flow.printReport()
 
         then:
             (1..steps.size()).collect {
-                1 * steps[it-1].timerName() >> "step${it}"
+                steps[it-1].timerName() >> "step${it}"
                 1 * steps[it-1].execute() >> FlowStepResult.OK
             }
             0 * _
@@ -75,6 +79,7 @@ class SequenceFlowSpec extends Specification {
 
         when:
             flow.execute()
+            flow.printReport()
 
         then:
             (1..steps.size()).collect {
@@ -94,6 +99,7 @@ class SequenceFlowSpec extends Specification {
 
         when:
             flow.execute()
+            flow.printReport()
 
         then:
             thrown(FlowStepException)

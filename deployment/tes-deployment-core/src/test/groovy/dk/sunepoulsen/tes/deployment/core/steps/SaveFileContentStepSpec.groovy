@@ -49,10 +49,9 @@ class SaveFileContentStepSpec extends Specification {
             sut.execute()
 
         then:
-            Path filePath = fileSystem.getPath(directory.toString(), fileContent.filename)
             Files.exists(directory)
-            Files.exists(filePath)
-            Files.readString(filePath) == fileContent.getContentAsString()
+            Files.exists(sut.createdPath.get().get())
+            Files.readString(sut.createdPath.get().get()) == fileContent.getContentAsString()
     }
 
     void "Test of store DeployFileContent where only directory already exists"() {
@@ -63,10 +62,9 @@ class SaveFileContentStepSpec extends Specification {
             sut.execute()
 
         then:
-            Path filePath = fileSystem.getPath(directory.toString(), fileContent.filename)
             Files.exists(directory)
-            Files.exists(filePath)
-            Files.readString(filePath) == fileContent.getContentAsString()
+            Files.exists(sut.createdPath.get().get())
+            Files.readString(sut.createdPath.get().get()) == fileContent.getContentAsString()
     }
 
     void "Test of store DeployFileContent where directory and file already exists"() {
@@ -81,12 +79,9 @@ class SaveFileContentStepSpec extends Specification {
             sut.execute()
 
         then:
-            FlowStepException ex = thrown(FlowStepException)
-            ex.message == "Unable to create file with new content because the file '${filePath.toAbsolutePath().toString()}' already exists"
-
             Files.exists(directory)
-            Files.exists(filePath)
-            Files.readString(filePath) == 'Some other content'
+            Files.exists(sut.createdPath.get().get())
+            Files.readString(sut.createdPath.get().get()) == fileContent.getContentAsString()
     }
 
 }

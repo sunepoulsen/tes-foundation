@@ -17,11 +17,13 @@ import java.nio.file.Path;
 @Setter
 public class SaveFileContentStep extends AbstractDeployStep {
 
-    private AtomicDataSupplier<DeployFileContent> fileContent;
+    private final AtomicDataSupplier<Path> createdPath;
+    private AtomicDataSupplier<? extends DeployFileContent> fileContent;
     private AtomicDataSupplier<Path> directory;
 
     public SaveFileContentStep(String key) {
         super(key);
+        this.createdPath = new AtomicDataSupplier<>();
     }
 
     @Override
@@ -36,9 +38,11 @@ public class SaveFileContentStep extends AbstractDeployStep {
             final DeployFileContent fc = fileContent.get("File content has not been set");
             filePath = fileSystem.getPath(directoryPath.toAbsolutePath().toString(), fc.getFilename());
 
+            Files.deleteIfExists(filePath);
             Files.createFile(filePath);
             Files.write(filePath, fc.getContent());
 
+            createdPath.set(filePath);
             return FlowStepResult.OK;
         } catch (FileAlreadyExistsException ex) {
             String message = ex.getMessage();

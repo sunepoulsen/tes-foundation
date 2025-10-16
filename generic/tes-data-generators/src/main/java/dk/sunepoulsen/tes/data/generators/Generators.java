@@ -55,11 +55,15 @@ public class Generators {
     }
 
     public static DataGenerator<String> passwordGenerator() {
-        return passwordGenerator(NumberGenerators.integerGenerator(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH + 1));
+        return passwordGenerator(CharacterGenerator.ALL_ALPHA_DIGITS);
     }
 
-    public static DataGenerator<String> passwordGenerator(DataGenerator<Integer> lengthGenerator) {
-        return textGenerator(lengthGenerator);
+    public static DataGenerator<String> passwordGenerator(String characters) {
+        return passwordGenerator(characters, NumberGenerators.integerGenerator(PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH + 1));
+    }
+
+    public static DataGenerator<String> passwordGenerator(String characters, DataGenerator<Integer> lengthGenerator) {
+        return textGenerator(List.of(characters), lengthGenerator);
     }
 
     public static DataGenerator<UUID> uuidGenerator() {

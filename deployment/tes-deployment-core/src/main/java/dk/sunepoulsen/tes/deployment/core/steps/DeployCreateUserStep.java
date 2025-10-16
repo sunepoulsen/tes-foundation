@@ -1,20 +1,19 @@
 package dk.sunepoulsen.tes.deployment.core.steps;
 
-import dk.sunepoulsen.tes.data.generators.DataGenerator;
+import dk.sunepoulsen.tes.data.generators.FixedDataGenerator;
 import dk.sunepoulsen.tes.deployment.core.data.DeployUser;
 import dk.sunepoulsen.tes.deployment.core.function.AtomicDataSupplier;
 import dk.sunepoulsen.tes.flows.FlowStepResult;
 import lombok.Getter;
 
+@Getter
 public class DeployCreateUserStep extends AbstractDeployStep {
 
-    @Getter
     private final AtomicDataSupplier<DeployUser> createdUser;
+    private final FixedDataGenerator<String> username;
+    private final FixedDataGenerator<String> password;
 
-    private final DataGenerator<String> username;
-    private final DataGenerator<String> password;
-
-    public DeployCreateUserStep(final String key, final DataGenerator<String> username, final DataGenerator<String> password) {
+    public DeployCreateUserStep(final String key, final FixedDataGenerator<String> username, final FixedDataGenerator<String> password) {
         super(key);
         this.createdUser = new AtomicDataSupplier<>();
         this.username = username;

@@ -2,7 +2,7 @@
 psql=( psql -v ON_ERROR_STOP=1)
 #[["${psql[@]}"]]#  --username $masterUsername <<-ENDOFSQL
 
-    CREATE ROLE IF NOT EXISTS $adminUser.getUsername()
+    CREATE ROLE $adminUser.username
         PASSWORD '$adminUser.password'
         NOCREATEDB
         NOCREATEROLE
@@ -10,7 +10,7 @@ psql=( psql -v ON_ERROR_STOP=1)
         LOGIN
     ;
 
-    CREATE ROLE IF NOT EXISTS $applicationUser.username
+    CREATE ROLE $applicationUser.username
         PASSWORD '$applicationUser.password'
         NOCREATEDB
         NOCREATEROLE
