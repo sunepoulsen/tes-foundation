@@ -28,7 +28,7 @@ class FlowStepExecutorSpec extends Specification {
 
         when:
             FlowStepResult result = executor.execute()
-            List<Measurement> measurements = StreamSupport.stream(executor.measure().spliterator(), false).toList()
+            List<Measurement> measurements = StreamSupport.stream(executor.timer.measure().spliterator(), false).toList()
 
         then:
             result == _stepResult

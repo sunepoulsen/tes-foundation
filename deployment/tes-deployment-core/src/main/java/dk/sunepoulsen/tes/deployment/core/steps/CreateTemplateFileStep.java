@@ -40,7 +40,7 @@ public class CreateTemplateFileStep extends AbstractDeployStep {
         this.contextSupplier = new HashMap<>();
     }
 
-    void addContextSupplier(String name, AtomicDataSupplier<?> supplier) {
+    public void addContextSupplier(String name, AtomicDataSupplier<?> supplier) {
         contextSupplier.put(name, supplier);
     }
 

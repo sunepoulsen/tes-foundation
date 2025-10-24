@@ -34,8 +34,9 @@ public class SutStartTesServiceStep extends AbstractSutContainerStep {
         final GenericContainer<?> container = createContainer();
 
         container.withEnv("SPRING_PROFILES_ACTIVE", String.join(", ", profiles.get("Profiles has not been set")));
-        mountFiles(container, "/app/resources", configurationFiles);
-        mountFiles(container, "/app/certificates", certificateFiles);
+        container.withExposedPorts(8080);
+        withMountFiles(container, "/app/resources", configurationFiles);
+        withMountFiles(container, "/app/certificates", certificateFiles);
         container.waitingFor(protocol.waitStrategy("/actuator/health"));
 
         systemUnderTestDeployment.addService(new ContainerHttpService(serviceKey, container, protocol,

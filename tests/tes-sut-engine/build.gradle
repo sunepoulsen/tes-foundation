@@ -1,12 +1,16 @@
 dependencies {
     implementation project(':generic:tes-data-generators')
     implementation project(':generic:tes-flows')
+    implementation project(':generic:tes-io')
+    implementation project(':generic:tes-security')
     implementation project(':deployment:tes-deployment-core')
+    implementation project(':services:tes-rest-integrations')
 
     // Test containers
     implementation platform('org.testcontainers:testcontainers-bom:1.21.3')
     implementation 'org.testcontainers:testcontainers'
 
     // Spock Framework
+    implementation 'org.apache.groovy:groovy-all:4.0.28'
     api 'org.spockframework:spock-core:2.3-groovy-4.0'
 }

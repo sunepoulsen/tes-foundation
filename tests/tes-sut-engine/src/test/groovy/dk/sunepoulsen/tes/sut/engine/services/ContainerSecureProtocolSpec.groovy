@@ -12,7 +12,7 @@ class ContainerSecureProtocolSpec extends Specification {
 
     void "Test exposed port"() {
         expect:
-            sut.exposedPort() == 443
+            sut.exposedPort() == 8080
     }
 
     void "Test base URI"() {

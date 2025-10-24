@@ -60,7 +60,7 @@ public class DeployCreatePostgresDatabaseScriptStep extends AbstractDeployStep {
 
     @Override
     public FlowStepResult execute() {
-        TesTemplate template = new TesTemplate(velocityEngine, "templates/postgresql-create-database.sql", this::contextProvider);
+        TesTemplate template = new TesTemplate(velocityEngine, "templates/postgresql-create-database.sh", this::contextProvider);
         StringWriter writer = template.produce();
 
         this.createdScript.set(new DeployFileContent(filename, writer.toString().getBytes(StandardCharsets.UTF_8)));

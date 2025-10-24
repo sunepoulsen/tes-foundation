@@ -40,6 +40,11 @@ public class SequenceFlow implements Flow {
         }
     }
 
+    @Override
+    public void printReport() {
+        new LogFlowReport().printReport(steps);
+    }
+
     private void ignoredRemainingStepsAfterError(FlowStepExecutor failedStep) {
         int indexFailedStep = steps.indexOf(failedStep);
         if (indexFailedStep == steps.size() - 1) {

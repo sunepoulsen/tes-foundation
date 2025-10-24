@@ -11,8 +11,7 @@ import org.testcontainers.utility.DockerImageName;
 import org.testcontainers.utility.MountableFile;
 
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -30,6 +29,8 @@ public abstract class AbstractSutContainerStep extends AbstractDeployStep {
     protected AbstractSutContainerStep(String key, String serviceKey, SystemUnderTestDeployment systemUnderTestDeployment) {
         super(key);
         this.serviceKey = serviceKey;
+        this.environmentVariables = new HashMap<>();
+        this.aliases = new ArrayList<>();
         this.systemUnderTestDeployment = systemUnderTestDeployment;
     }
 
@@ -51,10 +52,10 @@ public abstract class AbstractSutContainerStep extends AbstractDeployStep {
         return container;
     }
 
-    protected GenericContainer<?> mountFiles(GenericContainer<?> container, String containerPath, List<AtomicDataSupplier<Path>> paths) {
+    protected GenericContainer<?> withMountFiles(GenericContainer<?> container, String containerPath, List<AtomicDataSupplier<Path>> paths) {
         paths.forEach(pathSupplier -> {
             Path path = pathSupplier.get("Path has not been set for mounted file");
-            container.copyFileToContainer(MountableFile.forHostPath(path), containerPath + "/" + path.getFileName());
+            container.withCopyFileToContainer(MountableFile.forHostPath(path), containerPath + "/" + path.getFileName());
         });
 
         return container;

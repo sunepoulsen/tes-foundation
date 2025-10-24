@@ -16,7 +16,12 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 
 import dk.sunepoulsen.tes.security.exceptions.SelfSignedCertificateFactoryException;
+import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.asn1.x509.GeneralName;
+import org.bouncycastle.asn1.x509.GeneralNames;
 import org.bouncycastle.cert.X509v3CertificateBuilder;
 import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
 import org.bouncycastle.cert.jcajce.JcaX509v3CertificateBuilder;
@@ -25,6 +30,7 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 
+@Slf4j
 public class SelfSignedCertificateFactory {
 
     public byte[] createCertificate(String alias, DistinguishedName distinguishedName, String password) throws SelfSignedCertificateFactoryException {
@@ -53,11 +59,19 @@ public class SelfSignedCertificateFactory {
             BigInteger certSerialNumber = new BigInteger(Long.toString(now));
             Date endDate = new Date(now + 365L * 24 * 60 * 60 * 1000); // 1 year
 
+            // Define SANs
+            GeneralName[] names = new GeneralName[] {
+                new GeneralName(GeneralName.dNSName, "localhost"),
+                new GeneralName(GeneralName.iPAddress, "127.0.0.1")
+            };
+            GeneralNames subjectAltNames = new GeneralNames(names);
+
             // Sign the certificate
             ContentSigner contentSigner = new JcaContentSignerBuilder("SHA256WithRSA").build(keyPair.getPrivate());
 
             X509v3CertificateBuilder certBuilder = new JcaX509v3CertificateBuilder(
                 dnName, certSerialNumber, startDate, endDate, dnName, keyPair.getPublic());
+            certBuilder.addExtension(Extension.subjectAlternativeName, false, subjectAltNames);
 
             X509Certificate certificate = new JcaX509CertificateConverter()
                 .setProvider("BC").getCertificate(certBuilder.build(contentSigner));

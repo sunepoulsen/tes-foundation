@@ -34,7 +34,8 @@ public class SutStartPostgresStep extends AbstractSutContainerStep {
 
         container.withEnv("POSTGRES_USER", masterUsername.get("Master username has not been set"));
         container.withEnv("POSTGRES_PASSWORD", masterPassword.get("Master password has not been set"));
-        container = mountFiles(container, "/docker-entrypoint-initdb.d", startupScripts);
+        container.withExposedPorts(5432);
+        container = withMountFiles(container, "/docker-entrypoint-initdb.d", startupScripts);
         container.waitingFor((new LogMessageWaitStrategy())
             .withRegEx(".*database system is ready to accept connections.*\\s")
             .withTimes(2)

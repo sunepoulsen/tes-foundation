@@ -36,4 +36,9 @@ public class TechEasySolutionsBackendIntegrator extends AbstractIntegrator {
             .onErrorResumeNext(this::mapClientExceptions);
     }
 
+    public Single<HashMapModel> apiDocumentation() {
+        return Single.fromFuture(httpClient.get("/v3/api-docs", HashMapModel.class))
+            .onErrorResumeNext(this::mapClientExceptions);
+    }
+
 }

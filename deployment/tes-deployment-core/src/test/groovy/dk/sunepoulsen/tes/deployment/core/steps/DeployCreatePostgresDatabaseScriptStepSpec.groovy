@@ -32,7 +32,7 @@ class DeployCreatePostgresDatabaseScriptStepSpec extends Specification {
     void "Test creating PostgreSQL database script successfully"() {
         given:
             DeployCreatePostgresDatabaseScriptStep sut = new DeployCreatePostgresDatabaseScriptStep('key', this.velocityEngine)
-            sut.filename = 'filename.sql'
+            sut.filename = 'filename.sh'
             sut.masterUsername = Generators.fixedGenerator('postgres')
             sut.databaseName = Generators.fixedGenerator('features')
             sut.databaseEncoding = Generators.fixedGenerator('UTF8')
@@ -56,13 +56,13 @@ class DeployCreatePostgresDatabaseScriptStepSpec extends Specification {
             sut.execute()
 
         then:
-            sut.createdScript.get().orElseThrow().filename == 'filename.sql'
+            sut.createdScript.get().orElseThrow().filename == 'filename.sh'
             sut.createdScript.get().orElseThrow().getContentAsString(StandardCharsets.UTF_8) ==
                 """#!/bin/bash
 psql=( psql -v ON_ERROR_STOP=1)
 "\${psql[@]}"  --username ${sut.masterUsername.generate()} <<-ENDOFSQL
 
-    CREATE ROLE IF NOT EXISTS features_admin
+    CREATE ROLE features_admin
         PASSWORD '${sut.adminUser.get().orElseThrow().password.replace('\'', '\'\'')}'
         NOCREATEDB
         NOCREATEROLE
@@ -70,7 +70,7 @@ psql=( psql -v ON_ERROR_STOP=1)
         LOGIN
     ;
 
-    CREATE ROLE IF NOT EXISTS features_app
+    CREATE ROLE features_app
         PASSWORD '${sut.applicationUser.get().orElseThrow().password.replace('\'', '\'\'')}'
         NOCREATEDB
         NOCREATEROLE
@@ -149,7 +149,7 @@ ENDOFSQL
     void "Test creating PostgreSQL database script without an Admin User value"() {
         given:
             DeployCreatePostgresDatabaseScriptStep sut = new DeployCreatePostgresDatabaseScriptStep('key', this.velocityEngine)
-            sut.filename = 'filename.sql'
+            sut.filename = 'filename.sh'
             sut.masterUsername = Generators.fixedGenerator('postgres')
             sut.databaseName = Generators.fixedGenerator('features')
             sut.databaseEncoding = Generators.fixedGenerator('UTF8')
@@ -176,7 +176,7 @@ ENDOFSQL
     void "Test creating PostgreSQL database script without an Application User value"() {
         given:
             DeployCreatePostgresDatabaseScriptStep sut = new DeployCreatePostgresDatabaseScriptStep('key', this.velocityEngine)
-            sut.filename = 'filename.sql'
+            sut.filename = 'filename.sh'
             sut.masterUsername = Generators.fixedGenerator('postgres')
             sut.databaseName = Generators.fixedGenerator('features')
             sut.databaseEncoding = Generators.fixedGenerator('UTF8')

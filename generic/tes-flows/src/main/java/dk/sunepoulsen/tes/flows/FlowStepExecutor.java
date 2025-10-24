@@ -6,8 +6,11 @@ import io.micrometer.core.instrument.Timer;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.concurrent.TimeUnit;
+
 @Slf4j
 public class FlowStepExecutor {
+    @Getter
     private final Timer timer;
 
     @Getter
@@ -45,9 +48,5 @@ public class FlowStepExecutor {
 
     void ignoreStep() {
         this.status = FlowStepExecutorStatus.IGNORED;
-    }
-
-    public Iterable<Measurement> measure() {
-        return timer.measure();
     }
 }

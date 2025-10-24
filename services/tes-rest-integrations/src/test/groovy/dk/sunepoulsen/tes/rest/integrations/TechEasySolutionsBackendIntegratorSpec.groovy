@@ -198,4 +198,36 @@ class TechEasySolutionsBackendIntegratorSpec extends Specification {
             ex.serviceError.message == 'message'
     }
 
+    void "Get api documentation with OK"() {
+        given:
+            HashMapModel expected = [
+                openapi: '3.1.0'
+            ]
+
+        when:
+            HashMapModel result = this.sut.apiDocumentation().blockingGet()
+
+        then:
+            1 * httpClient.get('/v3/api-docs', HashMapModel) >> CompletableFuture.supplyAsync { expected }
+            result == expected
+    }
+
+    void "Get api documentation with BadRequest result"() {
+        when:
+            this.sut.apiDocumentation().blockingGet()
+
+        then:
+            1 * httpClient.get('/v3/api-docs', HashMapModel) >> CompletableFuture.supplyAsync {
+                throw new ExecutionException("message", new ClientBadRequestException(Mock(HttpResponse), new ServiceErrorModel(
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                )))
+            }
+            ClientBadRequestException ex = thrown(ClientBadRequestException)
+            ex.serviceError.code == 'code'
+            ex.serviceError.param == 'param'
+            ex.serviceError.message == 'message'
+    }
+
 }
