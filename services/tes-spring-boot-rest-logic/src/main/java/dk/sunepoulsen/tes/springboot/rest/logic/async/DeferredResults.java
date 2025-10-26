@@ -8,6 +8,7 @@ import io.reactivex.rxjava3.core.Single;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
@@ -56,6 +57,11 @@ public class DeferredResults {
         try {
             if( throwable instanceof ApiException ) {
                 deferredResult.setErrorResult( throwable );
+                return;
+            }
+
+            if( throwable instanceof ExecutionException ) {
+                errorHandler(deferredResult, throwable.getCause(), errorMapper);
                 return;
             }
 

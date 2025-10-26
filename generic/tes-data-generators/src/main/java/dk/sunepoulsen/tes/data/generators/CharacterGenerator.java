@@ -11,6 +11,9 @@ public class CharacterGenerator implements DataGenerator<Character> {
     public static final String ALL_ALPHA_DIGITS = ALL_ALPHA + DIGITS;
     public static final String SPECIAL = " ;:,.'<>";
     public static final String ANY_CHARECTERS = ALL_ALPHA_DIGITS + SPECIAL;
+    public static final String URI_PATH_CHARECTERS = ANY_CHARECTERS
+        .replace(" ", "")
+        .replace(";", "");
 
     private final Random random;
     private final String characters;
