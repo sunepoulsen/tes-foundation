@@ -1,6 +1,7 @@
 dependencies {
     // Tech Easy Solutions
     implementation project(':services:tes-rest-models')
+    implementation project(':services:tes-spring-boot-backend-logging')
 
     // Spring Boot
     implementation 'org.springframework:spring-web:6.2.11'

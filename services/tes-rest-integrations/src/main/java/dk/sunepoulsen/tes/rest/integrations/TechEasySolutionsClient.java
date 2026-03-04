@@ -3,8 +3,9 @@ package dk.sunepoulsen.tes.rest.integrations;
 import dk.sunepoulsen.tes.json.JsonMapper;
 import dk.sunepoulsen.tes.rest.integrations.config.DefaultClientConfig;
 import dk.sunepoulsen.tes.rest.integrations.config.TechEasySolutionsClientConfig;
-import dk.sunepoulsen.tes.rest.integrations.generators.RequestIdGenerator;
-import dk.sunepoulsen.tes.rest.integrations.generators.UUIDRequestIdGenerator;
+import dk.sunepoulsen.tes.rest.integrations.generators.TransactionIdsGenerator;
+import dk.sunepoulsen.tes.rest.integrations.generators.DefaultTransactionIdsGenerator;
+import dk.sunepoulsen.tes.springboot.backend.logging.RequestTransaction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,24 +28,24 @@ public class TechEasySolutionsClient {
     private final HttpClient client;
 
     private final ResponseHandler responseHandler;
-    private final RequestIdGenerator requestIdGenerator;
+    private final TransactionIdsGenerator transactionIdsGenerator;
 
     public TechEasySolutionsClient(URI uri) {
-        this(uri, new UUIDRequestIdGenerator());
+        this(uri, new DefaultTransactionIdsGenerator());
     }
 
-    public TechEasySolutionsClient(URI uri, RequestIdGenerator requestIdGenerator) {
-        this(uri, new DefaultClientConfig(), requestIdGenerator);
+    public TechEasySolutionsClient(URI uri, TransactionIdsGenerator transactionIdsGenerator) {
+        this(uri, new DefaultClientConfig(), transactionIdsGenerator);
     }
 
     public TechEasySolutionsClient(URI uri, TechEasySolutionsClientConfig config) {
-        this(uri, config, new UUIDRequestIdGenerator());
+        this(uri, config, new DefaultTransactionIdsGenerator());
     }
 
-    public TechEasySolutionsClient(URI uri, TechEasySolutionsClientConfig config, RequestIdGenerator requestIdGenerator) {
+    public TechEasySolutionsClient(URI uri, TechEasySolutionsClientConfig config, TransactionIdsGenerator transactionIdsGenerator) {
         this.uri = uri;
         this.config = config;
-        this.requestIdGenerator = requestIdGenerator;
+        this.transactionIdsGenerator = transactionIdsGenerator;
 
         this.client = buildHttpClient();
         this.responseHandler = new ResponseHandler(config.jsonMapper().getObjectMapper());
@@ -74,7 +75,8 @@ public class TechEasySolutionsClient {
         HttpRequest httpRequest = HttpRequest.newBuilder()
             .method(method, HttpRequest.BodyPublishers.noBody())
             .uri(uri.resolve(url))
-            .header("X-REQUEST-ID", requestIdGenerator.generateId())
+                .header(RequestTransaction.OPERATION_ID_HEADER_NAME, transactionIdsGenerator.operationId().generate().toString())
+            .header(RequestTransaction.TRANSACTION_ID_HEADER_NAME, transactionIdsGenerator.transactionId().generate())
             .timeout(config.httpClientRequestTimeout())
             .build();
 
@@ -93,7 +95,8 @@ public class TechEasySolutionsClient {
             .method(method, HttpRequest.BodyPublishers.ofString(config.jsonMapper().encode(bodyValue)))
             .uri(uri.resolve(url))
             .header("Content-Type", "application/json")
-            .header("X-REQUEST-ID", requestIdGenerator.generateId())
+            .header(RequestTransaction.OPERATION_ID_HEADER_NAME, transactionIdsGenerator.operationId().generate().toString())
+            .header(RequestTransaction.TRANSACTION_ID_HEADER_NAME, transactionIdsGenerator.transactionId().generate())
             .timeout(config.httpClientRequestTimeout())
             .build();
 

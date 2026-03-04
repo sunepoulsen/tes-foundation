@@ -1,6 +1,15 @@
 dependencies {
+    // TES Foundation
+    implementation project(':generic:tes-data-generators')
+
     // Spring Framework
     implementation 'org.springframework:spring-web:6.2.11'
+    implementation 'org.springframework:spring-webmvc:6.2.11'
     implementation 'org.springframework:spring-context:6.2.11'
     compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+    // Spring Doc
+    implementation 'org.springdoc:springdoc-openapi-starter-common:2.8.13'
+
+    testImplementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 }

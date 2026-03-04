@@ -1,7 +1,9 @@
 dependencies {
     // Tech Easy Solutions
-    api project(':services:tes-rest-models')
+    api project(':generic:tes-data-generators')
     api project(':generic:tes-json')
+    api project(':services:tes-rest-models')
+    api project(':services:tes-spring-boot-backend-logging')
 
     // Rx Java2
     api 'io.reactivex.rxjava3:rxjava:3.1.12'

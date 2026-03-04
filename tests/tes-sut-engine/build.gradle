@@ -7,7 +7,7 @@ dependencies {
     implementation project(':services:tes-rest-integrations')
 
     // Test containers
-    implementation platform('org.testcontainers:testcontainers-bom:1.21.3')
+    implementation platform('org.testcontainers:testcontainers-bom:2.0.3')
     implementation 'org.testcontainers:testcontainers'
 
     // Spock Framework

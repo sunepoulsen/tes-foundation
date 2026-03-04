@@ -7,6 +7,7 @@ import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientBadRequestException
 import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientConflictException
 import dk.sunepoulsen.tes.rest.models.monitoring.ServiceHealth
 import dk.sunepoulsen.tes.rest.models.monitoring.ServiceHealthStatusCode
+import dk.sunepoulsen.tes.springboot.backend.logging.RequestTransaction
 import groovy.json.JsonOutput
 import spock.lang.Specification
 
@@ -40,7 +41,8 @@ class TechEasySolutionsClientSpec extends Specification {
 
         and:
             wireMockServer.stubFor(get(urlEqualTo('/actuator/health'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .willReturn(aResponse()
                     .withStatus(200)
                     .withBody(JsonOutput.toJson(
@@ -63,7 +65,8 @@ class TechEasySolutionsClientSpec extends Specification {
 
         and:
             wireMockServer.stubFor(get(urlEqualTo('/actuator/health'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .willReturn(aResponse()
                     .withStatus(400)
                     .withBody(JsonOutput.toJson(
@@ -102,7 +105,8 @@ class TechEasySolutionsClientSpec extends Specification {
         and:
             wireMockServer.stubFor(post(urlEqualTo('/actuator/health'))
                 .withHeader("Content-Type", equalTo('application/json'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .withRequestBody(equalToJson(requestBody))
                 .willReturn(aResponse()
                     .withStatus(200)
@@ -136,7 +140,8 @@ class TechEasySolutionsClientSpec extends Specification {
         and:
             wireMockServer.stubFor(post(urlEqualTo('/actuator/health'))
                 .withHeader("Content-Type", equalTo('application/json'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .withRequestBody(equalToJson(requestBody))
                 .willReturn(aResponse()
                     .withStatus(409)
@@ -171,7 +176,8 @@ class TechEasySolutionsClientSpec extends Specification {
         and:
             wireMockServer.stubFor(put(urlEqualTo('/actuator/health'))
                 .withHeader("Content-Type", equalTo('application/json'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .withRequestBody(equalToJson(requestBody))
                 .willReturn(aResponse()
                     .withStatus(200)
@@ -205,7 +211,8 @@ class TechEasySolutionsClientSpec extends Specification {
         and:
             wireMockServer.stubFor(put(urlEqualTo('/actuator/health'))
                 .withHeader("Content-Type", equalTo('application/json'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .withRequestBody(equalToJson(requestBody))
                 .willReturn(aResponse()
                     .withStatus(409)
@@ -240,7 +247,8 @@ class TechEasySolutionsClientSpec extends Specification {
         and:
             wireMockServer.stubFor(patch(urlEqualTo('/actuator/health'))
                 .withHeader("Content-Type", equalTo('application/json'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .withRequestBody(equalToJson(requestBody))
                 .willReturn(aResponse()
                     .withStatus(200)
@@ -274,7 +282,8 @@ class TechEasySolutionsClientSpec extends Specification {
         and:
             wireMockServer.stubFor(patch(urlEqualTo('/actuator/health'))
                 .withHeader("Content-Type", equalTo('application/json'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .withRequestBody(equalToJson(requestBody))
                 .willReturn(aResponse()
                     .withStatus(409)
@@ -298,7 +307,8 @@ class TechEasySolutionsClientSpec extends Specification {
 
         and:
             wireMockServer.stubFor(delete(urlEqualTo('/actuator/health'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .willReturn(aResponse()
                     .withStatus(204)
                 ))
@@ -317,7 +327,8 @@ class TechEasySolutionsClientSpec extends Specification {
 
         and:
             wireMockServer.stubFor(delete(urlEqualTo('/actuator/health'))
-                .withHeader("X-Request-ID", new AnythingPattern())
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
                 .willReturn(aResponse()
                     .withStatus(409)
                     .withBody(JsonOutput.toJson(
