@@ -3,10 +3,13 @@ package dk.sunepoulsen.tes.springboot.rest.exceptions;
 import dk.sunepoulsen.tes.rest.models.ServiceErrorModel;
 import dk.sunepoulsen.tes.rest.models.ServiceValidationError;
 import dk.sunepoulsen.tes.rest.models.ServiceValidationErrorModel;
+import dk.sunepoulsen.tes.springboot.backend.logging.exceptions.RequestHeaderValueException;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -26,6 +29,24 @@ public class ServiceExceptionHandler {
     @ResponseBody
     public ServiceErrorModel handleBadRequest(ApiBadRequestException ex) {
         return handleCheckedException(ex);
+    }
+
+    @Hidden
+    @ExceptionHandler(RequestHeaderValueException.class)
+    @ResponseBody
+    public ResponseEntity<ServiceErrorModel> handleRequestHeaderValueException(RequestHeaderValueException ex) {
+        ServiceErrorModel model = new ServiceErrorModel();
+        model.setParam(ex.getHeaderName());
+        model.setMessage(ex.getMessage());
+
+        log.info(ex.getMessage());
+        log.debug("Complete handling of exception " + ex.getClass().getSimpleName(), ex);
+        logResponseBody(model);
+
+        return ResponseEntity
+            .badRequest()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(model);
     }
 
     @Hidden
