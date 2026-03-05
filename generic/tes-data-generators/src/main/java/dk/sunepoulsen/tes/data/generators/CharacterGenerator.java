@@ -1,7 +1,7 @@
 package dk.sunepoulsen.tes.data.generators;
 
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 public class CharacterGenerator implements DataGenerator<Character> {
 
@@ -15,7 +15,7 @@ public class CharacterGenerator implements DataGenerator<Character> {
         .replace(" ", "")
         .replace(";", "");
 
-    private final Random random;
+    private final SecureRandom random;
     private final String characters;
 
     public CharacterGenerator(String characters) {
@@ -23,7 +23,7 @@ public class CharacterGenerator implements DataGenerator<Character> {
     }
 
     public CharacterGenerator(List<String> strings) {
-        this.random = new Random();
+        this.random = new SecureRandom();
         this.characters = String.join("", strings);
     }
 

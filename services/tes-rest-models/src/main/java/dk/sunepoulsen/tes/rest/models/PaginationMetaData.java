@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Schema(name = "Pagination Metadata", description = "Metadata for a paginated result")
 @Data
-public class PaginationMetaData implements BaseModel {
+public class PaginationMetaData {
     @Schema(
         description = "Number of the current page",
         requiredMode = Schema.RequiredMode.REQUIRED,

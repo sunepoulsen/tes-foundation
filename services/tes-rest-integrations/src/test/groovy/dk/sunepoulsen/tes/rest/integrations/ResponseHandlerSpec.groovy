@@ -1,5 +1,6 @@
 package dk.sunepoulsen.tes.rest.integrations
 
+import dk.sunepoulsen.tes.json.JsonMapper
 import dk.sunepoulsen.tes.json.exceptions.DecodeJsonException
 import dk.sunepoulsen.tes.rest.integrations.exceptions.*
 import dk.sunepoulsen.tes.rest.models.monitoring.ServiceHealthStatusCode
@@ -14,7 +15,7 @@ class ResponseHandlerSpec extends Specification {
     private ResponseHandler sut
 
     void setup() {
-        this.sut = new ResponseHandler()
+        this.sut = new ResponseHandler(new JsonMapper())
     }
 
     void "Verify response and extract body for a valid body"() {
@@ -30,8 +31,8 @@ class ResponseHandlerSpec extends Specification {
 
         then:
             result == body
-            2 * response.statusCode() >> 200
-            1 * response.body() >> body
+            3 * response.statusCode() >> 200
+            2 * response.body() >> body
             0 * response._
     }
 
@@ -52,8 +53,8 @@ class ResponseHandlerSpec extends Specification {
             ClientResponseException ex = thrown(_exception)
             ex.serviceError.code == 'code'
             ex.serviceError.message == 'message'
-            3 * response.statusCode() >> _respponseCode
-            1 * response.body() >> body
+            4 * response.statusCode() >> _respponseCode
+            2 * response.body() >> body
             0 * response._
 
         where:
@@ -77,8 +78,8 @@ class ResponseHandlerSpec extends Specification {
 
         then:
             thrown(DecodeJsonException)
-            3 * response.statusCode() >> _respponseCode
-            1 * response.body() >> body
+            4 * response.statusCode() >> _respponseCode
+            2 * response.body() >> body
             0 * response._
 
         where:

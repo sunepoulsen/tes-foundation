@@ -8,5 +8,5 @@ import java.util.HashMap;
  *     It can represent any type of json.
  * </p>
  */
-public class HashMapModel extends HashMap<String, Object> implements BaseModel {
+public class HashMapModel extends HashMap<String, Object> {
 }

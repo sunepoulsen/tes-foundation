@@ -5,6 +5,8 @@ import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiInternalServerException;
 import dk.sunepoulsen.tes.utils.Waits;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Duration;
@@ -12,6 +14,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.function.Function;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeferredResults {
     public static <T> DeferredResult<T> of(Future<T> future ) {
         return of( Single.fromFuture( future ) );
@@ -78,7 +81,7 @@ public class DeferredResults {
 
             deferredResult.setErrorResult( new ApiInternalServerException( throwable ) );
         }
-        catch( Throwable ex ) {
+        catch( Exception ex ) {
             deferredResult.setErrorResult( new ApiInternalServerException( ex ) );
         }
     }

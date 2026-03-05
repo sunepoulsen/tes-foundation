@@ -1,11 +1,14 @@
 package dk.sunepoulsen.tes.validation.tests;
 
 import jakarta.validation.ConstraintViolation;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ConstraintViolationAssertions {
 
     public static void verifyViolations(Set<ConstraintViolation<?>> violations, List<ExpectedConstraintViolation> expected) {

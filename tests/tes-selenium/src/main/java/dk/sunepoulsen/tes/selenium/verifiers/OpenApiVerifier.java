@@ -27,20 +27,23 @@ public class OpenApiVerifier extends GeneralVerifier {
     }
 
     public void verifyEndpoint(String id, String method, String path) {
-        WebDriverWait wait = new WebDriverWait(webDriver, this.waitElementDuration);
+        final WebDriverWait wait = new WebDriverWait(webDriver, this.waitElementDuration);
 
-        WebElement operationsElement = wait
+        final WebElement operationsElement = wait
             .until(ExpectedConditions.presenceOfElementLocated(By.id("operations-" + id)));
         Assertions.assertNotNull(operationsElement);
 
-        WebElement methodElement = wait
+        final WebElement methodElement = wait
             .until(webDriver1 -> operationsElement.findElement(By.cssSelector("span.opblock-summary-method")));
         Assertions.assertNotNull(methodElement);
         Assertions.assertEquals(method.toUpperCase(), methodElement.getText().toUpperCase());
 
-        WebElement pathElement = wait
+        final WebElement pathElement = wait
             .until(webDriver1 -> operationsElement.findElement(By.cssSelector("span.opblock-summary-path")));
         Assertions.assertNotNull(pathElement);
-        Assertions.assertEquals(path.toLowerCase(), pathElement.getAttribute("data-path").toLowerCase());
+
+        final String dataPath = pathElement.getAttribute("data-path");
+        Assertions.assertNotNull(dataPath, "The attribute 'data-path' does not exist on element " + pathElement.getTagName());
+        Assertions.assertEquals(path.toLowerCase(), dataPath.toLowerCase());
     }
 }

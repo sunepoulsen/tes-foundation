@@ -21,7 +21,7 @@ String json = JsonMapper.encode(value);
 To decode json into a class do the following:
 
 ```java
-String json = "{...}"
+String json = "{...}";
 ClassType value = JsonMapper.decode(json, ClassType.class);
 ```
 

@@ -48,9 +48,9 @@ public class ConfigurationFileStepsFactory {
 
         result.setTemplateFileStep(new CreateTemplateFileStep(stepKeyPrefix + ".createConfigurationFile", velocityEngine, templateName));
         result.getTemplateFileStep().setFilename(filename);
-        contextSupplier.forEach((k, v) -> {
-            result.getTemplateFileStep().addContextSupplier(k, v);
-        });
+        contextSupplier.forEach((k, v) ->
+            result.getTemplateFileStep().addContextSupplier(k, v)
+        );
 
         result.setSaveConfigurationStep(new SaveFileContentStep(stepKeyPrefix + ".saveConfigurationFile"));
         result.getSaveConfigurationStep().setDirectory(new AtomicDataSupplier<>(storeDirectory));

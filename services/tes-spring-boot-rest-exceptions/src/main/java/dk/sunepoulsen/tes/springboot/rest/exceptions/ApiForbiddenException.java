@@ -31,6 +31,7 @@ public class ApiForbiddenException extends ApiException {
         super( code, param, message, ex );
     }
 
+    @Override
     public String toString() {
         return "ApiForbiddenException{} " + super.toString();
     }

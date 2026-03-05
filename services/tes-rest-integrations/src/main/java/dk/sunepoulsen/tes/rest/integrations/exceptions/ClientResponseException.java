@@ -1,12 +1,14 @@
 package dk.sunepoulsen.tes.rest.integrations.exceptions;
 
 import dk.sunepoulsen.tes.rest.models.ServiceErrorModel;
+import lombok.Getter;
 
 import java.net.http.HttpResponse;
 import java.util.Objects;
 
+@Getter
 public class ClientResponseException extends ClientException {
-    private HttpResponse<String> response;
+    private final transient HttpResponse<String> response;
 
     public ClientResponseException(HttpResponse<String> response, ServiceErrorModel serviceError) {
         this(response, serviceError, null);
@@ -15,10 +17,6 @@ public class ClientResponseException extends ClientException {
     public ClientResponseException(HttpResponse<String> response, ServiceErrorModel serviceError, Throwable throwable) {
         super(serviceError, throwable);
         this.response = response;
-    }
-
-    public HttpResponse<String> getResponse() {
-        return response;
     }
 
     @Override

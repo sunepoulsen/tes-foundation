@@ -1,16 +1,10 @@
 package dk.sunepoulsen.tes.deployment.core.steps;
 
-import dk.sunepoulsen.tes.deployment.core.function.AtomicDataSupplier;
 import dk.sunepoulsen.tes.flows.FlowStepResult;
 import dk.sunepoulsen.tes.flows.exceptions.FlowStepException;
-import dk.sunepoulsen.tes.io.visitors.DeletePathVisitor;
 import dk.sunepoulsen.tes.utils.ProcessExecutor;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 @Getter
 @Setter

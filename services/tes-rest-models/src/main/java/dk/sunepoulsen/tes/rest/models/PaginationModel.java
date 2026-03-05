@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Schema(name = "Pagination model", description = "Model of a paginated result")
 @Data
-public class PaginationModel<T> implements BaseModel {
+public class PaginationModel<T> {
     @Schema(
         description = "Metadata of this paginated result",
         requiredMode = Schema.RequiredMode.REQUIRED,

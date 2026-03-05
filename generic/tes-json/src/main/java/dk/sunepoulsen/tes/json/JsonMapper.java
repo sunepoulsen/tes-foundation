@@ -1,15 +1,22 @@
 package dk.sunepoulsen.tes.json;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import dk.sunepoulsen.tes.json.exceptions.DecodeJsonException;
 import dk.sunepoulsen.tes.json.exceptions.EncodeJsonException;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.PropertyNamingStrategies;
+import tools.jackson.databind.SerializationFeature;
+
+import static tools.jackson.databind.PropertyNamingStrategies.SNAKE_CASE;
 
 /**
  * Class to encode and decode objects to and from JSON strings.
  */
+@Slf4j
 @Getter
 public class JsonMapper {
     private final ObjectMapper objectMapper;
@@ -44,8 +51,12 @@ public class JsonMapper {
      */
     public String encode(Object value) {
         try {
-            return this.objectMapper.writeValueAsString(value);
-        } catch (JsonProcessingException ex) {
+            log.trace("Attempt to encode to json of object: {}", value);
+            String result = this.objectMapper.writeValueAsString(value);
+
+            log.trace("Encoded result of object: {}", result);
+            return result;
+        } catch (JacksonException ex) {
             throw new EncodeJsonException(ex.getMessage(), ex);
         }
     }
@@ -62,8 +73,12 @@ public class JsonMapper {
      */
     public <T> T decode(String json, Class<T> clazz) {
         try {
-            return this.objectMapper.readValue(json, clazz);
-        } catch (JsonProcessingException ex) {
+            log.trace("Attempt to decode from json to object of type {}: {}", clazz.getName(), json);
+            T result = this.objectMapper.readValue(json, clazz);
+
+            log.trace("Decoded result of json: {}", result);
+            return result;
+        } catch (JacksonException ex) {
             throw new DecodeJsonException(ex.getMessage(), ex);
         }
     }
@@ -126,9 +141,24 @@ public class JsonMapper {
      * @return A fully configured <code>ObjectMapper</code>
      */
     public static ObjectMapper springBootObjectMapper() {
-        var objectMapper = new ObjectMapper().findAndRegisterModules();
-        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        return tools.jackson.databind.json.JsonMapper.builder()
+            // modules (JavaTime, JDK8, etc.)
+            .findAndAddModules()
 
-        return objectMapper;
+            // snake_case globally
+            //.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+
+            // NON_NULL globally – Jackson 3 style
+            //.changeDefaultPropertyInclusion(incl ->
+            //    incl.withValueInclusion(JsonInclude.Include.NON_NULL)
+            //        .withContentInclusion(JsonInclude.Include.NON_NULL))
+
+            // ignore unknown properties
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+            // optional: dates as ISO strings
+            //.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+
+            .build();
     }
 }

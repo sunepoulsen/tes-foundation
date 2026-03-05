@@ -1,9 +1,9 @@
 package dk.sunepoulsen.tes.data.generators;
 
+import java.security.SecureRandom;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
-import java.util.Random;
 
 /**
  * Factory class to create test data generators for date and times.
@@ -17,7 +17,7 @@ public class TimeGenerators {
     }
 
     public static DataGenerator<LocalDate> dateGenerator(LocalDate fromDate, LocalDate toDate, TemporalUnit temporalUnit) {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         long units = fromDate.until(toDate, temporalUnit);
         return Generators.supplierGenerator(() -> fromDate.plus(random.nextLong(units), temporalUnit));
     }
@@ -27,7 +27,7 @@ public class TimeGenerators {
     }
 
     public static DataGenerator<LocalTime> timeGenerator(LocalTime fromTime, LocalTime toTime, TemporalUnit temporalUnit) {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         long units = fromTime.until(toTime, temporalUnit);
         return Generators.supplierGenerator(() -> fromTime.plus(random.nextLong(units), temporalUnit));
     }
@@ -37,7 +37,7 @@ public class TimeGenerators {
     }
 
     public static DataGenerator<LocalDateTime> dateTimeGenerator(LocalDateTime fromDateTime, LocalDateTime toDateTime, TemporalUnit temporalUnit) {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         long units = fromDateTime.until(toDateTime, temporalUnit);
         return Generators.supplierGenerator(() -> fromDateTime.plus(random.nextLong(units), temporalUnit));
     }
@@ -47,7 +47,7 @@ public class TimeGenerators {
     }
 
     public static DataGenerator<ZonedDateTime> zonedDateTimeGenerator(ZonedDateTime fromZonedDateTime, ZonedDateTime toZonedDateTime, TemporalUnit temporalUnit) {
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         long units = fromZonedDateTime.until(toZonedDateTime, temporalUnit);
         return Generators.supplierGenerator(() -> fromZonedDateTime.plus(random.nextLong(units), temporalUnit));
     }

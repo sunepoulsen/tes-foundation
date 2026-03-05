@@ -52,7 +52,7 @@ public abstract class AbstractSutContainerStep extends AbstractDeployStep {
         return container;
     }
 
-    protected GenericContainer<?> withMountFiles(GenericContainer<?> container, String containerPath, List<AtomicDataSupplier<Path>> paths) {
+    protected <T extends GenericContainer<T>> GenericContainer<T> withMountFiles(GenericContainer<T> container, String containerPath, List<AtomicDataSupplier<Path>> paths) {
         paths.forEach(pathSupplier -> {
             Path path = pathSupplier.get("Path has not been set for mounted file");
             container.withCopyFileToContainer(MountableFile.forHostPath(path), containerPath + "/" + path.getFileName());

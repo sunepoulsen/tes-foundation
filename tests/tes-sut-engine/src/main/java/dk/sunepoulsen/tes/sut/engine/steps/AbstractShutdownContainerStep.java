@@ -2,6 +2,7 @@ package dk.sunepoulsen.tes.sut.engine.steps;
 
 import dk.sunepoulsen.tes.deployment.core.function.AtomicDataSupplier;
 import dk.sunepoulsen.tes.deployment.core.steps.AbstractDeployStep;
+import dk.sunepoulsen.tes.sut.engine.exceptions.ContainerStepException;
 import dk.sunepoulsen.tes.sut.engine.services.SutService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,9 +26,9 @@ public abstract class AbstractShutdownContainerStep extends AbstractDeployStep  
         Path logDirectory = logPath.get("logPath has not been set");
         try {
             Files.createDirectories(logDirectory);
-        } catch (IOException e) {
-            log.error("Unable to create directory {}", logDirectory, e);
-            throw new RuntimeException(e);
+        } catch (IOException ex) {
+            log.error("Unable to create directories {}", logDirectory, ex);
+            throw new ContainerStepException("Unable to create directories " + logDirectory, ex);
         }
     }
 
