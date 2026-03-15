@@ -13,10 +13,10 @@ import java.util.stream.StreamSupport;
 
 public class ValidationErrorsTransformations {
 
-    private ValidationErrorsTransformations() {
+    ValidationErrorsTransformations() {
     }
 
-    static List<ServiceValidationError> toServiceValidationErrors(ConstraintViolationException ex) {
+    List<ServiceValidationError> toServiceValidationErrors(ConstraintViolationException ex) {
         return ex.getConstraintViolations().stream()
             .map(constraintViolation -> {
                 ServiceValidationError error = new ServiceValidationError();
@@ -29,7 +29,7 @@ public class ValidationErrorsTransformations {
             .toList();
     }
 
-    static List<ServiceValidationError> toServiceValidationErrors(List<FieldError> fieldErrors) {
+    List<ServiceValidationError> toServiceValidationErrors(List<FieldError> fieldErrors) {
         return fieldErrors.stream()
             .map(fieldError -> {
                 ServiceValidationError error = new ServiceValidationError();
@@ -42,12 +42,12 @@ public class ValidationErrorsTransformations {
             .toList();
     }
 
-    private static Comparator<ServiceValidationError> validationErrorComparator() {
+    private Comparator<ServiceValidationError> validationErrorComparator() {
         return Comparator.comparing(ServiceValidationError::getParam)
             .thenComparing(ServiceValidationError::getMessage);
     }
 
-    private static String constructViolationPath(Path path) {
+    private String constructViolationPath(Path path) {
         return StreamSupport.stream(path.spliterator(), false)
             .filter(node -> node.getKind() == ElementKind.PROPERTY)
             .map(Path.Node::getName)

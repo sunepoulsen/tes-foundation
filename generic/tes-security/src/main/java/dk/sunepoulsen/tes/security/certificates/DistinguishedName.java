@@ -11,7 +11,7 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class DistinguishedName {
 
-    public static DistinguishedName DEFAULT = DistinguishedName.builder()
+    public static final DistinguishedName DEFAULT = DistinguishedName.builder()
         .commonName("Sune Thomas Poulsen")
         .organizationName("Private Person")
         .company("Private Person")

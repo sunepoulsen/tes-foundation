@@ -44,7 +44,7 @@ public class AbstractIntegrator {
             return "";
         }
 
-        StringBuffer result = new StringBuffer();
+        StringBuilder result = new StringBuilder();
 
         result.append('?');
         params.forEach((key, value) -> {

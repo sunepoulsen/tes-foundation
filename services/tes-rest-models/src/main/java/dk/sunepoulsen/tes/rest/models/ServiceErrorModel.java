@@ -3,9 +3,15 @@ package dk.sunepoulsen.tes.rest.models;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serial;
+import java.io.Serializable;
+
 @Schema(name = "Service error", description = "Defines a service error")
 @Data
-public class ServiceErrorModel implements BaseModel {
+public class ServiceErrorModel implements Serializable {
+    @Serial
+    private static final long serialVersionUID = -7949368391090760504L;
+
     @Schema(
         description = "Error code of this service error",
         requiredMode = Schema.RequiredMode.NOT_REQUIRED,

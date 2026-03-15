@@ -1,8 +1,6 @@
 package dk.sunepoulsen.tes.rest.models.monitoring;
 
-import dk.sunepoulsen.tes.rest.models.BaseModel;
-
-public enum ServiceHealthStatusCode implements BaseModel {
+public enum ServiceHealthStatusCode {
     UP,
     DOWN
 }

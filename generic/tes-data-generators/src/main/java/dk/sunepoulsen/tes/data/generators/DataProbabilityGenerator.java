@@ -1,7 +1,7 @@
 package dk.sunepoulsen.tes.data.generators;
 
+import java.security.SecureRandom;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Generator to produce test data based on probability of other test data generators.
@@ -18,11 +18,11 @@ import java.util.Random;
  */
 public class DataProbabilityGenerator<T> implements DataGenerator<T> {
     private final List<DataProbabilityGeneratorItem<T>> generators;
-    private final Random random;
+    private final SecureRandom random;
 
     public DataProbabilityGenerator(List<DataProbabilityGeneratorItem<T>> generators) {
         this.generators = generators;
-        this.random = new Random();
+        this.random = new SecureRandom();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class DataProbabilityGenerator<T> implements DataGenerator<T> {
             .sum();
 
         if (sum != 100.0) {
-            throw new IllegalArgumentException("Probabilities not sum to 100");
+            throw new IllegalArgumentException("Probabilities does not sum to 100");
         }
     }
 }

@@ -1,6 +1,8 @@
 package dk.sunepoulsen.tes.security.net.ssl;
 
 import dk.sunepoulsen.tes.security.exceptions.SSLContextFactoryException;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
@@ -12,6 +14,7 @@ import java.nio.file.StandardOpenOption;
 import java.security.*;
 import java.security.cert.CertificateException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SSLContextFactory {
 
     public static SSLContext createSSLContext(Path certificateFile, String password) throws SSLContextFactoryException {

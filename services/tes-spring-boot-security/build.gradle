@@ -1,0 +1,6 @@
+dependencies {
+    // Spring Boot
+    api 'org.springframework:spring-context:7.0.6'
+    api 'org.springframework.security:spring-security-config:7.0.3'
+    api 'org.springframework.security:spring-security-web:7.0.3'
+}

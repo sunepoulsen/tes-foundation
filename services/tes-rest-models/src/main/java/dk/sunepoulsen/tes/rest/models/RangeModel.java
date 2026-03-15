@@ -8,7 +8,7 @@ import lombok.Data;
 @Schema(name = "Range", description = "Defines a range of min and max")
 @Data
 @Interval(minProperty = "min", maxProperty = "max")
-public class RangeModel<T extends Number> implements BaseModel {
+public class RangeModel<T extends Number> {
     @Schema(
         description = "Minimum value of this range",
         requiredMode = Schema.RequiredMode.NOT_REQUIRED,

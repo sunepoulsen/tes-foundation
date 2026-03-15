@@ -20,6 +20,9 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 public class TechEasySolutionsClient {
+
+    private static final String CALL_URL_LOG_MESSAGE = "Call {} {}";
+
     @Getter
     private final URI uri;
 
@@ -48,7 +51,7 @@ public class TechEasySolutionsClient {
         this.transactionIdsGenerator = transactionIdsGenerator;
 
         this.client = buildHttpClient();
-        this.responseHandler = new ResponseHandler(config.jsonMapper().getObjectMapper());
+        this.responseHandler = new ResponseHandler(config.jsonMapper());
     }
 
     public <T> CompletableFuture<T> get(String url, Class<T> clazz) {
@@ -72,6 +75,7 @@ public class TechEasySolutionsClient {
     }
 
     private CompletableFuture<String> executeRequest(String method, String url) {
+        log.debug(CALL_URL_LOG_MESSAGE, method, uri.resolve(url));
         HttpRequest httpRequest = HttpRequest.newBuilder()
             .method(method, HttpRequest.BodyPublishers.noBody())
             .uri(uri.resolve(url))
@@ -80,19 +84,23 @@ public class TechEasySolutionsClient {
             .timeout(config.httpClientRequestTimeout())
             .build();
 
-        log.debug("Call {} {}", method, httpRequest.uri());
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
             .thenApply(responseHandler::verifyResponseAndExtractBody);
     }
 
-    private <T, R> CompletableFuture<R> executeRequest(String method, String url, Class<R> clazzResult) {
+    private <T> CompletableFuture<T> executeRequest(String method, String url, Class<T> clazzResult) {
         return executeRequest(method, url)
             .thenApply(s -> JsonMapper.decodeJson(s, clazzResult));
     }
 
     private <T, R> CompletableFuture<R> executeRequest(String method, String url, T bodyValue, Class<R> clazzResult) {
+        log.debug(CALL_URL_LOG_MESSAGE, method, uri.resolve(url));
+
+        String requestBody = config.jsonMapper().encode(bodyValue);
+        log.trace("Request body: {}", requestBody);
+
         HttpRequest httpRequest = HttpRequest.newBuilder()
-            .method(method, HttpRequest.BodyPublishers.ofString(config.jsonMapper().encode(bodyValue)))
+            .method(method, HttpRequest.BodyPublishers.ofString(requestBody))
             .uri(uri.resolve(url))
             .header("Content-Type", "application/json")
             .header(RequestTransaction.OPERATION_ID_HEADER_NAME, transactionIdsGenerator.operationId().generate().toString())
@@ -100,10 +108,12 @@ public class TechEasySolutionsClient {
             .timeout(config.httpClientRequestTimeout())
             .build();
 
-        log.debug("Call {} {}", method, httpRequest.uri());
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
             .thenApply(responseHandler::verifyResponseAndExtractBody)
-            .thenApply(s -> JsonMapper.decodeJson(s, clazzResult));
+            .thenApply(s -> {
+                log.trace("Recei");
+                return JsonMapper.decodeJson(s, clazzResult);
+            });
     }
 
     private HttpClient buildHttpClient() {

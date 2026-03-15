@@ -4,12 +4,15 @@ package dk.sunepoulsen.tes.springboot.rest.exceptions;
  * Created by sunepoulsen on 19/12/2016.
  */
 public class ApiInternalServerException extends ApiException {
+
+    public static final String EXCEPTION_MESSAGE = "Unable to complete request";
+
     public ApiInternalServerException() {
-        super( "Unable to complete request" );
+        super( EXCEPTION_MESSAGE );
     }
 
     public ApiInternalServerException( Throwable ex ) {
-        super( "Unable to complete request", ex );
+        super( EXCEPTION_MESSAGE, ex );
     }
 
     @Override

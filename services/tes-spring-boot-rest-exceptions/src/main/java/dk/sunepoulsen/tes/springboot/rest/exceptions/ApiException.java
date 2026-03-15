@@ -1,11 +1,15 @@
 package dk.sunepoulsen.tes.springboot.rest.exceptions;
 
 import dk.sunepoulsen.tes.rest.models.ServiceErrorModel;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Objects;
 
+@Getter
+@Setter
 public class ApiException extends RuntimeException {
-    private ServiceErrorModel serviceError;
+    private final ServiceErrorModel serviceError;
 
     public ApiException( String message ) {
         this( null, null, message, null );
@@ -34,14 +38,6 @@ public class ApiException extends RuntimeException {
         serviceError.setCode( code );
         serviceError.setParam( param );
         serviceError.setMessage( message );
-    }
-
-    public ServiceErrorModel getServiceError() {
-        return serviceError;
-    }
-
-    public void setServiceError( ServiceErrorModel serviceError ) {
-        this.serviceError = serviceError;
     }
 
     @Override

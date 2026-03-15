@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.log4j.MDC;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
@@ -34,8 +36,11 @@ import java.util.UUID;
  * </table>
  */
 @Component
+@Order(Ordered.LOWEST_PRECEDENCE)
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
+
+    private static final String START_REQUEST_LOG_MESSAGE = "Starting processing of request: {} {}";
 
     private final HandlerExceptionResolver exceptionHandlerResolver;
 
@@ -49,10 +54,12 @@ public class LoggingFilter extends OncePerRequestFilter {
         try {
             filterRequest(request);
             filterChain.doFilter(request, response);
-            filterResponse(response);
         } catch (RequestHeaderValueException ex) {
-            log.info("Starting processing of request: {} {}", request.getMethod().toUpperCase(), request.getRequestURI());
+            log.info(START_REQUEST_LOG_MESSAGE, request.getMethod().toUpperCase(), request.getRequestURI());
             exceptionHandlerResolver.resolveException(request, response, null, ex);
+        } catch (Exception ex) {
+            exceptionHandlerResolver.resolveException(request, response, null, ex);
+        } finally {
             filterResponse(response);
         }
     }
@@ -61,7 +68,7 @@ public class LoggingFilter extends OncePerRequestFilter {
         MDC.put(RequestTransaction.OPERATION_ID_MDC_NAME, readOperationIdHeader(request));
         MDC.put(RequestTransaction.TRANSACTION_ID_MDC_NAME, readTransactionIdHeader(request));
 
-        log.info("Starting processing of request: {} {}", request.getMethod().toUpperCase(), request.getRequestURI());
+        log.info(START_REQUEST_LOG_MESSAGE, request.getMethod().toUpperCase(), request.getRequestURI());
     }
 
     private void filterResponse(HttpServletResponse response) {

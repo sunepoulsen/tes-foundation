@@ -1,12 +1,12 @@
 package dk.sunepoulsen.tes.springboot.rest.exceptions;
 
 import dk.sunepoulsen.tes.rest.models.ServiceErrorModel;
-import dk.sunepoulsen.tes.rest.models.ServiceValidationError;
 import dk.sunepoulsen.tes.rest.models.ServiceValidationErrorModel;
 import dk.sunepoulsen.tes.springboot.backend.logging.exceptions.RequestHeaderValueException;
 import io.swagger.v3.oas.annotations.Hidden;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +20,24 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class ServiceExceptionHandler {
 
+    private final ValidationErrorsTransformations validationErrorsTransformations;
+
     public ServiceExceptionHandler() {
+        this(new ValidationErrorsTransformations());
+    }
+
+    public ServiceExceptionHandler(ValidationErrorsTransformations validationErrorsTransformations) {
+        this.validationErrorsTransformations = validationErrorsTransformations;
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ApiBadRequestException.class)
     @ResponseBody
-    public ServiceErrorModel handleBadRequest(ApiBadRequestException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleBadRequest(ApiBadRequestException ex) {
+        return ResponseEntity
+            .badRequest()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
@@ -39,9 +48,7 @@ public class ServiceExceptionHandler {
         model.setParam(ex.getHeaderName());
         model.setMessage(ex.getMessage());
 
-        log.info(ex.getMessage());
-        log.debug("Complete handling of exception " + ex.getClass().getSimpleName(), ex);
-        logResponseBody(model);
+        completeHandlingOfException(ex, model);
 
         return ResponseEntity
             .badRequest()
@@ -50,108 +57,126 @@ public class ServiceExceptionHandler {
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(ApiUnauthorizedException.class)
     @ResponseBody
-    public ServiceErrorModel handleUnauthorized(ApiUnauthorizedException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleUnauthorized(ApiUnauthorizedException ex) {
+        return ResponseEntity
+            .status(HttpStatus.UNAUTHORIZED)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.FORBIDDEN)
     @ExceptionHandler(ApiForbiddenException.class)
     @ResponseBody
-    public ServiceErrorModel handleForbidden(ApiForbiddenException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleForbidden(ApiForbiddenException ex) {
+        return ResponseEntity
+            .status(HttpStatus.FORBIDDEN)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ApiNotFoundException.class)
     @ResponseBody
-    public ServiceErrorModel handleNotFound(ApiNotFoundException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleNotFound(ApiNotFoundException ex) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(ApiConflictException.class)
     @ResponseBody
-    public ServiceErrorModel handleConflict(ApiConflictException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleConflict(ApiConflictException ex) {
+        return ResponseEntity
+            .status(HttpStatus.CONFLICT)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
     @ExceptionHandler(UnsupportedOperationException.class)
     @ResponseBody
-    public ServiceErrorModel handleUnsupportedOperation(UnsupportedOperationException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleUnsupportedOperation(UnsupportedOperationException ex) {
+        return ResponseEntity
+            .status(HttpStatus.NOT_IMPLEMENTED)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.BAD_GATEWAY)
     @ExceptionHandler(ApiBadGatewayException.class)
     @ResponseBody
-    public ServiceErrorModel handleBadGateway(ApiBadGatewayException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleBadGateway(ApiBadGatewayException ex) {
+        return ResponseEntity
+            .status(HttpStatus.BAD_GATEWAY)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(ApiInternalServerException.class)
     @ResponseBody
-    public ServiceErrorModel handleInternalServerError(ApiInternalServerException ex) {
-        return handleCheckedException(ex);
+    public ResponseEntity<ServiceErrorModel> handleInternalServerError(ApiInternalServerException ex) {
+        return ResponseEntity
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(processCheckedException(ex));
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
-    public ServiceValidationErrorModel handleConstraintViolationException(ConstraintViolationException ex) {
+    public ResponseEntity<ServiceValidationErrorModel> handleConstraintViolationException(ConstraintViolationException ex) {
         ServiceValidationErrorModel model = new ServiceValidationErrorModel();
 
         try {
             model.setMessage("Unable to process request because of validation errors");
-            model.setValidationErrors(ValidationErrorsTransformations.toServiceValidationErrors(ex));
-            return model;
+            model.setValidationErrors(validationErrorsTransformations.toServiceValidationErrors(ex));
+
+            return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(model);
         } finally {
-            log.info(ex.getMessage());
-            log.debug("Complete handling of exception " + ex.getClass().getSimpleName(), ex);
-            logResponseBody(model);
+            completeHandlingOfException(ex, model);
         }
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
-    public ServiceValidationErrorModel handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ServiceValidationErrorModel> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         ServiceValidationErrorModel model = new ServiceValidationErrorModel();
 
         try {
             model.setMessage("Unable to process request because of validation errors");
-            model.setValidationErrors(ValidationErrorsTransformations.toServiceValidationErrors(ex.getFieldErrors()));
-            return model;
+            model.setValidationErrors(validationErrorsTransformations.toServiceValidationErrors(ex.getFieldErrors()));
+
+            return ResponseEntity
+                .badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(model);
         } finally {
-            log.info(ex.getMessage());
-            log.debug("Complete handling of exception " + ex.getClass().getSimpleName(), ex);
-            logResponseBody(model);
+            completeHandlingOfException(ex, model);
         }
     }
 
     @Hidden
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody
-    public ServiceErrorModel handleRuntimeException(RuntimeException ex) {
+    public ResponseEntity<ServiceErrorModel> handleRuntimeException(RuntimeException ex) {
         ServiceErrorModel body = null;
         try {
             body = new ServiceErrorModel();
-            body.setMessage("Unable to process request");
+            body.setMessage(ApiInternalServerException.EXCEPTION_MESSAGE);
 
-            return body;
+            return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(body);
         } catch (Exception e) {
             log.info(e.getMessage(), e);
             return null;
@@ -161,29 +186,31 @@ public class ServiceExceptionHandler {
         }
     }
 
-    private ServiceErrorModel handleCheckedException(Exception ex) {
+    private ServiceErrorModel processCheckedException(Exception ex) {
         ServiceErrorModel body = null;
         try {
-            return body = extractErrorBody(ex);
-        } catch (Exception e) {
-            log.info(e.getMessage(), e);
-            return null;
+            body = extractErrorBody(ex);
+            return body;
         } finally {
-            log.info(ex.getMessage());
-            log.debug("Complete handling of exception " + ex.getClass().getSimpleName(), ex);
-            logResponseBody(body);
+            completeHandlingOfException(ex, body);
         }
     }
 
     private ServiceErrorModel extractErrorBody(Exception ex) {
-        if (ex instanceof ApiException) {
-            return ((ApiException) ex).getServiceError();
+        if (ex instanceof ApiException apiException) {
+            return apiException.getServiceError();
         }
 
         ServiceErrorModel serviceError = new ServiceErrorModel();
         serviceError.setMessage(ex.getMessage());
 
         return serviceError;
+    }
+
+    private void completeHandlingOfException(Exception exception, ServiceErrorModel model) {
+        log.info(exception.getMessage());
+        log.debug("Complete handling of exception " + exception.getClass().getSimpleName(), exception);
+        logResponseBody(model);
     }
 
     private static void logResponseBody(ServiceErrorModel body) {

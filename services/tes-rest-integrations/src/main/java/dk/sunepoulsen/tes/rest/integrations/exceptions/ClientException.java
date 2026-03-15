@@ -5,7 +5,7 @@ import dk.sunepoulsen.tes.rest.models.ServiceErrorModel;
 import java.util.Objects;
 
 public class ClientException extends RuntimeException {
-    private ServiceErrorModel serviceError;
+    private final ServiceErrorModel serviceError;
 
     public ClientException(ServiceErrorModel serviceError) {
         this(serviceError, null);

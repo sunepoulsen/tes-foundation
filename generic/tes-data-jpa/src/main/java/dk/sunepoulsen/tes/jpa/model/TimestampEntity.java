@@ -11,11 +11,9 @@ import java.time.ZonedDateTime;
 public abstract class TimestampEntity {
 
     @Column( name = ColumnNames.CREATE_TIME, nullable = false, updatable = false )
-    @Temporal( TemporalType.TIMESTAMP )
     private ZonedDateTime createDateTime;
 
     @Column( name = ColumnNames.UPDATE_TIME, nullable = false )
-    @Temporal( TemporalType.TIMESTAMP )
     private ZonedDateTime updateDateTime;
 
     @PrePersist

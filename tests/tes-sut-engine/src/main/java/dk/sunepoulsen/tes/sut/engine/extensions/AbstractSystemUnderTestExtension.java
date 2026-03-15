@@ -5,20 +5,25 @@ import dk.sunepoulsen.tes.deployment.core.steps.DeleteDirectoryStep;
 import dk.sunepoulsen.tes.deployment.core.steps.factories.CertificateStepsFactory;
 import dk.sunepoulsen.tes.deployment.core.steps.factories.CertificateStepsResult;
 import dk.sunepoulsen.tes.flows.FlowStep;
+import dk.sunepoulsen.tes.flows.LogFlowReport;
 import dk.sunepoulsen.tes.flows.SequenceFlow;
 import dk.sunepoulsen.tes.sut.engine.services.SutCertificate;
 import dk.sunepoulsen.tes.sut.engine.steps.SutCreateTestContainerNetworkStep;
 import dk.sunepoulsen.tes.sut.engine.system.SystemUnderTestDeployment;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.spockframework.runtime.extension.IGlobalExtension;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public abstract class AbstractSystemUnderTestExtension implements IGlobalExtension {
@@ -27,6 +32,8 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
     private static SystemUnderTestDeployment systemUnderTestDeployment;
 
     private final MeterRegistry meterRegistry;
+    private Timer executionTimer;
+    private Timer.Sample executionSample;
     protected final Path deployDirectory;
     protected final Path certificateDirectory;
     protected final Path logDirectory;
@@ -35,6 +42,8 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
 
     protected AbstractSystemUnderTestExtension() {
         this.meterRegistry = new SimpleMeterRegistry();
+        this.executionTimer = null;
+        this.executionSample = null;
         this.deployDirectory = FileSystems.getDefault().getPath("build", "deploy");
         this.certificateDirectory = FileSystems.getDefault().getPath(deployDirectory.toAbsolutePath().toString(), "certificates");
         this.logDirectory = FileSystems.getDefault().getPath(deployDirectory.toAbsolutePath().toString(), "logs");
@@ -52,6 +61,8 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
 
     @Override
     public void start() {
+        this.executionTimer = meterRegistry.timer("sut-test");
+        this.executionSample = Timer.start(meterRegistry);
         log.info("Starting deploying System Under Test Extension");
 
         try {
@@ -87,29 +98,34 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
             log.info("========================================================");
             systemUnderTestDeployment.getServices().forEach(service -> {
                 log.info("Service '{}': {}. Docker image: {}", service.key(), service.container().getContainerName(), service.container().getDockerImageName());
-                service.container().getExposedPorts().forEach(exposedPort -> {
-                    log.info("{}Port {} -> {}", " ".repeat(4), exposedPort, service.container().getMappedPort(exposedPort));
-                });
+                service.container().getExposedPorts().forEach(exposedPort ->
+                    log.info("{}Port {} -> {}", " ".repeat(4), exposedPort, service.container().getMappedPort(exposedPort))
+                );
             });
         } catch (Exception e) {
-            log.error("Error starting System Under Test Extension", e);
+            log.error("Error starting System Under Test", e);
             throw e;
         }
     }
 
     @Override
     public void stop() {
-        log.info("Stop deployed System Under Test Extension");
-
         try {
             IGlobalExtension.super.stop();
 
             systemUnderTestDeployment().ifPresent(instance -> {
+                log.info("Stopping deployed System Under Test");
                 instance.undeploy(meterRegistry, "SystemUnderTestExtension.undeploy");
                 setSystemUnderTestDeployment(null);
+
+                this.executionSample.stop(this.executionTimer);
+                log.info("Total test execution time: {} ms", LogFlowReport.TIMER_FORMATTER.format(this.executionTimer.totalTime(TimeUnit.MILLISECONDS)));
+
+                this.executionTimer = null;
+                this.executionSample = null;
             });
         } catch (Exception e) {
-            log.error("Error stopping System Under Test Extension", e);
+            log.error("Error stopping System Under Test", e);
             throw e;
         }
     }

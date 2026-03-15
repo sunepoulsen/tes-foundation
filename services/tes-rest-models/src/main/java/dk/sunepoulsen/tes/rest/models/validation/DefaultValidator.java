@@ -10,7 +10,6 @@ import java.util.Set;
 
 public class DefaultValidator {
 
-    private final ValidatorFactory factory;
     private final Validator validator;
 
     public DefaultValidator() {
@@ -18,7 +17,6 @@ public class DefaultValidator {
     }
 
     public DefaultValidator(ValidatorFactory factory) {
-        this.factory = factory;
         this.validator = factory.getValidator();
     }
 

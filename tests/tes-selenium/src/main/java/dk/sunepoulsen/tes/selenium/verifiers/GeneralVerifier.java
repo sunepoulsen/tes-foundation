@@ -28,8 +28,8 @@ public class GeneralVerifier {
     }
 
     public void verifyCurrentUrlPath(String expected) throws URISyntaxException {
-        URI uri = new URI(webDriver.getCurrentUrl());
-        Assertions.assertEquals(expected, uri.getPath());
+        URI currentUri = new URI(webDriver.getCurrentUrl());
+        Assertions.assertEquals(expected, currentUri.getPath());
     }
 
 }

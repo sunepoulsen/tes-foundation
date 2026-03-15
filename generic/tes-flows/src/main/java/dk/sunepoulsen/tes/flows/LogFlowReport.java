@@ -10,16 +10,14 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class LogFlowReport implements FlowReport {
 
+    public static final NumberFormat TIMER_FORMATTER = createTimerFormatter();
+
     @Override
     public void printReport(List<FlowStepExecutor> steps) {
         log.info("");
         log.info("Flow Report of flow with {} steps", steps.size());
         log.info("================================================");
         log.info("");
-
-        NumberFormat numberFormatter = NumberFormat.getInstance(Locale.of("en", "DK"));
-        numberFormatter.setMinimumFractionDigits(3);
-        numberFormatter.setMaximumFractionDigits(3);
 
         steps.forEach(step -> {
             String statusText = step.getStatus().toString();
@@ -30,7 +28,7 @@ public class LogFlowReport implements FlowReport {
             if (step.getStatus().equals(FlowStepExecutorStatus.FINISHED)) {
                 log.info("Step {} with status {}. Duration: {} ms",
                     step.getFlowStep().timerName(), statusText,
-                    numberFormatter.format(step.getTimer().totalTime(TimeUnit.MILLISECONDS)));
+                    TIMER_FORMATTER.format(step.getTimer().totalTime(TimeUnit.MILLISECONDS)));
             } else {
                 log.info("Step {} with status {}.", step.getFlowStep().timerName(), statusText);
             }
@@ -43,8 +41,16 @@ public class LogFlowReport implements FlowReport {
         double flowTotalTime = steps.stream()
             .mapToDouble(step -> step.getTimer().totalTime(TimeUnit.MILLISECONDS))
             .sum();
-        log.info("Executed {} steps in {} ms.", steps.size(), numberFormatter.format(flowTotalTime));
+        log.info("Executed {} steps in {} ms.", steps.size(), TIMER_FORMATTER.format(flowTotalTime));
         log.info("");
+    }
+
+    static NumberFormat createTimerFormatter() {
+        NumberFormat numberFormatter = NumberFormat.getInstance(Locale.of("en", "DK"));
+        numberFormatter.setMinimumFractionDigits(3);
+        numberFormatter.setMaximumFractionDigits(3);
+
+        return numberFormatter;
     }
 
 }
