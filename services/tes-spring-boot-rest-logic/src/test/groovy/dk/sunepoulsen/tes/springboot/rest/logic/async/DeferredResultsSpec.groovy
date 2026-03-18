@@ -2,6 +2,8 @@ package dk.sunepoulsen.tes.springboot.rest.logic.async
 
 import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiBadRequestException
 import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiInternalServerException
+import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiNotFoundException
+import dk.sunepoulsen.tes.springboot.rest.logic.exceptions.ResourceNotFoundException
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.core.Single
 import org.springframework.web.context.request.async.DeferredResult
@@ -51,9 +53,11 @@ class DeferredResultsSpec extends Specification {
         where:
             _testcase                                       | _value                                                         | _exception
             'Single with ApiException'                      | Single.error(new ApiBadRequestException('message'))            | ApiBadRequestException
+            'Single with LogicException'                    | Single.error(new ResourceNotFoundException('message'))         | ApiNotFoundException
             'Single with UnsupportedOperationException'     | Single.error(new UnsupportedOperationException('message'))     | UnsupportedOperationException
             'Single with unknown exception'                 | Single.error(new IllegalAccessError('message'))                | ApiInternalServerException
             'Observable with ApiException'                  | Observable.error(new ApiBadRequestException('message'))        | ApiBadRequestException
+            'Observable with LogicException'                | Observable.error(new ResourceNotFoundException('message'))     | ApiNotFoundException
             'Observable with UnsupportedOperationException' | Observable.error(new UnsupportedOperationException('message')) | UnsupportedOperationException
             'Observable with unknown exception'             | Observable.error(new IllegalAccessError('message'))            | ApiInternalServerException
     }
