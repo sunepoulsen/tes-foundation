@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 
@@ -14,8 +14,12 @@ import java.util.List;
  * @param <T> Type of each item in the list of results.
  */
 @Schema(name = "Pagination model", description = "Model of a paginated result")
-@Data
-public class PaginationModel<T> {
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true)
+public class PaginationModel<T> extends EnvelopeModel<T> {
+
     @Schema(
         description = "Metadata of this paginated result",
         requiredMode = Schema.RequiredMode.REQUIRED,
@@ -25,20 +29,9 @@ public class PaginationModel<T> {
     @Valid
     private PaginationMetaData metadata;
 
-    /**
-     * List of results
-     */
-    @Schema(
-        description = "List of elements in the paginated result",
-        requiredMode = Schema.RequiredMode.REQUIRED,
-        accessMode = Schema.AccessMode.READ_ONLY
-    )
-    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "@modelClass")
-    @NotNull
-    @Valid
-    private List<T> results;
-
     public PaginationModel() {
+        super();
         this.metadata = new PaginationMetaData();
     }
+
 }

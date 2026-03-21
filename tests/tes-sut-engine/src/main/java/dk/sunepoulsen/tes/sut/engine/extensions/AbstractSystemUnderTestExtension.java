@@ -10,18 +10,18 @@ import dk.sunepoulsen.tes.flows.SequenceFlow;
 import dk.sunepoulsen.tes.sut.engine.services.SutCertificate;
 import dk.sunepoulsen.tes.sut.engine.steps.SutCreateTestContainerNetworkStep;
 import dk.sunepoulsen.tes.sut.engine.system.SystemUnderTestDeployment;
+import dk.sunepoulsen.tes.utils.ProcessExecutor;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.spockframework.runtime.extension.IGlobalExtension;
+import org.spockframework.runtime.model.SpecInfo;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -114,6 +114,21 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
             IGlobalExtension.super.stop();
 
             systemUnderTestDeployment().ifPresent(instance -> {
+                log.info("Printing resource usages");
+
+                List<String> containerNames = new ArrayList<>();
+                instance.getServices().forEach(sutService ->
+                    containerNames.add(sutService.key() + ":" + sutService.container().getContainerInfo().getName())
+                );
+                log.debug("Containers names: {}", containerNames);
+                try {
+                    ProcessExecutor executor = new ProcessExecutor();
+                    executor.execute("docker", "stats", "--no-stream", "--format", "json");
+                    log.info("");
+                } catch (Exception e) {
+                    log.warn("Unable to print docker resource usages");
+                }
+
                 log.info("Stopping deployed System Under Test");
                 instance.undeploy(meterRegistry, "SystemUnderTestExtension.undeploy");
                 setSystemUnderTestDeployment(null);

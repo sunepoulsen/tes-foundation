@@ -2,6 +2,7 @@ package dk.sunepoulsen.tes.springboot.rest.logic.async;
 
 import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiException;
 import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiInternalServerException;
+import dk.sunepoulsen.tes.springboot.rest.logic.exceptions.LogicException;
 import dk.sunepoulsen.tes.utils.Waits;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Single;
@@ -60,6 +61,11 @@ public class DeferredResults {
         try {
             if( throwable instanceof ApiException ) {
                 deferredResult.setErrorResult( throwable );
+                return;
+            }
+
+            if( throwable instanceof LogicException logicException ) {
+                errorHandler( deferredResult, logicException.mapApiException(), errorMapper );
                 return;
             }
 

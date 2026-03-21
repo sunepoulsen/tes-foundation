@@ -3,6 +3,7 @@ dependencies {
     implementation project(':generic:tes-flows')
     implementation project(':generic:tes-io')
     implementation project(':generic:tes-security')
+    implementation project(':generic:tes-utils')
     implementation project(':deployment:tes-deployment-core')
     implementation project(':services:tes-rest-integrations')
 
