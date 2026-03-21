@@ -16,7 +16,6 @@ import io.micrometer.core.instrument.Timer;
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import lombok.extern.slf4j.Slf4j;
 import org.spockframework.runtime.extension.IGlobalExtension;
-import org.spockframework.runtime.model.SpecInfo;
 
 import java.nio.file.FileSystems;
 import java.nio.file.Path;
@@ -125,8 +124,8 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
                     ProcessExecutor executor = new ProcessExecutor();
                     executor.execute("docker", "stats", "--no-stream", "--format", "json");
                     log.info("");
-                } catch (Exception e) {
-                    log.warn("Unable to print docker resource usages");
+                } catch (Exception ex) {
+                    log.warn("Unable to print docker resource usages", ex);
                 }
 
                 log.info("Stopping deployed System Under Test");
@@ -139,9 +138,9 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
                 this.executionTimer = null;
                 this.executionSample = null;
             });
-        } catch (Exception e) {
-            log.error("Error stopping System Under Test", e);
-            throw e;
+        } catch (Exception ex) {
+            log.error("Error stopping System Under Test", ex);
+            throw ex;
         }
     }
 
