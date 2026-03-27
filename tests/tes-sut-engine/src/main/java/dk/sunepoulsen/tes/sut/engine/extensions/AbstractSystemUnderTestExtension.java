@@ -122,7 +122,7 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
                 log.debug("Containers names: {}", containerNames);
                 try {
                     ProcessExecutor executor = new ProcessExecutor();
-                    executor.execute("docker", "stats", "--no-stream", "--format", "json");
+                    executor.execute("docker", "stats", "--no-stream");
                     log.info("");
                 } catch (Exception ex) {
                     log.warn("Unable to print docker resource usages", ex);
