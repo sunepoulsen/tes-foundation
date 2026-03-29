@@ -5,6 +5,7 @@ import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
 import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientBadRequestException
 import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientConflictException
+import dk.sunepoulsen.tes.rest.models.NoContent
 import dk.sunepoulsen.tes.rest.models.monitoring.ServiceHealth
 import dk.sunepoulsen.tes.rest.models.monitoring.ServiceHealthStatusCode
 import dk.sunepoulsen.tes.springboot.backend.logging.RequestTransaction
@@ -314,10 +315,10 @@ class TechEasySolutionsClientSpec extends Specification {
                 ))
 
         when:
-            CompletableFuture<String> futureResponse = techEasySolutionsClient.delete('/actuator/health')
+            CompletableFuture<NoContent> futureResponse = techEasySolutionsClient.delete('/actuator/health')
 
         then:
-            futureResponse.get().empty
+            futureResponse.get() != null
             noExceptionThrown()
     }
 
