@@ -18,16 +18,16 @@ public class TesContainerStepsFactory extends AbstractContainerStepsFactory {
     }
 
     public ContainerStepResult<SutStartTesServiceStep> createSteps(List<String> profiles, String serviceKey, CertificateStepsResult certificateStepsResult, ConfigurationFileStepsResult configSteps) {
-        SutStartTesServiceStep startFeaturesServiceStep = new SutStartTesServiceStep("startContainer." + serviceKey, serviceKey, new ContainerSecureProtocol(), systemUnderTestDeployment);
-        startFeaturesServiceStep.setDockerImageName(new AtomicDataSupplier<>(imageName));
-        startFeaturesServiceStep.setDockerImageTag(new AtomicDataSupplier<>(imageTag));
-        startFeaturesServiceStep.setNetwork(createTestContainerNetworkStep.getCreatedNetwork());
-        startFeaturesServiceStep.getAliases().add(new AtomicDataSupplier<>(serviceKey));
-        startFeaturesServiceStep.setProfiles(new AtomicDataSupplier<>(profiles));
-        startFeaturesServiceStep.getCertificateFiles().add(certificateStepsResult.getSaveCertificateStep().getCreatedPath());
-        startFeaturesServiceStep.getConfigurationFiles().add(configSteps.getSaveConfigurationStep().getCreatedPath());
-        startFeaturesServiceStep.setLogPath(new AtomicDataSupplier<>(logDirectory));
+        SutStartTesServiceStep startTesServiceStep = new SutStartTesServiceStep("startContainer." + serviceKey, serviceKey, new ContainerSecureProtocol(), systemUnderTestDeployment);
+        startTesServiceStep.setDockerImageName(new AtomicDataSupplier<>(imageName));
+        startTesServiceStep.setDockerImageTag(new AtomicDataSupplier<>(imageTag));
+        startTesServiceStep.setNetwork(createTestContainerNetworkStep.getCreatedNetwork());
+        startTesServiceStep.getAliases().add(new AtomicDataSupplier<>(serviceKey));
+        startTesServiceStep.setProfiles(new AtomicDataSupplier<>(profiles));
+        startTesServiceStep.getCertificateFiles().add(certificateStepsResult.getSaveCertificateStep().getCreatedPath());
+        startTesServiceStep.getConfigurationFiles().add(configSteps.getSaveConfigurationStep().getCreatedPath());
+        startTesServiceStep.setLogPath(new AtomicDataSupplier<>(logDirectory));
 
-        return new ContainerStepResult<>(startFeaturesServiceStep);
+        return new ContainerStepResult<>(startTesServiceStep);
     }
 }

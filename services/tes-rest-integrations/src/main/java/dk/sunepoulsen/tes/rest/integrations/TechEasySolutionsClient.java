@@ -5,6 +5,7 @@ import dk.sunepoulsen.tes.rest.integrations.config.DefaultClientConfig;
 import dk.sunepoulsen.tes.rest.integrations.config.TechEasySolutionsClientConfig;
 import dk.sunepoulsen.tes.rest.integrations.generators.TransactionIdsGenerator;
 import dk.sunepoulsen.tes.rest.integrations.generators.DefaultTransactionIdsGenerator;
+import dk.sunepoulsen.tes.rest.models.NoContent;
 import dk.sunepoulsen.tes.springboot.backend.logging.RequestTransaction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -70,26 +71,37 @@ public class TechEasySolutionsClient {
         return executeRequest("PATCH", url, bodyValue, clazzResult);
     }
 
-    public CompletableFuture<String> delete(String url) {
+    public CompletableFuture<NoContent> delete(String url) {
         return executeRequest("DELETE", url);
     }
 
-    private CompletableFuture<String> executeRequest(String method, String url) {
+    private CompletableFuture<NoContent> executeRequest(String method, String url) {
         log.debug(CALL_URL_LOG_MESSAGE, method, uri.resolve(url));
         HttpRequest httpRequest = HttpRequest.newBuilder()
             .method(method, HttpRequest.BodyPublishers.noBody())
             .uri(uri.resolve(url))
-                .header(RequestTransaction.OPERATION_ID_HEADER_NAME, transactionIdsGenerator.operationId().generate().toString())
+            .header(RequestTransaction.OPERATION_ID_HEADER_NAME, transactionIdsGenerator.operationId().generate().toString())
             .header(RequestTransaction.TRANSACTION_ID_HEADER_NAME, transactionIdsGenerator.transactionId().generate())
             .timeout(config.httpClientRequestTimeout())
             .build();
 
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
-            .thenApply(responseHandler::verifyResponseAndExtractBody);
+            .thenApply(responseHandler::verifyResponseAndExtractBody)
+            .thenApply(s -> new NoContent());
     }
 
     private <T> CompletableFuture<T> executeRequest(String method, String url, Class<T> clazzResult) {
-        return executeRequest(method, url)
+        log.debug(CALL_URL_LOG_MESSAGE, method, uri.resolve(url));
+        HttpRequest httpRequest = HttpRequest.newBuilder()
+            .method(method, HttpRequest.BodyPublishers.noBody())
+            .uri(uri.resolve(url))
+            .header(RequestTransaction.OPERATION_ID_HEADER_NAME, transactionIdsGenerator.operationId().generate().toString())
+            .header(RequestTransaction.TRANSACTION_ID_HEADER_NAME, transactionIdsGenerator.transactionId().generate())
+            .timeout(config.httpClientRequestTimeout())
+            .build();
+
+        return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
+            .thenApply(responseHandler::verifyResponseAndExtractBody)
             .thenApply(s -> JsonMapper.decodeJson(s, clazzResult));
     }
 
@@ -110,10 +122,7 @@ public class TechEasySolutionsClient {
 
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
             .thenApply(responseHandler::verifyResponseAndExtractBody)
-            .thenApply(s -> {
-                log.trace("Recei");
-                return JsonMapper.decodeJson(s, clazzResult);
-            });
+            .thenApply(s -> JsonMapper.decodeJson(s, clazzResult));
     }
 
     private HttpClient buildHttpClient() {
