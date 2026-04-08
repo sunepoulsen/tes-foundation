@@ -7,8 +7,8 @@ import lombok.Data;
 
 import java.util.List;
 
-@Schema(name = "List model", description = "Model of a list of results")
 @Data
+@Schema(name = "Envelope", description = "Object with a list of results")
 public class EnvelopeModel<T> {
     /**
      * List of results

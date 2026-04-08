@@ -7,10 +7,10 @@ import lombok.ToString;
 
 import java.util.List;
 
-@Schema(name = "Service validation errors", description = "Defines service validation errors")
 @Data
 @EqualsAndHashCode(callSuper=true)
 @ToString(callSuper = true)
+@Schema(name = "ServiceValidationErrorModel", description = "Defines service validation errors")
 public class ServiceValidationErrorModel extends ServiceErrorModel {
     @Schema(
         description = "List of validation errors",
