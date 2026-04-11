@@ -6,8 +6,8 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Schema(name = "Service error", description = "Defines a service error")
 @Data
+@Schema(name = "ServiceErrorModel", description = "Defines a service error")
 public class ServiceErrorModel implements Serializable {
     @Serial
     private static final long serialVersionUID = -7949368391090760504L;

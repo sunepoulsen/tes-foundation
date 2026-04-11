@@ -13,11 +13,11 @@ import lombok.ToString;
  *
  * @param <T> Type of each item in the list of results.
  */
-@Schema(name = "Pagination model", description = "Model of a paginated result")
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@Schema(name = "PaginationModel", description = "Model of a paginated result")
 public class PaginationModel<T> extends EnvelopeModel<T> {
 
     @Schema(

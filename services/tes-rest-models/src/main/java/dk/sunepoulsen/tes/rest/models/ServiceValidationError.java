@@ -6,8 +6,8 @@ import lombok.Data;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Schema(name = "Service validation error", description = "Defines a service validation error")
 @Data
+@Schema(name = "ServiceValidationError", description = "Defines a service validation error")
 public class ServiceValidationError implements Serializable {
     @Serial
     private static final long serialVersionUID = -1194485686031448130L;

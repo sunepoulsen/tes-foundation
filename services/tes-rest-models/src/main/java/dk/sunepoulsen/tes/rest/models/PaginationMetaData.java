@@ -4,8 +4,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.PositiveOrZero;
 import lombok.Data;
 
-@Schema(name = "Pagination Metadata", description = "Metadata for a paginated result")
 @Data
+@Schema(name = "PaginationMetaData", description = "Metadata for a paginated result")
 public class PaginationMetaData {
     @Schema(
         description = "Number of the current page",
