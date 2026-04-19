@@ -4,85 +4,63 @@ import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiException;
 import dk.sunepoulsen.tes.springboot.rest.exceptions.ApiInternalServerException;
 import dk.sunepoulsen.tes.springboot.rest.logic.exceptions.LogicException;
 import dk.sunepoulsen.tes.utils.Waits;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Single;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.web.context.request.async.DeferredResult;
 
 import java.time.Duration;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.function.Function;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class DeferredResults {
-    public static <T> DeferredResult<T> of(Future<T> future ) {
-        return of( Single.fromFuture( future ) );
+    public static <T> DeferredResult<T> of(CompletableFuture<T> completableFuture ) {
+        return of( completableFuture, ApiInternalServerException::new );
     }
 
-    public static <T> DeferredResult<T> of(Future<T> future, Function<Throwable, ApiException> errorMapper ) {
-        return of( Single.fromFuture( future ), errorMapper );
+    public static <T> DeferredResult<T> of(CompletableFuture<T> completableFuture, Function<Throwable, ApiException> errorMapper ) {
+        final DeferredResult<T> deferredResult = new DeferredResult<>();
+
+        completableFuture
+            .thenAccept(deferredResult::setResult)
+            .exceptionally(throwable ->
+                errorHandler(deferredResult, throwable, errorMapper)
+            );
+
+        return deferredResult;
     }
 
     public static <T> DeferredResult<T> of(T value ) {
-        return of( Single.just( value ) );
+        return of( CompletableFuture.completedFuture( value ) );
     }
 
-    public static <T> DeferredResult<T> of( Single<T> single ) {
-        return of( single, ApiInternalServerException::new );
-    }
-
-    public static <T> DeferredResult<T> of(Single<T> single, Function<Throwable, ApiException> errorMapper ) {
-        DeferredResult<T> deferredResult = new DeferredResult<>();
-
-        single.subscribe( deferredResult::setResult, throwable ->
-            errorHandler(deferredResult, throwable, errorMapper)
-        );
-
-        return deferredResult;
-    }
-
-    public static <T> DeferredResult<T> of( Observable<T> observable ) {
-        return of( observable, ApiInternalServerException::new );
-    }
-
-    public static <T> DeferredResult<T> of( Observable<T> observable, Function<Throwable, ApiException> errorMapper ) {
-        DeferredResult<T> deferredResult = new DeferredResult<>();
-
-        observable.subscribe( deferredResult::setResult, throwable ->
-            errorHandler(deferredResult, throwable, errorMapper)
-        );
-
-        return deferredResult;
-    }
-
-    private static <T> void errorHandler(DeferredResult<T> deferredResult, Throwable throwable, Function<Throwable, ApiException> errorMapper) {
+    private static <T> Void errorHandler(DeferredResult<T> deferredResult, Throwable throwable, Function<Throwable, ApiException> errorMapper) {
         try {
             if( throwable instanceof ApiException ) {
                 deferredResult.setErrorResult( throwable );
-                return;
+                return null;
             }
 
             if( throwable instanceof LogicException logicException ) {
                 errorHandler( deferredResult, logicException.mapApiException(), errorMapper );
-                return;
+                return null;
             }
 
-            if( throwable instanceof ExecutionException ) {
+            if( throwable instanceof CompletionException) {
                 errorHandler(deferredResult, throwable.getCause(), errorMapper);
-                return;
+                return null;
             }
 
             if( throwable instanceof UnsupportedOperationException ) {
                 deferredResult.setErrorResult( throwable );
-                return;
+                return null;
             }
 
             ApiException apiThrowable = errorMapper.apply( throwable );
             if( apiThrowable != null ) {
                 deferredResult.setErrorResult( apiThrowable );
-                return;
+                return null;
             }
 
             deferredResult.setErrorResult( new ApiInternalServerException( throwable ) );
@@ -90,6 +68,8 @@ public class DeferredResults {
         catch( Exception ex ) {
             deferredResult.setErrorResult( new ApiInternalServerException( ex ) );
         }
+
+        return null;
     }
 
     public static <T> boolean wait( DeferredResult<T> deferredResult ) throws InterruptedException {

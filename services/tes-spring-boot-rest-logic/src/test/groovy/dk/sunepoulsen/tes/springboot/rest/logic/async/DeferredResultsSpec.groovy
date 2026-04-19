@@ -35,8 +35,6 @@ class DeferredResultsSpec extends Specification {
         where:
             _testcase             | _value                                | _expected
             'Primitive value'     | 27                                    | 27
-            'Single of value'     | Single.just(45)                       | 45
-            'Observable of value' | Observable.just(47)                   | 47
             'Future of value'     | CompletableFuture.completedFuture(55) | 55
     }
 
@@ -51,20 +49,16 @@ class DeferredResultsSpec extends Specification {
             thrown(_exception)
 
         where:
-            _testcase                                       | _value                                                         | _exception
-            'Single with ApiException'                      | Single.error(new ApiBadRequestException('message'))            | ApiBadRequestException
-            'Single with LogicException'                    | Single.error(new ResourceNotFoundException('message'))         | ApiNotFoundException
-            'Single with UnsupportedOperationException'     | Single.error(new UnsupportedOperationException('message'))     | UnsupportedOperationException
-            'Single with unknown exception'                 | Single.error(new IllegalAccessError('message'))                | ApiInternalServerException
-            'Observable with ApiException'                  | Observable.error(new ApiBadRequestException('message'))        | ApiBadRequestException
-            'Observable with LogicException'                | Observable.error(new ResourceNotFoundException('message'))     | ApiNotFoundException
-            'Observable with UnsupportedOperationException' | Observable.error(new UnsupportedOperationException('message')) | UnsupportedOperationException
-            'Observable with unknown exception'             | Observable.error(new IllegalAccessError('message'))            | ApiInternalServerException
+            _testcase                       | _value                                                                       | _exception
+            'ApiException'                  | CompletableFuture.failedFuture(new ApiBadRequestException('message'))        | ApiBadRequestException
+            'LogicException'                | CompletableFuture.failedFuture(new ResourceNotFoundException('message'))     | ApiNotFoundException
+            'UnsupportedOperationException' | CompletableFuture.failedFuture(new UnsupportedOperationException('message')) | UnsupportedOperationException
+            'Unknown exception'             | CompletableFuture.failedFuture(new IllegalAccessError('message'))            | ApiInternalServerException
     }
 
-    void "Tests DeferredResults with Single exception and exception mapping to ApiException"() {
+    void "Tests DeferredResults with exception mapping to ApiException"() {
         when:
-            DeferredResult<Integer> deferredResult = DeferredResults.of(Single.error(new IllegalAccessError('message'))) {
+            DeferredResult<Integer> deferredResult = DeferredResults.of(CompletableFuture.failedFuture(new IllegalAccessError('message'))) {
                 new ApiBadRequestException('message')
             }
             DeferredResults.wait(deferredResult, this.duration, this.sleepDuration)
@@ -74,9 +68,9 @@ class DeferredResultsSpec extends Specification {
             thrown(ApiBadRequestException)
     }
 
-    void "Tests DeferredResults with Single exception and exception mapping to null"() {
+    void "Tests DeferredResults with exception mapping to null"() {
         when:
-            DeferredResult<Integer> deferredResult = DeferredResults.of(Single.error(new IllegalAccessError('message'))) {
+            DeferredResult<Integer> deferredResult = DeferredResults.of(CompletableFuture.failedFuture(new IllegalAccessError('message'))) {
                 null
             }
             DeferredResults.wait(deferredResult, this.duration, this.sleepDuration)
@@ -86,9 +80,9 @@ class DeferredResultsSpec extends Specification {
             thrown(ApiInternalServerException)
     }
 
-    void "Tests DeferredResults with Single exception and exception mapping throws exception"() {
+    void "Tests DeferredResults with exception mapping throws exception"() {
         when:
-            DeferredResult<Integer> deferredResult = DeferredResults.of(Single.error(new IllegalAccessError('message'))) {
+            DeferredResult<Integer> deferredResult = DeferredResults.of(CompletableFuture.failedFuture(new IllegalAccessError('message'))) {
                 throw new NullPointerException('Null pointer')
             }
             DeferredResults.wait(deferredResult, this.duration, this.sleepDuration)

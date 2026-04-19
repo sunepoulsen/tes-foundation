@@ -3,9 +3,8 @@ package dk.sunepoulsen.tes.rest.integrations;
 import dk.sunepoulsen.tes.json.JsonMapper;
 import dk.sunepoulsen.tes.rest.integrations.config.DefaultClientConfig;
 import dk.sunepoulsen.tes.rest.integrations.config.TechEasySolutionsClientConfig;
-import dk.sunepoulsen.tes.rest.integrations.generators.TransactionIdsGenerator;
 import dk.sunepoulsen.tes.rest.integrations.generators.DefaultTransactionIdsGenerator;
-import dk.sunepoulsen.tes.rest.models.NoContent;
+import dk.sunepoulsen.tes.rest.integrations.generators.TransactionIdsGenerator;
 import dk.sunepoulsen.tes.springboot.backend.logging.RequestTransaction;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -71,11 +70,11 @@ public class TechEasySolutionsClient {
         return executeRequest("PATCH", url, bodyValue, clazzResult);
     }
 
-    public CompletableFuture<NoContent> delete(String url) {
+    public CompletableFuture<Void> delete(String url) {
         return executeRequest("DELETE", url);
     }
 
-    private CompletableFuture<NoContent> executeRequest(String method, String url) {
+    private CompletableFuture<Void> executeRequest(String method, String url) {
         log.debug(CALL_URL_LOG_MESSAGE, method, uri.resolve(url));
         HttpRequest httpRequest = HttpRequest.newBuilder()
             .method(method, HttpRequest.BodyPublishers.noBody())
@@ -87,7 +86,7 @@ public class TechEasySolutionsClient {
 
         return client.sendAsync(httpRequest, HttpResponse.BodyHandlers.ofString())
             .thenApply(responseHandler::verifyResponseAndExtractBody)
-            .thenApply(s -> new NoContent());
+            .thenAccept(s -> {});
     }
 
     private <T> CompletableFuture<T> executeRequest(String method, String url, Class<T> clazzResult) {
