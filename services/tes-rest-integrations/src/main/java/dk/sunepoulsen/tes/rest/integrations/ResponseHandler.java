@@ -20,7 +20,7 @@ public class ResponseHandler {
     }
 
     public String verifyResponseAndExtractBody(HttpResponse<String> response) {
-        log.trace("Receive status code {} of request", response.statusCode());
+        log.debug("Receive response of request {} {} with status code {}", response.request().method(), response.request().uri(), response.statusCode());
         log.trace("Receive body of request: {}", response.body());
         if( response.statusCode() >= 200 && response.statusCode() < 300) {
             return response.body();

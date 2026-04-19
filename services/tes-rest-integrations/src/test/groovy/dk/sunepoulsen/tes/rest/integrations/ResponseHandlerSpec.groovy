@@ -8,6 +8,7 @@ import groovy.json.JsonOutput
 import spock.lang.Specification
 import spock.lang.Unroll
 
+import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
 class ResponseHandlerSpec extends Specification {
@@ -21,6 +22,7 @@ class ResponseHandlerSpec extends Specification {
     void "Verify response and extract body for a valid body"() {
         given:
             HttpResponse<String> response = Mock(HttpResponse)
+            HttpRequest request = Mock(HttpRequest)
             String body = JsonOutput.toJson(
                 [
                     status: ServiceHealthStatusCode.UP.toString()
@@ -33,6 +35,7 @@ class ResponseHandlerSpec extends Specification {
             result == body
             3 * response.statusCode() >> 200
             2 * response.body() >> body
+            2 * response.request() >> request
             0 * response._
     }
 
@@ -40,6 +43,7 @@ class ResponseHandlerSpec extends Specification {
     void "Verify response and extract body for #_description"() {
         given:
             HttpResponse<String> response = Mock(HttpResponse)
+            HttpRequest request = Mock(HttpRequest)
             String body = JsonOutput.toJson(
                 [
                     code: 'code',
@@ -55,13 +59,14 @@ class ResponseHandlerSpec extends Specification {
             ex.serviceError.message == 'message'
             4 * response.statusCode() >> _respponseCode
             2 * response.body() >> body
+            2 * response.request() >> request
             0 * response._
 
         where:
             _respponseCode | _exception                    | _description
-            400            | ClientBadRequestException | 'a bad request'
-            404            | ClientNotFoundException | 'a not found response'
-            409            | ClientConflictException | 'a conflict response'
+            400            | ClientBadRequestException     | 'a bad request'
+            404            | ClientNotFoundException       | 'a not found response'
+            409            | ClientConflictException       | 'a conflict response'
             500            | ClientInternalServerException | 'an internal server error response'
             501            | ClientNotImplementedException | 'a not implemented response'
             999            | ClientResponseException       | 'an unknown response'
@@ -71,6 +76,7 @@ class ResponseHandlerSpec extends Specification {
     void "Verify response and extract body for #_description with an unknown body type"() {
         given:
             HttpResponse<String> response = Mock(HttpResponse)
+            HttpRequest request = Mock(HttpRequest)
             String body = 'no json'
 
         when:
@@ -80,6 +86,7 @@ class ResponseHandlerSpec extends Specification {
             thrown(DecodeJsonException)
             4 * response.statusCode() >> _respponseCode
             2 * response.body() >> body
+            2 * response.request() >> request
             0 * response._
 
         where:
