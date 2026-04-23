@@ -43,7 +43,7 @@ public class SutStartPostgresStep extends AbstractSutContainerStep {
         );
 
         systemUnderTestDeployment.addService(new ContainerService(serviceKey, container, sutService ->
-            new SutShutdownPostgresStep(getKey() + ".shutdown", getLogPath(), sutService)
+            new SutShutdownServiceWithContainerLogsStep(getKey() + ".shutdown", getLogPath(), sutService)
         ));
         container.start();
         return FlowStepResult.OK;

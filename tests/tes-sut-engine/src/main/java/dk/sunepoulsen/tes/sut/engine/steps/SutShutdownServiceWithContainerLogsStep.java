@@ -9,9 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class SutShutdownPostgresStep extends AbstractShutdownContainerStep {
+public class SutShutdownServiceWithContainerLogsStep extends AbstractShutdownContainerStep {
 
-    public SutShutdownPostgresStep(String key, AtomicDataSupplier<Path> logPath, SutService sutService) {
+    public SutShutdownServiceWithContainerLogsStep(String key, AtomicDataSupplier<Path> logPath, SutService sutService) {
         super(key, logPath, sutService);
     }
 
