@@ -43,7 +43,10 @@ class ResponseHandlerSpec extends Specification {
     void "Verify response and extract body for #_description"() {
         given:
             HttpResponse<String> response = Mock(HttpResponse)
-            HttpRequest request = Mock(HttpRequest)
+            HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI('http://localhost:8080'))
+                .build()
             String body = JsonOutput.toJson(
                 [
                     code: 'code',
@@ -57,13 +60,13 @@ class ResponseHandlerSpec extends Specification {
             ClientResponseException ex = thrown(_exception)
             ex.serviceError.code == 'code'
             ex.serviceError.message == 'message'
-            4 * response.statusCode() >> _respponseCode
+            5 * response.statusCode() >> _responseCode
             2 * response.body() >> body
             2 * response.request() >> request
             0 * response._
 
         where:
-            _respponseCode | _exception                    | _description
+            _responseCode | _exception | _description
             400            | ClientBadRequestException     | 'a bad request'
             404            | ClientNotFoundException       | 'a not found response'
             409            | ClientConflictException       | 'a conflict response'
@@ -76,7 +79,10 @@ class ResponseHandlerSpec extends Specification {
     void "Verify response and extract body for #_description with an unknown body type"() {
         given:
             HttpResponse<String> response = Mock(HttpResponse)
-            HttpRequest request = Mock(HttpRequest)
+            HttpRequest request = HttpRequest.newBuilder()
+                .GET()
+                .uri(new URI('http://localhost:8080'))
+                .build()
             String body = 'no json'
 
         when:
@@ -84,7 +90,7 @@ class ResponseHandlerSpec extends Specification {
 
         then:
             thrown(DecodeJsonException)
-            4 * response.statusCode() >> _respponseCode
+            5 * response.statusCode() >> _respponseCode
             2 * response.body() >> body
             2 * response.request() >> request
             0 * response._

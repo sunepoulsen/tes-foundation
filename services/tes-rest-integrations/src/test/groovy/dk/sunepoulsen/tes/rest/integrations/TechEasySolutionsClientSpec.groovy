@@ -3,6 +3,7 @@ package dk.sunepoulsen.tes.rest.integrations
 import com.github.tomakehurst.wiremock.WireMockServer
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration
 import com.github.tomakehurst.wiremock.matching.AnythingPattern
+import com.github.tomakehurst.wiremock.matching.EqualToPattern
 import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientBadRequestException
 import dk.sunepoulsen.tes.rest.integrations.exceptions.ClientConflictException
 import dk.sunepoulsen.tes.rest.models.monitoring.ServiceHealth
@@ -18,6 +19,8 @@ import static com.github.tomakehurst.wiremock.client.WireMock.*
 
 class TechEasySolutionsClientSpec extends Specification {
 
+    private static final String DEFAULT_JWT_TOKEN = "jwt-token"
+    private static final String DEFAULT_AUTHORIZATION_TOKEN = "${TechEasySolutionsClient.BEARER_TOKEN_NAME} ${DEFAULT_JWT_TOKEN}"
     private static WireMockServer wireMockServer
     private TechEasySolutionsClient techEasySolutionsClient
 
@@ -79,6 +82,61 @@ class TechEasySolutionsClientSpec extends Specification {
 
         when:
             techEasySolutionsClient.get('/actuator/health', ServiceHealth).get()
+
+        then:
+            ExecutionException ex = thrown(ExecutionException)
+            ex.cause instanceof ClientBadRequestException
+            ex.cause.serviceError.code == 'code'
+            ex.cause.serviceError.param == 'param'
+            ex.cause.serviceError.message == 'message'
+    }
+
+    void "Call GET /actuator/health with authorization token returning OK body"() {
+        given:
+            wireMockServer.running
+
+        and:
+            wireMockServer.stubFor(get(urlEqualTo('/actuator/health'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(JsonOutput.toJson(
+                        [
+                            status: ServiceHealthStatusCode.UP.toString()
+                        ]))
+                ))
+
+        when:
+            CompletableFuture<ServiceHealth> futureResponse = techEasySolutionsClient.get('/actuator/health', DEFAULT_JWT_TOKEN, ServiceHealth)
+
+        then:
+            futureResponse.get().status == ServiceHealthStatusCode.UP
+            noExceptionThrown()
+    }
+
+    void "Call GET /actuator/health with authorization token returning BadRequest error"() {
+        given:
+            wireMockServer.running
+
+        and:
+            wireMockServer.stubFor(get(urlEqualTo('/actuator/health'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .willReturn(aResponse()
+                    .withStatus(400)
+                    .withBody(JsonOutput.toJson(
+                        [
+                            code: 'code',
+                            param: 'param',
+                            message: 'message'
+                        ]))
+                ))
+
+        when:
+            techEasySolutionsClient.get('/actuator/health', DEFAULT_JWT_TOKEN, ServiceHealth).get()
 
         then:
             ExecutionException ex = thrown(ExecutionException)
@@ -159,6 +217,79 @@ class TechEasySolutionsClientSpec extends Specification {
             ex.cause.serviceError.message == 'message'
     }
 
+    void "Call POST /actuator/health with authorization token returning OK body"() {
+        given:
+            wireMockServer.running
+
+        and:
+            String requestBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.UP.toString()
+                ])
+            String responseBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.DOWN.toString()
+                ])
+
+        and:
+            wireMockServer.stubFor(post(urlEqualTo('/actuator/health'))
+                .withHeader("Content-Type", equalTo('application/json'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .withRequestBody(equalToJson(requestBody))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(responseBody)
+                ))
+
+        when:
+            CompletableFuture<ServiceHealth> futureResponse = techEasySolutionsClient.post('/actuator/health', DEFAULT_JWT_TOKEN, new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth)
+
+        then:
+            futureResponse.get().status == ServiceHealthStatusCode.DOWN
+            noExceptionThrown()
+    }
+
+    void "Call POST /actuator/health with authorization token returning conflict response"() {
+        given:
+            wireMockServer.running
+
+        and:
+            String requestBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.UP.toString()
+                ])
+            String responseBody = JsonOutput.toJson(
+                [
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                ])
+
+        and:
+            wireMockServer.stubFor(post(urlEqualTo('/actuator/health'))
+                .withHeader("Content-Type", equalTo('application/json'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .withRequestBody(equalToJson(requestBody))
+                .willReturn(aResponse()
+                    .withStatus(409)
+                    .withBody(responseBody)
+                ))
+
+        when:
+            techEasySolutionsClient.post('/actuator/health', DEFAULT_JWT_TOKEN, new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth).get()
+
+        then:
+            ExecutionException ex = thrown(ExecutionException)
+            ex.cause instanceof ClientConflictException
+            ex.cause.serviceError.code == 'code'
+            ex.cause.serviceError.param == 'param'
+            ex.cause.serviceError.message == 'message'
+    }
+
     void "Call PUT /actuator/health with OK body"() {
         given:
             wireMockServer.running
@@ -221,6 +352,79 @@ class TechEasySolutionsClientSpec extends Specification {
 
         when:
             techEasySolutionsClient.put('/actuator/health', new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth).get()
+
+        then:
+            ExecutionException ex = thrown(ExecutionException)
+            ex.cause instanceof ClientConflictException
+            ex.cause.serviceError.code == 'code'
+            ex.cause.serviceError.param == 'param'
+            ex.cause.serviceError.message == 'message'
+    }
+
+    void "Call PUT /actuator/health with authorization token returning OK body"() {
+        given:
+            wireMockServer.running
+
+        and:
+            String requestBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.UP.toString()
+                ])
+            String responseBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.DOWN.toString()
+                ])
+
+        and:
+            wireMockServer.stubFor(put(urlEqualTo('/actuator/health'))
+                .withHeader("Content-Type", equalTo('application/json'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .withRequestBody(equalToJson(requestBody))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(responseBody)
+                ))
+
+        when:
+            CompletableFuture<ServiceHealth> futureResponse = techEasySolutionsClient.put('/actuator/health', DEFAULT_JWT_TOKEN, new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth)
+
+        then:
+            futureResponse.get().status == ServiceHealthStatusCode.DOWN
+            noExceptionThrown()
+    }
+
+    void "Call PUT /actuator/health with authorization token returning conflict response"() {
+        given:
+            wireMockServer.running
+
+        and:
+            String requestBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.UP.toString()
+                ])
+            String responseBody = JsonOutput.toJson(
+                [
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                ])
+
+        and:
+            wireMockServer.stubFor(put(urlEqualTo('/actuator/health'))
+                .withHeader("Content-Type", equalTo('application/json'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .withRequestBody(equalToJson(requestBody))
+                .willReturn(aResponse()
+                    .withStatus(409)
+                    .withBody(responseBody)
+                ))
+
+        when:
+            techEasySolutionsClient.put('/actuator/health', DEFAULT_JWT_TOKEN, new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth).get()
 
         then:
             ExecutionException ex = thrown(ExecutionException)
@@ -301,6 +505,79 @@ class TechEasySolutionsClientSpec extends Specification {
             ex.cause.serviceError.message == 'message'
     }
 
+    void "Call PATCH /actuator/health with authorization token returning OK body"() {
+        given:
+            wireMockServer.running
+
+        and:
+            String requestBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.UP.toString()
+                ])
+            String responseBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.DOWN.toString()
+                ])
+
+        and:
+            wireMockServer.stubFor(patch(urlEqualTo('/actuator/health'))
+                .withHeader("Content-Type", equalTo('application/json'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .withRequestBody(equalToJson(requestBody))
+                .willReturn(aResponse()
+                    .withStatus(200)
+                    .withBody(responseBody)
+                ))
+
+        when:
+            CompletableFuture<ServiceHealth> futureResponse = techEasySolutionsClient.patch('/actuator/health', DEFAULT_JWT_TOKEN, new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth)
+
+        then:
+            futureResponse.get().status == ServiceHealthStatusCode.DOWN
+            noExceptionThrown()
+    }
+
+    void "Call PATCH /actuator/health with authorization token returning conflict response"() {
+        given:
+            wireMockServer.running
+
+        and:
+            String requestBody = JsonOutput.toJson(
+                [
+                    status: ServiceHealthStatusCode.UP.toString()
+                ])
+            String responseBody = JsonOutput.toJson(
+                [
+                    code: 'code',
+                    param: 'param',
+                    message: 'message'
+                ])
+
+        and:
+            wireMockServer.stubFor(patch(urlEqualTo('/actuator/health'))
+                .withHeader("Content-Type", equalTo('application/json'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .withRequestBody(equalToJson(requestBody))
+                .willReturn(aResponse()
+                    .withStatus(409)
+                    .withBody(responseBody)
+                ))
+
+        when:
+            techEasySolutionsClient.patch('/actuator/health', DEFAULT_JWT_TOKEN, new ServiceHealth(status: ServiceHealthStatusCode.UP), ServiceHealth).get()
+
+        then:
+            ExecutionException ex = thrown(ExecutionException)
+            ex.cause instanceof ClientConflictException
+            ex.cause.serviceError.code == 'code'
+            ex.cause.serviceError.param == 'param'
+            ex.cause.serviceError.message == 'message'
+    }
+
     void "Call DELETE /actuator/health with OK and no content"() {
         given:
             wireMockServer.running
@@ -341,6 +618,57 @@ class TechEasySolutionsClientSpec extends Specification {
 
         when:
             techEasySolutionsClient.delete('/actuator/health').get()
+
+        then:
+            ExecutionException ex = thrown(ExecutionException)
+            ex.cause instanceof ClientConflictException
+            ex.cause.serviceError.code == 'code'
+            ex.cause.serviceError.param == 'param'
+            ex.cause.serviceError.message == 'message'
+    }
+
+    void "Call DELETE /actuator/health with authorization token returning OK and no content"() {
+        given:
+            wireMockServer.running
+
+        and:
+            wireMockServer.stubFor(delete(urlEqualTo('/actuator/health'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .willReturn(aResponse()
+                    .withStatus(204)
+                ))
+
+        when:
+            CompletableFuture<Void> futureResponse = techEasySolutionsClient.delete('/actuator/health', DEFAULT_JWT_TOKEN)
+
+        then:
+            futureResponse.get() == null
+            noExceptionThrown()
+    }
+
+    void "Call DELETE /actuator/health with authorization token returning conflict response"() {
+        given:
+            wireMockServer.running
+
+        and:
+            wireMockServer.stubFor(delete(urlEqualTo('/actuator/health'))
+                .withHeader(RequestTransaction.OPERATION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(RequestTransaction.TRANSACTION_ID_HEADER_NAME, new AnythingPattern())
+                .withHeader(TechEasySolutionsClient.AUTHORIZATION_HEADER_NAME, new EqualToPattern(DEFAULT_AUTHORIZATION_TOKEN))
+                .willReturn(aResponse()
+                    .withStatus(409)
+                    .withBody(JsonOutput.toJson(
+                        [
+                            code: 'code',
+                            param: 'param',
+                            message: 'message'
+                        ]))
+                ))
+
+        when:
+            techEasySolutionsClient.delete('/actuator/health', DEFAULT_JWT_TOKEN).get()
 
         then:
             ExecutionException ex = thrown(ExecutionException)

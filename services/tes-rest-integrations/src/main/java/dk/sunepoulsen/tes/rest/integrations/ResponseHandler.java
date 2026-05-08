@@ -29,32 +29,47 @@ public class ResponseHandler {
         switch(response.statusCode()) {
             case 400:
                 log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceValidationErrorModel.class.getName(), ClientBadRequestException.class.getName());
-                throw new ClientBadRequestException(response, this.jsonMapper.decode(response.body(), ServiceValidationErrorModel.class));
+                throw new ClientBadRequestException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceValidationErrorModel.class));
 
             case 401:
                 log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceErrorModel.class.getName(), ClientUnauthorizedException.class.getName());
-                throw new ClientUnauthorizedException(response, this.jsonMapper.decode(response.body(), ServiceErrorModel.class));
+                throw new ClientUnauthorizedException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
+
+            case 403:
+                log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceErrorModel.class.getName(), ClientForbiddenException.class.getName());
+                throw new ClientForbiddenException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
 
             case 404:
                 log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceErrorModel.class.getName(), ClientNotFoundException.class.getName());
-                throw new ClientNotFoundException(response, this.jsonMapper.decode(response.body(), ServiceErrorModel.class));
+                throw new ClientNotFoundException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
 
             case 409:
                 log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceErrorModel.class.getName(), ClientConflictException.class.getName());
-                throw new ClientConflictException(response, this.jsonMapper.decode(response.body(), ServiceErrorModel.class));
+                throw new ClientConflictException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
 
             case 500:
                 log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceErrorModel.class.getName(), ClientInternalServerException.class.getName());
-                throw new ClientInternalServerException(response, this.jsonMapper.decode(response.body(), ServiceErrorModel.class));
+                throw new ClientInternalServerException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
 
             case 501:
                 log.trace(RESPONSE_EXCEPTION_LOG_MESSAGE, ServiceErrorModel.class.getName(), ClientNotImplementedException.class.getName());
-                throw new ClientNotImplementedException(response, this.jsonMapper.decode(response.body(), ServiceErrorModel.class));
+                throw new ClientNotImplementedException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
 
             default:
                 log.trace("Extract {} from body to general {} exception", ServiceErrorModel.class.getName(), ClientResponseException.class.getName());
-                throw new ClientResponseException(response, this.jsonMapper.decode(response.body(), ServiceErrorModel.class));
+                throw new ClientResponseException(response, decodeResponseBody(response.body(), response.statusCode(), ServiceErrorModel.class));
         }
+    }
+
+    private ServiceErrorModel decodeResponseBody(String responseBody, int responseStatusCode, Class<? extends ServiceErrorModel> clazz) {
+        if (responseBody != null && !responseBody.isEmpty()) {
+            return this.jsonMapper.decode(responseBody, clazz);
+        }
+
+        ServiceErrorModel model = new ServiceErrorModel();
+        model.setMessage("Service returned response with status %s".formatted(responseStatusCode));
+
+        return model;
     }
 
 }

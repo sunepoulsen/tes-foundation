@@ -9,9 +9,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Data
@@ -19,12 +17,37 @@ public class SystemUnderTestDeployment {
 
     private List<String> profiles;
     private List<SutService> services;
-    private List<SutCertificate> certificates;
+    private Map<String, Object> context;
 
     public SystemUnderTestDeployment() {
         this.profiles = new ArrayList<>();
         this.services = new ArrayList<>();
-        this.certificates = new ArrayList<>();
+        this.context = new HashMap<>();
+    }
+
+    public void putContext(final String key, final Object value) {
+        if (context.containsKey(key)) {
+            throw new IllegalStateException("This SystemUnderTestDeployment already contains the key '%s' in its context".formatted(key));
+        }
+
+        context.put(key, value);
+    }
+
+    public <T> Optional<T> getContext(String key, Class<T> clazz) {
+        Optional<String> entryKey = context.keySet().stream()
+            .filter(s -> s.equalsIgnoreCase(key))
+            .findFirst();
+
+        if (entryKey.isEmpty()) {
+            return Optional.empty();
+        }
+
+        Object data = context.get(entryKey.get());
+        if (clazz.isInstance(data)) {
+            return Optional.of(clazz.cast(data));
+        }
+
+        return Optional.empty();
     }
 
     public void addService(SutService service) {
@@ -36,16 +59,6 @@ public class SystemUnderTestDeployment {
             .filter(service -> key.equalsIgnoreCase(service.key()))
             .filter(clazz::isInstance)
             .map(clazz::cast)
-            .findFirst();
-    }
-
-    public void addCertificate(SutCertificate certificate) {
-        certificates.add(certificate);
-    }
-
-    public Optional<SutCertificate> findCertificate(String key) {
-        return certificates.stream()
-            .filter(certificate -> key.equalsIgnoreCase(certificate.getKey()))
             .findFirst();
     }
 

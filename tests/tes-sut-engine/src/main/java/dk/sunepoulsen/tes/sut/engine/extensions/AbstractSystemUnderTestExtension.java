@@ -76,7 +76,7 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
             CertificateStepsFactory certificateStepsFactory = new CertificateStepsFactory(certificateDirectory);
             certificateStepsResult = certificateStepsFactory.createSteps("tesCertificate");
 
-            systemUnderTestDeployment.addCertificate(SutCertificate.builder()
+            systemUnderTestDeployment.putContext(SUT_CERTIFICATE_NAME, SutCertificate.builder()
                 .key(SUT_CERTIFICATE_NAME)
                 .certificate(certificateStepsResult.getCertificateStep().getCreatedCertificate())
                 .build()

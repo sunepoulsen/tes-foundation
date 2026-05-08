@@ -17,7 +17,7 @@ trait SystemUnderTestProvider {
     }
 
     TechEasySolutionsClientConfig clientConfig() {
-        SutCertificate sutCertificate = sut().findCertificate(AbstractSystemUnderTestExtension.SUT_CERTIFICATE_NAME).orElseThrow(() ->
+        SutCertificate sutCertificate = sut().getContext(AbstractSystemUnderTestExtension.SUT_CERTIFICATE_NAME, SutCertificate).orElseThrow(() ->
             new IllegalStateException("Certificate '${AbstractSystemUnderTestExtension.SUT_CERTIFICATE_NAME}' is not available")
         )
         DeployCertificate deployCertificate = sutCertificate.certificate.get("Certificate has not been set")
