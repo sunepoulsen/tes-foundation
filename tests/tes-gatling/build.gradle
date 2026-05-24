@@ -1,0 +1,6 @@
+dependencies {
+    api project(':generic:tes-json')
+
+    api 'io.gatling:gatling-core-java:3.14.9'
+    api 'io.gatling:gatling-http-java:3.14.9'
+}
