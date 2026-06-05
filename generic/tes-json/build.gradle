@@ -1,4 +1,6 @@
 dependencies {
+    api project(':generic:tes-data-generators')
+
     // Jackson Json
     api 'tools.jackson.core:jackson-databind:3.1.1'
 }

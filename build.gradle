@@ -179,6 +179,7 @@ sonar {
             '**/dk/sunepoulsen/tes/springboot/security/configuration/**',
 
             // Tests
+            '**/dk/sunepoulsen/tes/gatling/**',
             '**/dk/sunepoulsen/tes/selenium/**',
             '**/dk/sunepoulsen/tes/sut/engine/**',
             '**/dk/sunepoulsen/tes/validation/tests/**',

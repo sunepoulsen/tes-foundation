@@ -18,14 +18,23 @@ public class ProcessExecutor {
 
     private final Consumer<String> stdOutConsumer;
     private final Consumer<String> stdErrorConsumer;
+    private final Consumer<ProcessBuilder> decoratorConsumer;
 
     public ProcessExecutor() {
+        this(processBuilder -> {});
+    }
+
+    public ProcessExecutor(Consumer<ProcessBuilder> decoratorConsumer) {
         this.stdOutConsumer = log::info;
         this.stdErrorConsumer = log::error;
+        this.decoratorConsumer = decoratorConsumer;
     }
 
     public int execute(String... command) throws Exception {
         ProcessBuilder pb = new ProcessBuilder(command);
+        if (decoratorConsumer != null) {
+            decoratorConsumer.accept(pb);
+        }
 
         log.info("Executing command: {}", String.join(" ", command));
         Process p = pb.start();
