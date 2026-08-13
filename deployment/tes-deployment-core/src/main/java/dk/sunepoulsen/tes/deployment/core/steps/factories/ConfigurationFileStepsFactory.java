@@ -4,6 +4,7 @@ import dk.sunepoulsen.tes.deployment.core.function.AtomicDataSupplier;
 import dk.sunepoulsen.tes.deployment.core.steps.CreateTemplateFileStep;
 import dk.sunepoulsen.tes.deployment.core.steps.SaveFileContentStep;
 import dk.sunepoulsen.tes.templates.VelocityEngineFactory;
+import lombok.Getter;
 import org.apache.velocity.app.VelocityEngine;
 
 import java.nio.file.Path;
@@ -17,6 +18,7 @@ public class ConfigurationFileStepsFactory {
     private final String filename;
     private final VelocityEngine velocityEngine;
 
+    @Getter
     private final Map<String, AtomicDataSupplier<?>> contextSupplier;
 
     public ConfigurationFileStepsFactory(final String templateName, Path storeDirectory, final String filename) {
@@ -34,13 +36,6 @@ public class ConfigurationFileStepsFactory {
     public void addCertificateContext(CertificateStepsResult certificateStepsResult) {
         this.contextSupplier.put("certificateFile", new AtomicDataSupplier<>("/app/certificates/" + certificateStepsResult.getCertificateStep().getFilename()));
         this.contextSupplier.put("certificatePassword", certificateStepsResult.getCertificateStep().getPassword());
-    }
-
-    public void addDatabaseContext(AtomicDataSupplier<String> databaseHost, PostgresConfigureStepsDatabaseResult databaseStepsResult) {
-        this.contextSupplier.put("databaseHost", databaseHost);
-        this.contextSupplier.put("databaseName", new AtomicDataSupplier<>(databaseStepsResult.getDatabaseName()));
-        this.contextSupplier.put("databaseAdminUser", databaseStepsResult.getDatabaseAdminUserStep().getCreatedUser());
-        this.contextSupplier.put("databaseApplicationUser", databaseStepsResult.getDatabaseApplicationUserStep().getCreatedUser());
     }
 
     public ConfigurationFileStepsResult createSteps(String stepKeyPrefix) {
