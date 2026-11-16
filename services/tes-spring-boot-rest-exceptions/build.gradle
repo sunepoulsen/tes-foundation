@@ -4,14 +4,14 @@ dependencies {
     implementation project(':services:tes-spring-boot-backend-logging')
 
     // Spring Boot
-    implementation 'org.springframework:spring-web:7.0.6'
-    implementation 'org.springframework:spring-webmvc:7.0.6'
+    implementation 'org.springframework:spring-web:7.0.10'
+    implementation 'org.springframework:spring-webmvc:7.0.10'
 
     // Validation API
     api 'jakarta.validation:jakarta.validation-api:3.0.2'
 
     // Open API
-    api 'io.swagger.core.v3:swagger-annotations:2.2.46'
+    api 'io.swagger.core.v3:swagger-annotations:3.0.0'
 
     testImplementation project(':services:tes-rest-models')
     testImplementation project(':tests:tes-validation-tests')

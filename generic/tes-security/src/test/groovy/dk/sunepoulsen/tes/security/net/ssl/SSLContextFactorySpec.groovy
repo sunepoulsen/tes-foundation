@@ -28,7 +28,7 @@ class SSLContextFactorySpec extends Specification {
         then:
             result != null
             result.getDefaultSSLParameters().namedGroups == [
-                'x25519', 'secp256r1', 'secp384r1', 'secp521r1', 'x448',
+                'X25519MLKEM768', 'x25519', 'secp256r1', 'secp384r1', 'secp521r1', 'x448',
                 'ffdhe2048', 'ffdhe3072', 'ffdhe4096', 'ffdhe6144', 'ffdhe8192'
             ].toArray()
     }
@@ -85,7 +85,7 @@ class SSLContextFactorySpec extends Specification {
         then:
             result != null
             result.getDefaultSSLParameters().namedGroups == [
-                'x25519', 'secp256r1', 'secp384r1', 'secp521r1', 'x448',
+                'X25519MLKEM768', 'x25519', 'secp256r1', 'secp384r1', 'secp521r1', 'x448',
                 'ffdhe2048', 'ffdhe3072', 'ffdhe4096', 'ffdhe6144', 'ffdhe8192'
             ].toArray()
     }
