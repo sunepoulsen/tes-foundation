@@ -30,6 +30,27 @@ class ServiceExceptionHandlerSpec extends Specification {
         this.sut = new ServiceExceptionHandler(this.validationErrorsTransformations)
     }
 
+    void "Default constructor uses validation transformations"() {
+        given:
+            ServiceExceptionHandler handler = new ServiceExceptionHandler()
+            MethodArgumentNotValidException exception = Mock(MethodArgumentNotValidException)
+            List<FieldError> fieldErrors = [new FieldError('request', 'name', 'must not be blank')]
+
+        when:
+            ResponseEntity<ServiceValidationErrorModel> response = handler.handleMethodArgumentNotValidException(exception)
+
+        then:
+            response.statusCode == HttpStatus.BAD_REQUEST
+            response.headers.containsHeaderValue(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            response.body == new ServiceValidationErrorModel(
+                message: 'Unable to process request because of validation errors',
+                validationErrors: [new ServiceValidationError(param: 'name', message: 'must not be blank')]
+            )
+            1 * exception.getFieldErrors() >> fieldErrors
+            1 * exception.getMessage() >> 'Exception message'
+            0 * _
+    }
+
     void "Exception handling of ApiBadRequestException"() {
         given:
             ApiBadRequestException exception = new ApiBadRequestException(
@@ -251,6 +272,40 @@ class ServiceExceptionHandlerSpec extends Specification {
             1 * arg.getFieldErrors() >> fieldErrors
             1 * validationErrorsTransformations.toServiceValidationErrors(fieldErrors) >> expectedValidationErrors
             1 * arg.getMessage() >> 'Exception message'
+            0 * _
+    }
+
+    void "Constraint violation transformation failures propagate"() {
+        given:
+            ConstraintViolationException exception = Mock(ConstraintViolationException)
+            IllegalStateException failure = new IllegalStateException('transformation failed')
+
+        when:
+            sut.handleConstraintViolationException(exception)
+
+        then:
+            IllegalStateException thrownException = thrown()
+            thrownException.is(failure)
+            1 * validationErrorsTransformations.toServiceValidationErrors(exception) >> { throw failure }
+            1 * exception.getMessage() >> 'Exception message'
+            0 * _
+    }
+
+    void "Method argument validation transformation failures propagate"() {
+        given:
+            MethodArgumentNotValidException exception = Mock(MethodArgumentNotValidException)
+            List<FieldError> fieldErrors = []
+            IllegalStateException failure = new IllegalStateException('transformation failed')
+
+        when:
+            sut.handleMethodArgumentNotValidException(exception)
+
+        then:
+            IllegalStateException thrownException = thrown()
+            thrownException.is(failure)
+            1 * exception.getFieldErrors() >> fieldErrors
+            1 * validationErrorsTransformations.toServiceValidationErrors(fieldErrors) >> { throw failure }
+            1 * exception.getMessage() >> 'Exception message'
             0 * _
     }
 

@@ -68,11 +68,84 @@ class ResponseHandlerSpec extends Specification {
         where:
             _responseCode | _exception | _description
             400            | ClientBadRequestException     | 'a bad request'
+            401            | ClientUnauthorizedException   | 'an unauthorized response'
+            403            | ClientForbiddenException      | 'a forbidden response'
             404            | ClientNotFoundException       | 'a not found response'
             409            | ClientConflictException       | 'a conflict response'
             500            | ClientInternalServerException | 'an internal server error response'
             501            | ClientNotImplementedException | 'a not implemented response'
             999            | ClientResponseException       | 'an unknown response'
+    }
+
+    @Unroll
+    void "Verify success status boundary #statusCode"(int statusCode) {
+        given:
+            HttpResponse<String> response = Stub(HttpResponse)
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(new URI('http://localhost:8080')).build()
+            response.request() >> request
+            response.statusCode() >> statusCode
+            response.body() >> '{"code":"code","message":"message"}'
+
+        when:
+            String result = this.sut.verifyResponseAndExtractBody(response)
+
+        then:
+            result == '{"code":"code","message":"message"}'
+
+        where:
+            statusCode << [200, 299]
+    }
+
+    @Unroll
+    void "Verify status #statusCode outside success boundaries"(int statusCode) {
+        given:
+            HttpResponse<String> response = Stub(HttpResponse)
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(new URI('http://localhost:8080')).build()
+            response.request() >> request
+            response.statusCode() >> statusCode
+            response.body() >> '{"code":"code","message":"message"}'
+
+        when:
+            this.sut.verifyResponseAndExtractBody(response)
+
+        then:
+            ClientResponseException ex = thrown()
+            ex.class == ClientResponseException
+            ex.serviceError.code == 'code'
+            ex.serviceError.message == 'message'
+
+        where:
+            statusCode << [199, 300]
+    }
+
+    @Unroll
+    void "Verify status #statusCode with #description error body"(int statusCode, Class<? extends ClientResponseException> exceptionType, String body, String description) {
+        given:
+            HttpResponse<String> response = Stub(HttpResponse)
+            HttpRequest request = HttpRequest.newBuilder().GET().uri(new URI('http://localhost:8080')).build()
+            response.request() >> request
+            response.statusCode() >> statusCode
+            response.body() >> body
+
+        when:
+            this.sut.verifyResponseAndExtractBody(response)
+
+        then:
+            ClientResponseException ex = thrown(exceptionType)
+            ex.class == exceptionType
+            ex.serviceError.code == null
+            ex.serviceError.message == "Service returned response with status ${statusCode}"
+
+        where:
+            statusCode | exceptionType               | body | description
+            400        | ClientBadRequestException   | null | 'a null'
+            400        | ClientBadRequestException   | ''   | 'an empty'
+            401        | ClientUnauthorizedException | null | 'a null'
+            401        | ClientUnauthorizedException | ''   | 'an empty'
+            403        | ClientForbiddenException    | null | 'a null'
+            403        | ClientForbiddenException    | ''   | 'an empty'
+            300        | ClientResponseException     | null | 'a null'
+            300        | ClientResponseException     | ''   | 'an empty'
     }
 
     @Unroll
