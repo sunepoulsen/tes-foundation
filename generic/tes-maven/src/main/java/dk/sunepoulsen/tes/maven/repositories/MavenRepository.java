@@ -10,5 +10,11 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface MavenRepository {
 
+    /**
+     * Loads the metadata for an artifact.
+     * @param artifact artifact whose metadata is requested
+     * @return a future containing the metadata text
+     * @throws MavenRepositoryException if the request cannot be prepared or initiated
+     */
     CompletableFuture<String> loadMetadata(MavenArtifact artifact) throws MavenRepositoryException;
 }

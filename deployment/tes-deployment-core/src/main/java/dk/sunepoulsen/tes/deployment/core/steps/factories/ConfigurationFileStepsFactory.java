@@ -11,16 +11,28 @@ import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Creates steps to render and save a configuration file. */
 public class ConfigurationFileStepsFactory {
 
+    /** Destination directory for the configuration file. */
     private final Path storeDirectory;
+    /** Template used to render the configuration. */
     private final String templateName;
+    /** Filename assigned to the rendered configuration. */
     private final String filename;
+    /** Engine used to render the template. */
     private final VelocityEngine velocityEngine;
 
+    /** Named suppliers of template context values. */
     @Getter
     private final Map<String, AtomicDataSupplier<?>> contextSupplier;
 
+    /**
+     * Creates a configuration steps factory.
+     * @param templateName template to render
+     * @param storeDirectory directory in which to save the file
+     * @param filename filename for the rendered configuration
+     */
     public ConfigurationFileStepsFactory(final String templateName, Path storeDirectory, final String filename) {
         this.templateName = templateName;
         this.storeDirectory = storeDirectory;
@@ -29,15 +41,25 @@ public class ConfigurationFileStepsFactory {
         this.contextSupplier = new HashMap<>();
     }
 
+    /** Adds the default service log file path to the template context. */
     public void addDefaultTesServiceContext() {
         this.contextSupplier.put("serviceLogFile", new AtomicDataSupplier<>("/app/logs/service.log"));
     }
 
+    /**
+     * Adds the certificate path and password suppliers to the template context.
+     * @param certificateStepsResult result containing the configured certificate step
+     */
     public void addCertificateContext(CertificateStepsResult certificateStepsResult) {
         this.contextSupplier.put("certificateFile", new AtomicDataSupplier<>("/app/certificates/" + certificateStepsResult.getCertificateStep().getFilename()));
         this.contextSupplier.put("certificatePassword", certificateStepsResult.getCertificateStep().getPassword());
     }
 
+    /**
+     * Configures linked template rendering and file saving steps.
+     * @param stepKeyPrefix prefix for step keys
+     * @return the configured steps
+     */
     public ConfigurationFileStepsResult createSteps(String stepKeyPrefix) {
         ConfigurationFileStepsResult result = new ConfigurationFileStepsResult();
 

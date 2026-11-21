@@ -14,9 +14,17 @@ import java.nio.file.StandardOpenOption;
 import java.security.*;
 import java.security.cert.CertificateException;
 
+/** Creates TLS contexts from PKCS12 key stores. */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SSLContextFactory {
 
+    /**
+     * Loads a PKCS12 file and creates a TLS context using it for keys and trust.
+     * @param certificateFile path to the key store
+     * @param password key store and key password
+     * @return the initialized TLS context
+     * @throws SSLContextFactoryException if the file or context cannot be loaded
+     */
     public static SSLContext createSSLContext(Path certificateFile, String password) throws SSLContextFactoryException {
         if (!Files.exists(certificateFile)) {
             throw new SSLContextFactoryException("The certificate file '" + certificateFile.toAbsolutePath() + "' does not exist");
@@ -28,6 +36,13 @@ public class SSLContextFactory {
             throw new SSLContextFactoryException("Unable to read the certificate file '" + certificateFile.toAbsolutePath() + "'", ex);
         }
     }
+    /**
+     * Loads a PKCS12 stream and creates a TLS context using it for keys and trust.
+     * @param certificateInputStream key store stream, which is not closed by this method
+     * @param password key store and key password
+     * @return the initialized TLS context
+     * @throws SSLContextFactoryException if the key store or context cannot be loaded
+     */
     public static SSLContext createSSLContext(InputStream certificateInputStream, String password) throws SSLContextFactoryException {
         try {
             // Load PKCS12 certificate file

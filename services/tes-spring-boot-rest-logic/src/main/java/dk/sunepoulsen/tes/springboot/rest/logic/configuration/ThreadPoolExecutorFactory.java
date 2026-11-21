@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
+/** Creates task executors configured with MDC propagation. */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ThreadPoolExecutorFactory {
 
@@ -11,6 +12,14 @@ public class ThreadPoolExecutorFactory {
     public static final Integer DEFAULT_MAX_POOL_SIZE = Integer.MAX_VALUE;
     public static final Integer DEFAULT_QUEUE_CAPACITY = Integer.MAX_VALUE;
 
+    /**
+     * Creates an executor using defaults for negative pool sizes and queue capacity.
+     * The returned executor is not initialized by this method.
+     *
+     * @param executorConfig the executor settings
+     * @return the configured task executor
+     * @throws NullPointerException if the configuration or a required value is null
+     */
     public static ThreadPoolTaskExecutor createExecutor(ExecutorConfig executorConfig) {
         ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
         executor.setCorePoolSize(executorValue(executorConfig.getCorePoolSize(), DEFAULT_CORE_POOL_SIZE));

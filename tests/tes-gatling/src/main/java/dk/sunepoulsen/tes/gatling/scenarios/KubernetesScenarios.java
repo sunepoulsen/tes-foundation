@@ -12,10 +12,16 @@ import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.http;
 import static io.gatling.javaapi.http.HttpDsl.status;
 
+/** Gatling scenarios for Kubernetes liveness and readiness probes. */
 public class KubernetesScenarios {
 
+    /** HTTP configuration shared by the probe scenarios. */
     private final HttpProtocolBuilder httpProtocolBuilder;
 
+    /**
+     * Configures probe requests against a base URL.
+     * @param url base URL of the service
+     */
     public KubernetesScenarios(String url) {
         this.httpProtocolBuilder = http.baseUrl(url)
             .userAgentHeader("kube-probe/1.30")
@@ -23,6 +29,11 @@ public class KubernetesScenarios {
 
     }
 
+    /**
+     * Creates liveness and readiness populations, each injecting 0.2 users per second.
+     * @param duration duration of each population
+     * @return the two configured populations
+     */
     public List<PopulationBuilder> populate(Duration duration) {
         return List.of(
             livenessScenario().injectOpen(

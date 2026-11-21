@@ -24,6 +24,12 @@ import java.util.EnumSet;
 @Slf4j
 public class LoggingConfiguration {
 
+    /**
+     * Registers the logging filter for every dispatcher type at highest precedence.
+     *
+     * @param filter filter to register
+     * @return filter registration
+     */
     @Bean
     public FilterRegistrationBean<LoggingFilter> loggingFilterRegistration(LoggingFilter filter) {
         FilterRegistrationBean<LoggingFilter> registration = new FilterRegistrationBean<>(filter);

@@ -12,6 +12,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/** Base step for saving logs and shutting down a service container. */
 @Slf4j
 public abstract class AbstractShutdownContainerStep extends AbstractDeployStep  {
 

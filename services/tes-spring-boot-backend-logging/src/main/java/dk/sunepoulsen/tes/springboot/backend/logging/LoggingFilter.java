@@ -40,10 +40,17 @@ import java.util.UUID;
 @Slf4j
 public class LoggingFilter extends OncePerRequestFilter {
 
+    /** Log message used at the start of request processing. */
     private static final String START_REQUEST_LOG_MESSAGE = "Starting processing of request: {} {}";
 
+    /** Resolver used to handle exceptions from request processing. */
     private final HandlerExceptionResolver exceptionHandlerResolver;
 
+    /**
+     * Creates a logging filter with the supplied exception resolver.
+     *
+     * @param exceptionHandlerResolver resolver for request processing exceptions
+     */
     public LoggingFilter(@Qualifier("handlerExceptionResolver")
                          HandlerExceptionResolver exceptionHandlerResolver) {
         this.exceptionHandlerResolver = exceptionHandlerResolver;

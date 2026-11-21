@@ -8,17 +8,34 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.net.http.HttpResponse;
 
+/**
+ * Extracts successful HTTP response bodies and maps error responses to client exceptions.
+ */
 @Slf4j
 public class ResponseHandler {
 
+    /** Log message used when mapping a response body to an exception. */
     private static final String RESPONSE_EXCEPTION_LOG_MESSAGE = "Extract {} from body to {} exception";
 
+    /** Mapper used to decode error response bodies. */
     private final JsonMapper jsonMapper;
 
+    /**
+     * Creates a response handler.
+     *
+     * @param jsonMapper mapper used to decode error response bodies
+     */
     public ResponseHandler(final JsonMapper jsonMapper) {
         this.jsonMapper = jsonMapper;
     }
 
+    /**
+     * Returns the body of a successful response or throws an exception for an error response.
+     *
+     * @param response HTTP response to inspect
+     * @return the response body for a 2xx status
+     * @throws ClientResponseException if the response status is not successful and its error body is decoded
+     */
     public String verifyResponseAndExtractBody(HttpResponse<String> response) {
         log.debug("Receive response of request {} {} with status code {}", response.request().method(), response.request().uri(), response.statusCode());
         log.trace("Receive body of request: {}", response.body());

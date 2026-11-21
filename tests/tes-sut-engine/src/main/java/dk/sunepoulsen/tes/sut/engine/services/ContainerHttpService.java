@@ -8,13 +8,22 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.function.Function;
 
+/** Container-backed HTTP service using the mapped host port. */
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
 public class ContainerHttpService extends ContainerService implements SutHttpService {
+    /** Protocol used for constructing the service URL. */
     private final ContainerProtocol protocol;
 
+    /**
+     * Creates an HTTP service.
+     * @param key service identifier
+     * @param container service container
+     * @param protocol protocol used by the service
+     * @param undeployStepFunction factory for the undeployment step
+     */
     public ContainerHttpService(String key, GenericContainer<?> container, ContainerProtocol protocol, Function<SutService, FlowStep> undeployStepFunction) {
         super(key, container, undeployStepFunction);
         this.protocol = protocol;

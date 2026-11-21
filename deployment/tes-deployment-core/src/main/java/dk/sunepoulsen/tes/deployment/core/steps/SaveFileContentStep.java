@@ -13,19 +13,32 @@ import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/** Saves supplied file content in a directory. */
 @Getter
 @Setter
 public class SaveFileContentStep extends AbstractDeployStep {
 
+    /** Receives the path of the saved file. */
     private final AtomicDataSupplier<Path> createdPath;
+    /** Supplies the filename and content to save. */
     private AtomicDataSupplier<? extends DeployFileContent> fileContent;
+    /** Supplies the destination directory. */
     private AtomicDataSupplier<Path> directory;
 
+    /**
+     * Creates a file saving step.
+     * @param key step and timer key
+     */
     public SaveFileContentStep(String key) {
         super(key);
         this.createdPath = new AtomicDataSupplier<>();
     }
 
+    /**
+     * Creates the directory if needed and replaces the destination file with the supplied content.
+     * @return the successful step result
+     * @throws FlowStepException if a supplied value is absent or an I/O operation fails
+     */
     @Override
     public FlowStepResult execute() {
         final Path directoryPath = directory.get("Directory has not been set");

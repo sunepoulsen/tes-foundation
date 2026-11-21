@@ -11,16 +11,27 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+/** Deletes a directory tree. */
 @Getter
 @Setter
 public class DeleteDirectoryStep extends AbstractDeployStep {
 
+    /** Supplies the directory to delete. */
     private AtomicDataSupplier<Path> directory;
 
+    /**
+     * Creates a directory deletion step.
+     * @param key step and timer key
+     */
     public DeleteDirectoryStep(String key) {
         super(key);
     }
 
+    /**
+     * Walks and deletes the supplied directory tree.
+     * @return the successful step result
+     * @throws FlowStepException if the directory is absent or an I/O operation fails
+     */
     @Override
     public FlowStepResult execute() {
         try {

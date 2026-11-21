@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
+/** Logs flow step statuses and recorded durations. */
 @Slf4j
 public class LogFlowReport implements FlowReport {
 
     public static final NumberFormat TIMER_FORMATTER = createTimerFormatter();
 
+    /** {@inheritDoc} */
     @Override
     public void printReport(List<FlowStepExecutor> steps) {
         log.info("");

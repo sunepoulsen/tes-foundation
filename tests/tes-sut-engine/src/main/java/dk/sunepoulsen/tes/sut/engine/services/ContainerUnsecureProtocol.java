@@ -6,6 +6,7 @@ import org.testcontainers.containers.wait.strategy.WaitStrategy;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+/** HTTP container protocol with a successful-status health check. */
 public class ContainerUnsecureProtocol implements ContainerProtocol {
     @Override
     public int exposedPort() {

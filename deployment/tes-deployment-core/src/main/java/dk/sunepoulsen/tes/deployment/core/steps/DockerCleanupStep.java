@@ -6,14 +6,24 @@ import dk.sunepoulsen.tes.utils.ProcessExecutor;
 import lombok.Getter;
 import lombok.Setter;
 
+/** Runs Docker system prune without an interactive confirmation. */
 @Getter
 @Setter
 public class DockerCleanupStep extends AbstractDeployStep {
 
+    /**
+     * Creates a Docker cleanup step.
+     * @param key step and timer key
+     */
     public DockerCleanupStep(String key) {
         super(key);
     }
 
+    /**
+     * Runs the cleanup command.
+     * @return the successful step result
+     * @throws FlowStepException if command execution throws an exception
+     */
     @Override
     public FlowStepResult execute() {
         try {

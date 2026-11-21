@@ -5,11 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
+/** Executes flow steps in sequence and ignores subsequent steps after an error. */
 @Slf4j
 public class SequenceFlow implements Flow {
+    /** Name used for logging and as the prefix of step timers. */
     private final String timerName;
+    /** Step executors in execution order. */
     private final List<FlowStepExecutor> steps;
 
+    /**
+     * Creates a sequential flow with a timer for each step.
+     *
+     * @param meterRegistry registry used to obtain step timers
+     * @param timerName prefix for step timer names
+     * @param steps steps in execution order
+     */
     public SequenceFlow(final MeterRegistry meterRegistry, final String timerName, List<FlowStep> steps) {
         this.timerName = timerName;
         this.steps = steps.stream()
@@ -17,6 +27,10 @@ public class SequenceFlow implements Flow {
                 .toList();
     }
 
+    /**
+     * Executes non-ignored steps in order. An error result causes later steps to be ignored;
+     * an exception also causes later steps to be ignored and is rethrown.
+     */
     @Override
     public void execute() {
         log.info("Executing flow '{}'", timerName);
@@ -40,6 +54,7 @@ public class SequenceFlow implements Flow {
         }
     }
 
+    /** {@inheritDoc} */
     @Override
     public void printReport() {
         new LogFlowReport().printReport(steps);

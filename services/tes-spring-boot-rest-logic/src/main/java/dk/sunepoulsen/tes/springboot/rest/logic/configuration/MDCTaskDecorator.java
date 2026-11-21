@@ -6,6 +6,7 @@ import org.springframework.core.task.TaskDecorator;
 
 import java.util.Map;
 
+/** Propagates the submitting thread's MDC context to a task and clears it afterwards. */
 public class MDCTaskDecorator implements TaskDecorator {
 
     @NullMarked

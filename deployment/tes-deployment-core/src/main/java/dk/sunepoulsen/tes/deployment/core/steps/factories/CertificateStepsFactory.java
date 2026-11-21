@@ -10,16 +10,28 @@ import dk.sunepoulsen.tes.security.certificates.DistinguishedName;
 
 import java.nio.file.Path;
 
+/** Creates steps to generate and save a self-signed certificate. */
 public class CertificateStepsFactory {
 
+    /** Destination directory for the certificate. */
     private final Path storeDirectory;
+    /** Generator for certificate passwords. */
     private final DataGenerator<String> passwordGenerator;
 
+    /**
+     * Creates a certificate steps factory.
+     * @param storeDirectory directory in which to save the certificate
+     */
     public CertificateStepsFactory(Path storeDirectory) {
         this.storeDirectory = storeDirectory;
         this.passwordGenerator = Generators.passwordGenerator(CharacterGenerator.ALL_ALPHA_DIGITS);
     }
 
+    /**
+     * Configures linked certificate creation and saving steps with a generated password.
+     * @param stepKeyPrefix prefix for step keys
+     * @return the configured steps
+     */
     public CertificateStepsResult createSteps(String stepKeyPrefix) {
         CertificateStepsResult result = new CertificateStepsResult();
 

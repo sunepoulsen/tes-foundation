@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+/** Configures a stateless security filter chain that permits requests. */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {

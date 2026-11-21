@@ -8,17 +8,22 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 
+/** Tracks the execution, result and timing of a flow step. */
 @Slf4j
 public class FlowStepExecutor {
+    /** Timer used to record the step's execution. */
     @Getter
     private final Timer timer;
 
+    /** Step executed by this executor. */
     @Getter
     private final FlowStep flowStep;
 
+    /** Result of the step, or null before a result is recorded. */
     @Getter
     private FlowStepResult flowStepResult;
 
+    /** Current execution status. */
     @Getter
     private FlowStepExecutorStatus status;
 

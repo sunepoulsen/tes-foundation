@@ -7,9 +7,12 @@ import lombok.Data;
 
 import java.util.List;
 
+/** Holds the configuration rendering and saving steps. */
 @Data
 public class ConfigurationFileStepsResult implements AbstractStepsResult {
+    /** Step that renders the configuration. */
     private CreateTemplateFileStep templateFileStep;
+    /** Step that saves the configuration. */
     private SaveFileContentStep saveConfigurationStep;
 
     @Override

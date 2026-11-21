@@ -16,20 +16,34 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/** Maps service and validation exceptions to HTTP responses. */
 @Slf4j
 @ControllerAdvice
 public class ServiceExceptionHandler {
 
+    /** Converts validation failures to response models. */
     private final ValidationErrorsTransformations validationErrorsTransformations;
 
+    /** Creates a handler with default validation transformations. */
     public ServiceExceptionHandler() {
         this(new ValidationErrorsTransformations());
     }
 
+    /**
+     * Creates a handler with the supplied validation transformations.
+     *
+     * @param validationErrorsTransformations validation error converter
+     */
     public ServiceExceptionHandler(ValidationErrorsTransformations validationErrorsTransformations) {
         this.validationErrorsTransformations = validationErrorsTransformations;
     }
 
+    /**
+     * Handles the exception and builds a bad request response.
+     *
+     * @param ex exception to handle
+     * @return the bad request response
+     */
     @Hidden
     @ExceptionHandler(ApiBadRequestException.class)
     @ResponseBody
@@ -40,6 +54,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a bad request response.
+     *
+     * @param ex exception to handle
+     * @return the bad request response
+     */
     @Hidden
     @ExceptionHandler(RequestHeaderValueException.class)
     @ResponseBody
@@ -56,6 +76,12 @@ public class ServiceExceptionHandler {
             .body(model);
     }
 
+    /**
+     * Handles the exception and builds a unauthorized response.
+     *
+     * @param ex exception to handle
+     * @return the unauthorized response
+     */
     @Hidden
     @ExceptionHandler(ApiUnauthorizedException.class)
     @ResponseBody
@@ -66,6 +92,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a forbidden response.
+     *
+     * @param ex exception to handle
+     * @return the forbidden response
+     */
     @Hidden
     @ExceptionHandler(ApiForbiddenException.class)
     @ResponseBody
@@ -76,6 +108,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a not found response.
+     *
+     * @param ex exception to handle
+     * @return the not found response
+     */
     @Hidden
     @ExceptionHandler(ApiNotFoundException.class)
     @ResponseBody
@@ -86,6 +124,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a conflict response.
+     *
+     * @param ex exception to handle
+     * @return the conflict response
+     */
     @Hidden
     @ExceptionHandler(ApiConflictException.class)
     @ResponseBody
@@ -96,6 +140,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a not implemented response.
+     *
+     * @param ex exception to handle
+     * @return the not implemented response
+     */
     @Hidden
     @ExceptionHandler(UnsupportedOperationException.class)
     @ResponseBody
@@ -106,6 +156,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a bad gateway response.
+     *
+     * @param ex exception to handle
+     * @return the bad gateway response
+     */
     @Hidden
     @ExceptionHandler(ApiBadGatewayException.class)
     @ResponseBody
@@ -116,6 +172,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a internal server error response.
+     *
+     * @param ex exception to handle
+     * @return the internal server error response
+     */
     @Hidden
     @ExceptionHandler(ApiInternalServerException.class)
     @ResponseBody
@@ -126,6 +188,12 @@ public class ServiceExceptionHandler {
             .body(processCheckedException(ex));
     }
 
+    /**
+     * Handles the exception and builds a bad request response.
+     *
+     * @param ex exception to handle
+     * @return the bad request response
+     */
     @Hidden
     @ExceptionHandler(ConstraintViolationException.class)
     @ResponseBody
@@ -145,6 +213,12 @@ public class ServiceExceptionHandler {
         }
     }
 
+    /**
+     * Handles the exception and builds a bad request response.
+     *
+     * @param ex exception to handle
+     * @return the bad request response
+     */
     @Hidden
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseBody
@@ -164,6 +238,12 @@ public class ServiceExceptionHandler {
         }
     }
 
+    /**
+     * Handles the exception and builds a internal server error response.
+     *
+     * @param ex exception to handle
+     * @return the internal server error response or {@code null} if response construction fails
+     */
     @Hidden
     @ExceptionHandler(RuntimeException.class)
     @ResponseBody

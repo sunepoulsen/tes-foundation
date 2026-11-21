@@ -13,12 +13,16 @@ import org.testcontainers.utility.MountableFile;
 import java.nio.file.Path;
 import java.util.*;
 
+/** Base step for configuring containers in a system-under-test deployment. */
 @Getter
 @Setter
 public abstract class AbstractSutContainerStep extends AbstractDeployStep {
 
+    /** Default container memory limit in bytes. */
     private static final long DEFAULT_CONTAINER_MEMORY_LIMIT = 1024L * 1024L * 1024L; // 1 Gb
+    /** Default container memory reservation in bytes. */
     private static final long DEFAULT_CONTAINER_MEMORY_RESERVATION = 256L * 1024L * 1024L; // 256 Mb
+    /** Default container memory and swap limit in bytes. */
     private static final long DEFAULT_CONTAINER_SWAP_LIMIT = 2048L * 1024L * 1024L; // 2 Gb swap
 
     /**
@@ -38,16 +42,27 @@ public abstract class AbstractSutContainerStep extends AbstractDeployStep {
     private static final long DEFAULT_CONTAINER_CPU_QUOTA = 150 * 1_000L;
 
     protected final String serviceKey;
+    /** Docker image name supplier. */
     private AtomicDataSupplier<String> dockerImageName;
+    /** Docker image tag supplier. */
     private AtomicDataSupplier<String> dockerImageTag;
+    /** Memory limit supplier. */
     private AtomicDataSupplier<Long> memoryLimit;
+    /** Memory reservation supplier. */
     private AtomicDataSupplier<Long> memoryReservation;
+    /** Memory and swap limit supplier. */
     private AtomicDataSupplier<Long> memorySwapLimit;
+    /** CPU scheduler period supplier. */
     private AtomicDataSupplier<Long> cpuPeriod;
+    /** CPU scheduler quota supplier. */
     private AtomicDataSupplier<Long> cpuQuota;
+    /** Environment variable value suppliers, indexed by name. */
     private Map<String, AtomicDataSupplier<String>> environmentVariables;
+    /** Network alias suppliers. */
     private List<AtomicDataSupplier<String>> aliases;
+    /** Container network supplier. */
     private AtomicDataSupplier<Network> network;
+    /** Directory for service logs. */
     private AtomicDataSupplier<Path> logPath;
     protected final SystemUnderTestDeployment systemUnderTestDeployment;
 

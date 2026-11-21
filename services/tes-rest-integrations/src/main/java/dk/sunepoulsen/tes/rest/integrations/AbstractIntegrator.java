@@ -8,9 +8,17 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
+/**
+ * Base class providing an HTTP client and helpers for integration requests.
+ */
 public class AbstractIntegrator {
     public final TechEasySolutionsClient httpClient;
 
+    /**
+     * Creates an integrator using the supplied client.
+     *
+     * @param httpClient client used to make HTTP requests
+     */
     public AbstractIntegrator(TechEasySolutionsClient httpClient) {
         this.httpClient = httpClient;
     }

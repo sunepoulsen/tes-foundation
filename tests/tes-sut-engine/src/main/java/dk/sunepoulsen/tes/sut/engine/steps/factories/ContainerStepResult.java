@@ -8,10 +8,14 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
+/** A factory result containing one container step.
+ * @param <T> type of container step
+ */
 @Getter
 @RequiredArgsConstructor
 public class ContainerStepResult<T extends AbstractSutContainerStep> implements AbstractStepsResult {
 
+    /** Container step included in the result. */
     private final T step;
 
     @Override

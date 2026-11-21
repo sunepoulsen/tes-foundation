@@ -2,6 +2,7 @@ package dk.sunepoulsen.tes.maven.repositories;
 
 import dk.sunepoulsen.tes.maven.model.MavenArtifact;
 
+/** Repository layout replacing dots in both group and artifact IDs with slashes. */
 public class DefaultRepositoryArtifactLayout implements MavenRepositoryArtifactLayout {
 
     @Override

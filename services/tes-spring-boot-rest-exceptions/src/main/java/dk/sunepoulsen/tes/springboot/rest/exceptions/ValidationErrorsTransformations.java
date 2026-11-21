@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+/** Converts validation errors into sorted service validation error models. */
 public class ValidationErrorsTransformations {
 
     ValidationErrorsTransformations() {

@@ -10,17 +10,26 @@ import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.UUID;
 
+/**
+ * Request-scoped storage for transaction identifier generators.
+ */
 @Component
 @RequestScope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class RequestTransactionService implements RequestTransaction {
 
+    /** Message used when identifiers are requested before initialization or after invalidation. */
     private static final String INSTANCE_NOT_INITIALIZED_EXCEPTION_MESSAGE = "RequestTransactionService has not been initialized";
 
+    /** Whether the transaction has been initialized and not invalidated. */
     private boolean initialized;
+    /** Generator of the operation ID. */
     private FixedDataGenerator<UUID> operationId;
+    /** Generator of the transaction ID. */
     private FixedDataGenerator<String> transactionId;
+    /** Generator of IDs for sub-transactions. */
     private SubTransactionIdGenerator subTransactionIdGenerator;
 
+    /** Creates an initially invalid request transaction. */
     public RequestTransactionService() {
         this.initialized = false;
     }

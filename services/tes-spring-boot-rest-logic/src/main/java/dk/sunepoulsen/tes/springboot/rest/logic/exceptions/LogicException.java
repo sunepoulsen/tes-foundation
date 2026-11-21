@@ -5,11 +5,14 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+/** Base class for logic failures that can be mapped to API exceptions. */
 @Getter
 @EqualsAndHashCode(callSuper = false)
 @ToString
 public abstract class LogicException extends RuntimeException {
+    /** Optional error code. */
     private final String code;
+    /** Optional parameter associated with the error. */
     private final String param;
 
     protected LogicException( String message ) {
@@ -39,8 +42,18 @@ public abstract class LogicException extends RuntimeException {
         this.param = param;
     }
 
+    /**
+     * Maps this failure to an API exception.
+     *
+     * @return the corresponding API exception
+     */
     public abstract ApiException mapApiException();
 
+    /**
+     * Throws the API exception produced by {@link #mapApiException()}.
+     *
+     * @throws ApiException the mapped API exception
+     */
     public void throwApiException() throws ApiException {
         throw mapApiException();
     }

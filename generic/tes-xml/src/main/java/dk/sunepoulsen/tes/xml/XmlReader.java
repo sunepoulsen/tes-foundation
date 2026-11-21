@@ -16,7 +16,9 @@ import java.util.List;
  * Class to simplify the reading of elements from a XML document with XPaths.
  */
 public class XmlReader {
+    /** Document queried by this reader. */
     private final Document xmlDocument;
+    /** XPath evaluator used to query the document. */
     private final XPath xPath;
 
     /**

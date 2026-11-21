@@ -24,14 +24,19 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+/** Spock global extension that deploys and undeploys a system under test. */
 @Slf4j
 public abstract class AbstractSystemUnderTestExtension implements IGlobalExtension {
     public static final String SUT_CERTIFICATE_NAME = "tes-certificate";
 
+    /** Current deployment, if the extension has started. */
     private static SystemUnderTestDeployment systemUnderTestDeployment;
 
+    /** Registry for deployment and execution metrics. */
     private final MeterRegistry meterRegistry;
+    /** Timer recording the test execution duration. */
     private Timer executionTimer;
+    /** Active execution timing sample. */
     private Timer.Sample executionSample;
     protected final Path deployDirectory;
     protected final Path certificateDirectory;
@@ -50,6 +55,10 @@ public abstract class AbstractSystemUnderTestExtension implements IGlobalExtensi
 
     protected abstract List<FlowStep> configureDeploySteps(SystemUnderTestDeployment systemUnderTestDeployment);
 
+    /**
+     * Returns the current deployment when available.
+     * @return the deployment, or an empty optional before startup or after shutdown
+     */
     public static Optional<SystemUnderTestDeployment> systemUnderTestDeployment() {
         return Optional.ofNullable(systemUnderTestDeployment);
     }

@@ -17,14 +17,27 @@ import java.util.List;
  * @param <T> Data type of the generated values.
  */
 public class DataProbabilityGenerator<T> implements DataGenerator<T> {
+    /** Generators and their associated probability weights. */
     private final List<DataProbabilityGeneratorItem<T>> generators;
+    /** Source of random probability values. */
     private final SecureRandom random;
 
+    /**
+     * Creates a generator that selects from the supplied weighted generators.
+     *
+     * @param generators generators and their probability weights
+     */
     public DataProbabilityGenerator(List<DataProbabilityGeneratorItem<T>> generators) {
         this.generators = generators;
         this.random = new SecureRandom();
     }
 
+    /**
+     * Generates a value using the generator selected by a random probability.
+     *
+     * @return the selected generator's value
+     * @throws IllegalArgumentException if the probabilities do not sum to 100 or the random value matches no interval
+     */
     @Override
     public T generate() {
         validateProbabilities();

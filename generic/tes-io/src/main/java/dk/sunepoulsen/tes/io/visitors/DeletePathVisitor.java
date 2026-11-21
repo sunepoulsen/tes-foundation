@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 
+/** Deletes visited files and directories, terminating when a file visit fails. */
 public class DeletePathVisitor implements FileVisitor<Path> {
 
     @Override

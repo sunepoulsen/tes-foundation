@@ -4,6 +4,10 @@ package dk.sunepoulsen.tes.springboot.rest.exceptions;
  * Created by sunepoulsen on 19/12/2016.
  */
 public class ApiUnauthorizedException extends ApiException {
+    /**
+     * Creates an authentication error with a cause.
+     * @param ex the cause
+     */
     public ApiUnauthorizedException( Throwable ex ) {
         super( "Unable to authenticate user", ex );
     }

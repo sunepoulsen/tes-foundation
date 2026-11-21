@@ -9,6 +9,8 @@ import lombok.Data;
 @Data
 @Builder
 public class DeployUser {
+    /** Username for the system under test. */
     private String username;
+    /** Password for the user. */
     private String password;
 }

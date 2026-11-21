@@ -19,6 +19,7 @@ import static tools.jackson.databind.PropertyNamingStrategies.SNAKE_CASE;
 @Slf4j
 @Getter
 public class JsonMapper {
+    /** Mapper used for encoding and decoding JSON. */
     private final ObjectMapper objectMapper;
 
     /**

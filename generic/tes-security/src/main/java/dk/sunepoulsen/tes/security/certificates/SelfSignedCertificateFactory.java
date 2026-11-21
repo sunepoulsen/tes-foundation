@@ -23,9 +23,18 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Date;
 
+/** Generates self-signed certificates and stores their private keys in PKCS12 key stores. */
 @Slf4j
 public class SelfSignedCertificateFactory {
 
+    /**
+     * Creates a PKCS12 key store containing a self-signed certificate.
+     * @param alias key entry alias
+     * @param distinguishedName certificate subject and issuer
+     * @param password key store and key password
+     * @return encoded key store bytes
+     * @throws SelfSignedCertificateFactoryException if creation fails
+     */
     public byte[] createCertificate(String alias, DistinguishedName distinguishedName, String password) throws SelfSignedCertificateFactoryException {
         try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
             createCertificate(alias, byteArrayOutputStream, distinguishedName, password);
@@ -35,6 +44,14 @@ public class SelfSignedCertificateFactory {
         }
     }
 
+    /**
+     * Writes a PKCS12 key store containing a self-signed certificate to a stream.
+     * @param alias key entry alias
+     * @param outputStream destination, not closed by this method
+     * @param distinguishedName certificate subject and issuer
+     * @param password key store and key password
+     * @throws SelfSignedCertificateFactoryException if creation or writing fails
+     */
     public void createCertificate(String alias, OutputStream outputStream, DistinguishedName distinguishedName, String password) throws SelfSignedCertificateFactoryException {
         try {
             Security.addProvider(new BouncyCastleProvider());

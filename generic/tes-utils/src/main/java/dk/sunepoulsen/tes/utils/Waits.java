@@ -28,7 +28,9 @@ public class Waits {
     public static final Duration DEFAULT_DURATION = Duration.ofSeconds(30);
     public static final Duration DEFAULT_SLEEP_DURATION = Duration.ofMillis(200);
 
+    /** Maximum time to wait for the condition. */
     private final Duration duration;
+    /** Delay between condition checks. */
     private final Duration sleepDuration;
 
     /**

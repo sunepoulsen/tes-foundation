@@ -13,15 +13,27 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Configures and starts a TES service container. */
 @Getter
 @Setter
 public class SutStartTesServiceStep extends AbstractSutContainerStep {
 
+    /** Protocol used for health checks and the service URL. */
     private final ContainerProtocol protocol;
+    /** Active Spring profiles supplier. */
     private AtomicDataSupplier<List<String>> profiles;
+    /** Configuration files copied into the container. */
     private final List<AtomicDataSupplier<Path>> configurationFiles;
+    /** Certificate files copied into the container. */
     private final List<AtomicDataSupplier<Path>> certificateFiles;
 
+    /**
+     * Creates a TES service start step.
+     * @param key step identifier
+     * @param serviceKey identifier for the service
+     * @param protocol protocol used by the service
+     * @param systemUnderTestDeployment deployment to register the service with
+     */
     public SutStartTesServiceStep(String key, String serviceKey, ContainerProtocol protocol, SystemUnderTestDeployment systemUnderTestDeployment) {
         super(key, serviceKey, systemUnderTestDeployment);
         this.protocol = protocol;

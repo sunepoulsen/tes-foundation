@@ -20,6 +20,7 @@ import lombok.ToString;
 @Schema(name = "PaginationModel", description = "Model of a paginated result")
 public class PaginationModel<T> extends EnvelopeModel<T> {
 
+    /** Metadata for this page of results. */
     @Schema(
         description = "Metadata of this paginated result",
         requiredMode = Schema.RequiredMode.REQUIRED,
@@ -29,6 +30,7 @@ public class PaginationModel<T> extends EnvelopeModel<T> {
     @Valid
     private PaginationMetaData metadata;
 
+    /** Creates a paginated result with empty metadata. */
     public PaginationModel() {
         super();
         this.metadata = new PaginationMetaData();

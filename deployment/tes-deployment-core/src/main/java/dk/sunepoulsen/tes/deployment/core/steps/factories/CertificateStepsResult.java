@@ -7,9 +7,12 @@ import lombok.Data;
 
 import java.util.List;
 
+/** Holds the certificate creation and saving steps. */
 @Data
 public class CertificateStepsResult implements AbstractStepsResult {
+    /** Step that creates the certificate. */
     private CreateSelfSignedCertificateStep certificateStep;
+    /** Step that saves the certificate. */
     private SaveFileContentStep saveCertificateStep;
 
     @Override

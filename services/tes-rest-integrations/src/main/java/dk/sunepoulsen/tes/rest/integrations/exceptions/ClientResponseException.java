@@ -6,14 +6,29 @@ import lombok.Getter;
 import java.net.http.HttpResponse;
 import java.util.Objects;
 
+/** An integration failure with its associated HTTP response. */
 @Getter
 public class ClientResponseException extends ClientException {
+    /** The response associated with the failure. */
     private final transient HttpResponse<String> response;
 
+    /**
+     * Creates an exception for a response and service error.
+     *
+     * @param response the HTTP response
+     * @param serviceError the service error
+     */
     public ClientResponseException(HttpResponse<String> response, ServiceErrorModel serviceError) {
         this(response, serviceError, null);
     }
 
+    /**
+     * Creates an exception for a response, service error and cause.
+     *
+     * @param response the HTTP response
+     * @param serviceError the service error
+     * @param throwable the cause, or null
+     */
     public ClientResponseException(HttpResponse<String> response, ServiceErrorModel serviceError, Throwable throwable) {
         super(serviceError, throwable);
         this.response = response;

@@ -10,22 +10,47 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.net.URI;
 import java.time.Duration;
 
+/** Assertions for an OpenAPI UI page. */
 public class OpenApiVerifier extends GeneralVerifier {
+    /** Delegate for checking visible page text. */
     private final WebVerifier webVerifier;
 
+    /**
+     * Creates a verifier with a one-minute element wait.
+     * @param webDriver browser driver
+     * @param uri base URI for navigation
+     */
     public OpenApiVerifier(WebDriver webDriver, URI uri) {
         this(webDriver, uri, Duration.ofMinutes(1));
     }
 
+    /**
+     * Creates a verifier with a configurable element wait.
+     * @param webDriver browser driver
+     * @param uri base URI for navigation
+     * @param waitElementDuration element wait duration
+     */
     public OpenApiVerifier(WebDriver webDriver, URI uri, Duration waitElementDuration) {
         super(webDriver, uri, waitElementDuration);
         this.webVerifier = new WebVerifier(webDriver, uri, waitElementDuration);
     }
 
+    /**
+     * Checks the visible OpenAPI title.
+     * @param title expected title
+     * @throws AssertionError if the title is not visible or differs
+     */
     public void verifyTitle(String title) {
         webVerifier.verifyVisibleTextElement(By.cssSelector("h2.title"), title);
     }
 
+    /**
+     * Checks an operation's method and data path, ignoring case.
+     * @param id operation identifier used in the element ID
+     * @param method expected HTTP method
+     * @param path expected operation path
+     * @throws AssertionError if the operation details differ
+     */
     public void verifyEndpoint(String id, String method, String path) {
         final WebDriverWait wait = new WebDriverWait(webDriver, this.waitElementDuration);
 

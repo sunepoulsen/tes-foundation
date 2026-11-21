@@ -18,11 +18,20 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class RemoteMavenRepository implements MavenRepository {
 
+    /** Base URI of the repository. */
     private final String baseUri;
+    /** Layout used to locate artifacts. */
     private final MavenRepositoryArtifactLayout artifactLayout;
 
+    /** Client used for asynchronous metadata requests. */
     private final HttpClient httpClient;
 
+    /**
+     * Creates a repository client.
+     *
+     * @param baseUri repository base URI
+     * @param artifactLayout layout used to locate artifacts
+     */
     public RemoteMavenRepository(URI baseUri, MavenRepositoryArtifactLayout artifactLayout) {
         this.baseUri = baseUri.toString();
         this.artifactLayout = artifactLayout;
@@ -47,6 +56,13 @@ public class RemoteMavenRepository implements MavenRepository {
         }
     }
 
+    /**
+     * Extracts the response body if the HTTP status is successful.
+     *
+     * @param response HTTP response to inspect
+     * @return response body for a 2xx status
+     * @throws MavenRepositoryException if the status is not 2xx
+     */
     public String verifyResponseAndExtractBody(HttpResponse<String> response) {
         if (response.statusCode() >= 200 && response.statusCode() < 300) {
             return response.body();

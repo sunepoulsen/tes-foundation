@@ -7,6 +7,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * Envelope containing a list of results.
+ *
+ * @param <T> type of result contained in the envelope
+ */
 @Data
 @Schema(name = "Envelope", description = "Object with a list of results")
 public class EnvelopeModel<T> {

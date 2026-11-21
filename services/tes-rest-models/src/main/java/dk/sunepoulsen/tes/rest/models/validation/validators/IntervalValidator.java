@@ -6,8 +6,10 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.lang.reflect.Field;
 
+/** Validates the ordering of two numeric fields specified by an interval constraint. */
 public class IntervalValidator implements ConstraintValidator<Interval, Object> {
 
+    /** Constraint supplying the names of the interval fields. */
     private Interval annotation;
 
     @Override
