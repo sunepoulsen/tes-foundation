@@ -4,8 +4,8 @@ dependencies {
     implementation project(':services:tes-spring-boot-backend-logging')
 
     // Spring Boot
-    implementation 'org.springframework:spring-web:7.0.10'
-    implementation 'org.springframework:spring-webmvc:7.0.10'
+    implementation 'org.springframework:spring-web:7.1.0'
+    implementation 'org.springframework:spring-webmvc:7.1.0'
 
     // Validation API
     api 'jakarta.validation:jakarta.validation-api:3.0.2'

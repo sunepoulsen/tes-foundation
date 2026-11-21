@@ -1,6 +1,6 @@
 dependencies {
     // Spring Boot
-    api 'org.springframework.data:spring-data-commons:4.1.2'
+    api 'org.springframework.data:spring-data-commons:4.2.0'
 
     // Jackson Json
     api 'tools.jackson.core:jackson-databind:3.3.0'
